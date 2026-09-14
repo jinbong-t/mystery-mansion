@@ -1,0 +1,186 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>미스터리 맨션 - 나의 주거 공간 구성</title>
+    <link rel="stylesheet" href="style.css">
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Serif+KR:wght@400;700&display=swap" rel="stylesheet">
+</head>
+<body>
+    <div id="game-container">
+        <!-- 층별 배경 -->
+        <div id="room-background"></div>
+        
+        <!-- 엘리베이터 (층간 이동 UI) -->
+        <div id="elevator-ui" class="hidden">
+            <div class="floor-indicator">1F</div>
+            <div class="elevator-doors">
+                <div class="door left-door"></div>
+                <div class="door right-door"></div>
+            </div>
+        </div>
+
+        <!-- 오디오 자동재생 방지용 시작 화면 -->
+        <div id="start-screen" class="floor-content active" style="background-color: #000; z-index: 100;">
+            <h1 style="color: var(--accent); margin-bottom: 30px;">미스터리 맨션</h1>
+            <p style="margin-bottom: 50px;">헤드폰이나 이어폰 착용을 권장합니다.</p>
+            <button id="real-start-btn" class="action-btn" style="font-size: 1.5rem; padding: 15px 40px; margin: 0 auto;">게임 시작</button>
+        </div>
+
+        <button id="skip-btn" class="action-btn hidden" style="position: absolute; top: 20px; left: 20px; z-index: 1000; padding: 5px 15px; font-size: 0.9rem;">⏭️ 스킵</button>
+
+        <!-- 프롤로그: 전화 씬 -->
+        <div id="scene-phone" class="floor-content" style="background-color: #111; z-index: 50; display: flex; align-items: center; justify-content: center;">
+            <div class="smartphone-frame">
+                <div class="notch"></div>
+                <div class="status-bar">
+                    <span class="time" id="phone-time">22:30</span>
+                    <span class="icons">📶 🔋</span>
+                </div>
+
+                <div id="incoming-call" class="phone-screen active-screen">
+                    <div class="caller-id-circle">엄마</div>
+                    <h1 class="caller">엄마</h1>
+                    <p class="status">휴대전화</p>
+                    
+                    <div class="bottom-controls">
+                        <div class="call-buttons" style="display: flex; gap: 50px;">
+                            <button id="answer-btn" class="call-btn answer-btn" style="background: #4cd964; border: none; width: 70px; height: 70px; border-radius: 50%; font-size: 2rem; cursor: pointer; box-shadow: 0 4px 10px rgba(0,0,0,0.3); animation: bounce 2s infinite;">📞</button>
+                        </div>
+                    </div>
+                </div>
+
+                <div id="in-call" class="phone-screen hidden">
+                    <div class="caller-info-small">
+                        <h1 class="caller">엄마</h1>
+                        <p class="status call-timer">00:00</p>
+                    </div>
+                    
+                    <div class="dialogue-box phone-dialogue" style="position: relative; width: 90%; margin: 40px auto; transform: none; left: auto; bottom: auto;">
+                        <p class="speaker">엄마</p>
+                        <p class="text">"어휴, 미안해서 어쩌니. 엄마가 갑자기 급한 일이 생겨서 집 보러 못 가게 됐어. 공인중개사랑 네가 살 집이니까 대신 잘 좀 보고 와!"</p>
+                    </div>
+
+                    <div id="end-call-wrapper" class="end-call-container hidden">
+                        <button id="phone-ok-btn" class="end-call-btn">
+                            <span class="end-icon">📞</span>
+                        </button>
+                        <p>알겠다고 끊기</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- 외경 씬 (입체적 연출) -->
+        <div id="scene-exterior" class="floor-content hidden" style="background-image: url('mansion_exterior.png'); background-size: cover; background-position: center; z-index: 45;">
+            <div id="exterior-overlay-text" class="cinematic-text">얼마 후, 미스터리 맨션 앞...</div>
+        </div>
+
+        <!-- 1층 로비 컨텐츠 -->
+        <div id="floor-1" class="floor-content" data-bg="bg_lobby.png">
+            <img src="agent_portrait.png" id="agent-portrait" class="cinematic-portrait hidden" alt="미스터리 공인중개사">
+            <div class="dialogue-box">
+                <p class="speaker">미스터리 공인중개사</p>
+                <p class="text" id="dialogue-text">"이 맨션, 매물마다 잠금장치가 걸려 있는데, 번호키도 있고 옛날식 자물쇠도 있어요. 그 집을 제대로 파악해야만 열리거든요."</p>
+                <button id="next-dialogue-btn" class="action-btn">다음</button>
+            </div>
+            
+            <div id="name-input-container" class="hidden glass-panel">
+                <h2>명함을 건네받았지만, 이름 칸이 얼룩져 있다.</h2>
+                <p>당신의 이름을 적어보세요.</p>
+                <input type="text" id="player-name" placeholder="이름 또는 애칭" autocomplete="off">
+                <button id="start-btn" class="action-btn">서명하기</button>
+            </div>
+        </div>
+
+        <!-- 2층 신혼부부 매물 컨텐츠 -->
+        <div id="floor-2" class="floor-content" data-bg="bg_floor2.png">
+            <!-- 공인중개사 코멘트 -->
+            <div class="dialogue-box" id="f2-dialogue" style="top: 20px; bottom: auto;">
+                <p class="speaker">미스터리 공인중개사</p>
+                <p class="text">"공간 나누는 게 서툰 신혼부부가 살았대요. 도어락 비밀번호는 구역화 원칙 속에 있습니다."</p>
+                <button id="start-f2-btn" class="action-btn">방 둘러보기</button>
+            </div>
+
+            <!-- 미니게임 1: 방 구역 분류 -->
+            <div id="f2-minigame-1" class="hidden glass-panel game-panel">
+                <h2>문제 1: 올바른 구역으로 분류하기</h2>
+                <p>아래 방들을 알맞은 주거 구역에 배치하세요.</p>
+                <div class="zoning-game">
+                    <div class="items" id="room-items">
+                        <div class="draggable-item" draggable="true" data-room="침실">침실</div>
+                        <div class="draggable-item" draggable="true" data-room="거실">거실</div>
+                        <div class="draggable-item" draggable="true" data-room="부엌">부엌</div>
+                        <div class="draggable-item" draggable="true" data-room="욕실">욕실</div>
+                        <div class="draggable-item" draggable="true" data-room="현관">현관</div>
+                    </div>
+                    <div class="drop-zones">
+                        <div class="drop-zone" data-zone="개인생활공간">개인생활공간<br>(예: 침실)</div>
+                        <div class="drop-zone" data-zone="공동생활공간">공동생활공간<br>(예: 거실)</div>
+                        <div class="drop-zone" data-zone="가사작업공간">가사작업공간<br>(예: 부엌)</div>
+                        <div class="drop-zone" data-zone="생리위생공간">생리위생공간<br>(예: 욕실)</div>
+                        <div class="drop-zone" data-zone="부수공간">부수공간<br>(예: 현관)</div>
+                    </div>
+                </div>
+                <button id="check-f2-m1" class="action-btn" style="margin-top: 15px;">확인</button>
+            </div>
+
+            <!-- 미니게임 2: 가구 분류 -->
+            <div id="f2-minigame-2" class="hidden glass-panel game-panel">
+                <h2>문제 2: 가구 용도 분류하기</h2>
+                <p>가구 이름 카드를 올바른 용도에 맞게 분류하세요. 완료 시 4자리 비밀번호 힌트가 나타납니다.</p>
+                <!-- 간소화된 클릭형 객관식으로 변경 (빠른 구현용) -->
+                <div class="quiz-container">
+                    <p>Q. 다음 중 <strong>수납용</strong> 가구에 해당하는 것을 모두 고르시오.</p>
+                    <label><input type="checkbox" value="옷장" class="f2-m2-cb"> 옷장</label>
+                    <label><input type="checkbox" value="침대" class="f2-m2-cb"> 침대</label>
+                    <label><input type="checkbox" value="책상" class="f2-m2-cb"> 책상</label>
+                    <label><input type="checkbox" value="서랍장" class="f2-m2-cb"> 서랍장</label>
+                </div>
+                <button id="check-f2-m2" class="action-btn" style="margin-top: 15px;">확인</button>
+                <div id="f2-password-hint" class="hidden" style="margin-top: 15px; color: yellow; font-weight: bold; font-size: 1.5rem;">
+                    비밀번호: 4 2 8 6
+                </div>
+            </div>
+
+            <!-- 2층 도어락 UI -->
+            <div id="f2-doorlock" class="hidden doorlock-panel">
+                <div class="doorlock-display" id="f2-display">----</div>
+                <div class="keypad">
+                    <button class="key-btn">1</button><button class="key-btn">2</button><button class="key-btn">3</button>
+                    <button class="key-btn">4</button><button class="key-btn">5</button><button class="key-btn">6</button>
+                    <button class="key-btn">7</button><button class="key-btn">8</button><button class="key-btn">9</button>
+                    <button class="key-btn clr-btn">C</button><button class="key-btn">0</button><button class="key-btn enter-btn">E</button>
+                </div>
+            </div>
+            
+            <!-- 냉장고 자석 (숨은 글자) -->
+            <div id="f2-hidden-magnet" class="hidden-object" style="top: 35%; left: 15%; width: 30px; height: 30px; cursor: pointer; position: absolute;">
+                <div class="magnet-glow"></div>
+            </div>
+        </div>
+
+        <!-- 성향 진단 모달 (1층 후반부) -->
+        <div id="personality-test-modal" class="modal hidden">
+            <div class="modal-content glass-panel">
+                <h2>간단한 성향 진단</h2>
+                <p>어떤 공간을 가장 선호하시나요?</p>
+                <div class="options">
+                    <button class="action-btn test-btn" data-type="휴식형">편안하고 아늑한 휴식 공간</button>
+                    <button class="action-btn test-btn" data-type="사교형">친구들을 초대하기 좋은 넓은 거실</button>
+                    <button class="action-btn test-btn" data-type="작업형">집중이 잘 되는 효율적인 작업 공간</button>
+                </div>
+            </div>
+        </div>
+        
+        <!-- UI Overlay for collected letters -->
+        <div id="inventory" class="hidden">
+            <div class="inventory-title">수집한 조각</div>
+            <div id="letter-pieces"></div>
+        </div>
+    </div>
+    
+    <script src="app.js"></script>
+</body>
+</html>
