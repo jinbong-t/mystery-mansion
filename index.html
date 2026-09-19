@@ -108,8 +108,59 @@
             <div id="f2-entrance-scene" style="width:100%;height:100%;position:absolute;z-index:15;">
                 <div class="dialogue-box" id="f2-entrance-dialogue" style="top:120px;bottom:auto;">
                     <p class="speaker">미스터리 공인중개사</p>
-                    <p class="text">"201호 복도입니다. 공간 구획이 서툰 신혼부부가 살던 곳이죠. 냉장고에 쪽지 두 장이 붙어 있군요 — '자기야 방 좀 나눠 쓰자' / '난 그냥 같이 쓰고 싶은데'. 서로 다른 요구가 부딪혔나 봐요. 부부는 5월 20일에 결혼했습니다. 문을 열어볼까요?"</p>
-                    <button id="show-entrance-doorlock-btn" class="action-btn">도어락 누르기</button>
+                    <p class="text">"201호 복도입니다. 공간 구획이 서툰 신혼부부가 살던 곳이죠.<br>잠시만요, 201호 도어락 번호가 뭐더라... 여기 집주인이 적어준게 있는데, 아아 여깄네요!"</p>
+                    <button id="show-memo-btn" class="action-btn">구겨진 메모 펴보기</button>
+                    <button id="show-entrance-doorlock-btn" class="action-btn hidden" style="margin-top:10px;">도어락 누르기</button>
+                </div>
+            </div>
+
+            <!-- 구겨진 메모 UI -->
+            <div id="f2-memo-scene" class="hidden" style="position:absolute;top:0;left:0;width:100%;height:100%;background:rgba(0,0,0,0.82);z-index:20;display:flex;align-items:center;justify-content:center;">
+                <div id="crumpled-memo" style="width:85%;max-width:480px;background:#f4eec8;color:#333;padding:22px;border-radius:5px;box-shadow:0 10px 30px rgba(0,0,0,0.5);transform:scale(0.1) rotate(20deg);opacity:0;transition:all 0.8s cubic-bezier(0.34, 1.56, 0.64, 1);position:relative;overflow:hidden;">
+                    <div style="position:absolute;top:0;left:0;right:0;bottom:0;background:repeating-linear-gradient(0deg, transparent, transparent 28px, rgba(0,0,0,0.04) 28px, rgba(0,0,0,0.04) 29px);pointer-events:none;"></div>
+                    <h3 style="text-align:center;margin-bottom:5px;border-bottom:2px dashed #bbb;padding-bottom:8px;font-size:0.95rem;color:#5a3a1a;">🗒️ 집주인 암호 메모</h3>
+                    <p style="text-align:center;font-size:0.78rem;color:#777;margin-bottom:12px;">수업 내용으로 OX를 풀어라! <strong style="color:#b38b59;">O=1, X=0</strong> 순서대로 4자리</p>
+                    <div style="display:flex;flex-direction:column;gap:8px;margin-bottom:12px;">
+                        <div style="background:rgba(255,255,255,0.72);border-radius:6px;padding:8px 11px;border-left:4px solid #5a8a5a;">
+                            <p style="font-size:0.85rem;font-weight:bold;margin:0 0 3px;">Q1. 주거 욕구에 '공동체 욕구'가 포함된다.</p>
+                            <p style="font-size:0.72rem;color:#888;margin:0 0 5px;">힌트: 안전 / 휴식 / ??? / 자기표현 / 심미적</p>
+                            <div style="display:flex;gap:6px;">
+                                <button id="ox-q1-o" onclick="selectOX(1,'O')" style="padding:2px 14px;border:2px solid #5a8a5a;border-radius:20px;background:transparent;cursor:pointer;font-weight:bold;font-size:0.88rem;color:#5a8a5a;">O</button>
+                                <button id="ox-q1-x" onclick="selectOX(1,'X')" style="padding:2px 14px;border:2px solid #cc4444;border-radius:20px;background:transparent;cursor:pointer;font-weight:bold;font-size:0.88rem;color:#cc4444;">X</button>
+                            </div>
+                        </div>
+                        <div style="background:rgba(255,255,255,0.72);border-radius:6px;padding:8px 11px;border-left:4px solid #8a5a5a;">
+                            <p style="font-size:0.85rem;font-weight:bold;margin:0 0 3px;">Q2. '침대'는 수납용 가구에 해당한다.</p>
+                            <p style="font-size:0.72rem;color:#888;margin:0 0 5px;">힌트: 수납용 = 옷장·책장·서랍장·협탁</p>
+                            <div style="display:flex;gap:6px;">
+                                <button id="ox-q2-o" onclick="selectOX(2,'O')" style="padding:2px 14px;border:2px solid #5a8a5a;border-radius:20px;background:transparent;cursor:pointer;font-weight:bold;font-size:0.88rem;color:#5a8a5a;">O</button>
+                                <button id="ox-q2-x" onclick="selectOX(2,'X')" style="padding:2px 14px;border:2px solid #cc4444;border-radius:20px;background:transparent;cursor:pointer;font-weight:bold;font-size:0.88rem;color:#cc4444;">X</button>
+                            </div>
+                        </div>
+                        <div style="background:rgba(255,255,255,0.72);border-radius:6px;padding:8px 11px;border-left:4px solid #8a5a5a;">
+                            <p style="font-size:0.85rem;font-weight:bold;margin:0 0 3px;">Q3. 공간 꿀팁에서 '조명 활용'이 첫 번째다.</p>
+                            <p style="font-size:0.72rem;color:#888;margin:0 0 5px;">힌트: ①쓸모없는 물건 버리기  ②조명으로 분위기…</p>
+                            <div style="display:flex;gap:6px;">
+                                <button id="ox-q3-o" onclick="selectOX(3,'O')" style="padding:2px 14px;border:2px solid #5a8a5a;border-radius:20px;background:transparent;cursor:pointer;font-weight:bold;font-size:0.88rem;color:#5a8a5a;">O</button>
+                                <button id="ox-q3-x" onclick="selectOX(3,'X')" style="padding:2px 14px;border:2px solid #cc4444;border-radius:20px;background:transparent;cursor:pointer;font-weight:bold;font-size:0.88rem;color:#cc4444;">X</button>
+                            </div>
+                        </div>
+                        <div style="background:rgba(255,255,255,0.72);border-radius:6px;padding:8px 11px;border-left:4px solid #5a8a5a;">
+                            <p style="font-size:0.85rem;font-weight:bold;margin:0 0 3px;">Q4. '심미적 욕구'란 아름다운 공간을 원하는 욕구다.</p>
+                            <p style="font-size:0.72rem;color:#888;margin:0 0 5px;">힌트: 심미적(審美的) = 아름다움을 살피고 느끼는</p>
+                            <div style="display:flex;gap:6px;">
+                                <button id="ox-q4-o" onclick="selectOX(4,'O')" style="padding:2px 14px;border:2px solid #5a8a5a;border-radius:20px;background:transparent;cursor:pointer;font-weight:bold;font-size:0.88rem;color:#5a8a5a;">O</button>
+                                <button id="ox-q4-x" onclick="selectOX(4,'X')" style="padding:2px 14px;border:2px solid #cc4444;border-radius:20px;background:transparent;cursor:pointer;font-weight:bold;font-size:0.88rem;color:#cc4444;">X</button>
+                            </div>
+                        </div>
+                    </div>
+                    <div style="text-align:center;background:rgba(0,0,0,0.07);padding:7px;border-radius:6px;margin-bottom:10px;">
+                        <p style="font-size:0.75rem;color:#666;margin:0 0 3px;">O=1, X=0 순서대로 입력하면 → 도어락 번호!</p>
+                        <p style="font-size:1.5rem;font-weight:bold;color:#b38b59;letter-spacing:10px;margin:0;" id="ox-code-display">_ _ _ _</p>
+                    </div>
+                    <div style="text-align:center;">
+                        <button id="close-memo-btn" style="background:#b38b59;color:#fff;border:none;padding:9px 20px;border-radius:4px;cursor:pointer;font-weight:bold;font-size:0.9rem;">확인! 도어락 누르러 가기 →</button>
+                    </div>
                 </div>
             </div>
 

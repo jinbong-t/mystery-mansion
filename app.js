@@ -15,6 +15,7 @@ var roomBackground = document.getElementById('room-background');
 var elevatorUI = document.getElementById('elevator-ui');
 var inventory = document.getElementById('inventory');
 var letterPiecesContainer = document.getElementById('letter-pieces');
+var audioCtx = null; // 전역으로 선언하여 엘리베이터 효과 등에서 사용
 
 function saveState() { localStorage.setItem('mansionState', JSON.stringify(state)); }
 function showElement(el) { if (el) { el.classList.remove('hidden'); if (el.classList.contains('floor-content')) el.classList.add('active'); } }
@@ -248,7 +249,7 @@ function initIntroAndLobby() {
     function showNameInput() {
         if (nameInputContainer) { showElement(nameInputContainer); nameInputContainer.classList.remove('hidden'); }
     }
-    var audioCtx = null; var ringInterval = null;
+    var ringInterval = null;
     function startRingtone() { if (!audioCtx) audioCtx = new (window.AudioContext || window.webkitAudioContext)(); if (audioCtx.state === 'suspended') audioCtx.resume(); function playBeep() { var osc1 = audioCtx.createOscillator(); var osc2 = audioCtx.createOscillator(); var gain = audioCtx.createGain(); osc1.type = 'sine'; osc2.type = 'sine'; osc1.frequency.value = 440; osc2.frequency.value = 480; osc1.connect(gain); osc2.connect(gain); gain.connect(audioCtx.destination); gain.gain.setValueAtTime(0, audioCtx.currentTime); gain.gain.linearRampToValueAtTime(0.1, audioCtx.currentTime + 0.1); gain.gain.setValueAtTime(0.1, audioCtx.currentTime + 1.0); gain.gain.linearRampToValueAtTime(0, audioCtx.currentTime + 1.1); osc1.start(audioCtx.currentTime); osc2.start(audioCtx.currentTime); osc1.stop(audioCtx.currentTime + 1.1); osc2.stop(audioCtx.currentTime + 1.1); } playBeep(); ringInterval = setInterval(playBeep, 3000); }
     function stopRingtone() { if (ringInterval) clearInterval(ringInterval); }
 
@@ -361,8 +362,56 @@ function initFloor2() {
     var hiddenMagnet = document.getElementById('f2-hidden-magnet');
     if (!showDoorlockBtn) return;
 
+    // OX 퀴즈 인터랙션
+    var oxAnswers = { 1: null, 2: null, 3: null, 4: null };
+    window.selectOX = function(q, val) {
+        oxAnswers[q] = val;
+        var oBtn = document.getElementById('ox-q' + q + '-o');
+        var xBtn = document.getElementById('ox-q' + q + '-x');
+        if (val === 'O') {
+            if (oBtn) { oBtn.style.background = '#5a8a5a'; oBtn.style.color = '#fff'; }
+            if (xBtn) { xBtn.style.background = 'transparent'; xBtn.style.color = '#cc4444'; }
+        } else {
+            if (xBtn) { xBtn.style.background = '#cc4444'; xBtn.style.color = '#fff'; }
+            if (oBtn) { oBtn.style.background = 'transparent'; oBtn.style.color = '#5a8a5a'; }
+        }
+        var disp = document.getElementById('ox-code-display');
+        if (disp) {
+            var code = '';
+            for (var i = 1; i <= 4; i++) {
+                if (oxAnswers[i] === 'O') code += '1';
+                else if (oxAnswers[i] === 'X') code += '0';
+                else code += '_';
+                if (i < 4) code += ' ';
+            }
+            disp.textContent = code;
+        }
+    };
+
+    if (showMemoBtn) {
+        showMemoBtn.addEventListener('click', function() {
+            showElement(memoScene);
+            setTimeout(function() {
+                crumpledMemo.style.transform = 'scale(1) rotate(0deg)';
+                crumpledMemo.style.opacity = '1';
+            }, 50);
+        });
+    }
+
+    if (closeMemoBtn) {
+        closeMemoBtn.addEventListener('click', function() {
+            crumpledMemo.style.transform = 'scale(0.1) rotate(20deg)';
+            crumpledMemo.style.opacity = '0';
+            setTimeout(function() {
+                hideElement(memoScene);
+                showMemoBtn.classList.add('hidden');
+                showDoorlockBtn.classList.remove('hidden');
+            }, 800);
+        });
+    }
+
     showDoorlockBtn.addEventListener('click', function() { showElement(f2Doorlock); });
-    setupDoorlock('f2', '0520', function() {
+    setupDoorlock('f2', '1001', function() {
         hideElement(f2EntranceScene);
         if (f2InsideScene) { showElement(f2InsideScene); f2InsideScene.classList.remove('hidden'); }
     }, null);
