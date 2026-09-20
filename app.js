@@ -2,7 +2,6 @@
 
 var state = {
     floor: 1, playerName: '', personalityType: '',
-    collectedLetters: [null, null, null, null, null],
     f2m1Done: false, f2m2Done: false, f2m3Done: false,
     f3m1Done: false, f3m2Done: false, f3m3Done: false,
     f4keyFound: false, f4m1Done: false, f4m2Done: false, f4m3Done: false,
@@ -13,35 +12,12 @@ var state = {
 
 var roomBackground = document.getElementById('room-background');
 var elevatorUI = document.getElementById('elevator-ui');
-var inventory = document.getElementById('inventory');
-var letterPiecesContainer = document.getElementById('letter-pieces');
 var audioCtx = null; // 전역으로 선언하여 엘리베이터 효과 등에서 사용
 
 function saveState() { localStorage.setItem('mansionState', JSON.stringify(state)); }
 function showElement(el) { if (el) { el.classList.remove('hidden'); if (el.classList.contains('floor-content')) el.classList.add('active'); } }
 function hideElement(el) { if (el) { el.classList.add('hidden'); if (el.classList.contains('floor-content')) el.classList.remove('active'); } }
 
-function renderInventory() {
-    if (!letterPiecesContainer) return;
-    letterPiecesContainer.innerHTML = '';
-    for (var i = 0; i < 5; i++) {
-        var div = document.createElement('div');
-        div.className = 'letter';
-        if (state.collectedLetters[i]) {
-            div.innerText = state.collectedLetters[i];
-            div.style.borderStyle = 'solid';
-            div.style.color = 'var(--accent)';
-        } else { div.innerText = '?'; }
-        letterPiecesContainer.appendChild(div);
-    }
-}
-
-function collectLetter(index, letter) {
-    if (!state.collectedLetters[index]) {
-        state.collectedLetters[index] = letter;
-        renderInventory(); saveState();
-    }
-}
 
 function changeFloorUI(floorId) {
     state.floor = floorId;
@@ -54,7 +30,7 @@ function changeFloorUI(floorId) {
     if (target) target.classList.add('active');
     var bgImg = target ? target.dataset.bg : null;
     if (bgImg && roomBackground) roomBackground.style.backgroundImage = "url('" + bgImg + "')";
-    if (floorId !== 1) { showElement(inventory); renderInventory(); }
+    // if (floorId !== 1) { showElement(inventory); renderInventory(); }
     saveState();
 }
 
@@ -105,6 +81,14 @@ function moveToFloor(floorId, label) {
         }
         playElevatorEffect();
         
+        // 1. Change the floor UI and background immediately while doors are closed
+        changeFloorUI(floorId);
+        if (roomBackground) {
+            roomBackground.style.transition = 'none';
+            roomBackground.style.transform = 'scale(1)';
+            roomBackground.style.filter = 'none';
+        }
+        
         setTimeout(function() {
             if (elevatorUI) {
                 elevatorUI.classList.remove('elevator-shake');
@@ -146,23 +130,74 @@ function setupDoorlock(floorPrefix, correctCode, onSuccess, onClose) {
     var display = document.getElementById(floorPrefix + '-display');
     var closeBtn = document.getElementById(floorPrefix + '-doorlock-close');
     if (!panel) return;
+    // 오디오 관련 헬퍼 함수들 (도어락용)
+    function playBeep() {
+        try {
+            if (!audioCtx) audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+            if (audioCtx.state === 'suspended') audioCtx.resume();
+            var osc = audioCtx.createOscillator(); var gain = audioCtx.createGain();
+            osc.type = 'sine'; osc.frequency.setValueAtTime(880, audioCtx.currentTime);
+            osc.connect(gain); gain.connect(audioCtx.destination);
+            gain.gain.setValueAtTime(0, audioCtx.currentTime);
+            gain.gain.linearRampToValueAtTime(0.1, audioCtx.currentTime + 0.02);
+            gain.gain.linearRampToValueAtTime(0, audioCtx.currentTime + 0.1);
+            osc.start(audioCtx.currentTime); osc.stop(audioCtx.currentTime + 0.1);
+        } catch (e) { console.error('Audio playback failed', e); }
+    }
+    
+    function playSuccess() {
+        try {
+            if (!audioCtx) audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+            if (audioCtx.state === 'suspended') audioCtx.resume();
+            var now = audioCtx.currentTime;
+            var notes = [523.25, 659.25, 783.99, 1046.50]; // 도, 미, 솔, 도
+            notes.forEach(function(freq, i) {
+                var osc = audioCtx.createOscillator(); var gain = audioCtx.createGain();
+                osc.type = 'sine'; osc.frequency.setValueAtTime(freq, now + i*0.1);
+                osc.connect(gain); gain.connect(audioCtx.destination);
+                gain.gain.setValueAtTime(0, now + i*0.1);
+                gain.gain.linearRampToValueAtTime(0.1, now + i*0.1 + 0.02);
+                gain.gain.linearRampToValueAtTime(0, now + i*0.1 + 0.1);
+                osc.start(now + i*0.1); osc.stop(now + i*0.1 + 0.1);
+            });
+        } catch (e) { console.error('Audio playback failed', e); }
+    }
+    
+    function playError() {
+        try {
+            if (!audioCtx) audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+            if (audioCtx.state === 'suspended') audioCtx.resume();
+            var osc = audioCtx.createOscillator(); var gain = audioCtx.createGain();
+            osc.type = 'sawtooth'; osc.frequency.setValueAtTime(150, audioCtx.currentTime);
+            osc.connect(gain); gain.connect(audioCtx.destination);
+            gain.gain.setValueAtTime(0, audioCtx.currentTime);
+            gain.gain.linearRampToValueAtTime(0.1, audioCtx.currentTime + 0.05);
+            gain.gain.linearRampToValueAtTime(0, audioCtx.currentTime + 0.3);
+            osc.start(audioCtx.currentTime); osc.stop(audioCtx.currentTime + 0.3);
+        } catch (e) { console.error('Audio playback failed', e); }
+    }
+
     var current = '';
     panel.querySelectorAll('.key-btn').forEach(function(btn) {
         btn.onclick = null;
         btn.addEventListener('click', function() {
             var val = btn.textContent;
+            playBeep();
+            
             if (btn.classList.contains('clr-btn')) {
                 current = ''; display.textContent = '----';
             } else if (btn.classList.contains('enter-btn')) {
                 if (current === correctCode) {
                     display.textContent = 'OPEN'; display.style.color = '#0f0';
+                    playSuccess();
                     setTimeout(function() {
                         hideElement(panel); display.textContent = '----'; display.style.color = '#0ff'; current = '';
                         if (onSuccess) onSuccess();
-                    }, 800);
+                    }, 1000);
                 } else {
                     display.textContent = 'ERR'; display.style.color = '#f00';
-                    setTimeout(function() { display.textContent = '----'; display.style.color = '#0ff'; current = ''; }, 800);
+                    playError();
+                    setTimeout(function() { display.textContent = '----'; display.style.color = '#0ff'; current = ''; }, 600);
                 }
             } else {
                 if (current.length < 4) { current += val; display.textContent = current.padEnd(4, '-'); }
@@ -360,6 +395,10 @@ function initFloor2() {
     var checkM3 = document.getElementById('check-f2-m3');
     var hint = document.getElementById('f2-password-hint');
     var hiddenMagnet = document.getElementById('f2-hidden-magnet');
+    var showMemoBtn = document.getElementById('show-memo-btn');
+    var closeMemoBtn = document.getElementById('close-memo-btn');
+    var memoScene = document.getElementById('f2-memo-scene');
+    var crumpledMemo = document.getElementById('crumpled-memo');
     if (!showDoorlockBtn) return;
 
     // OX 퀴즈 인터랙션
@@ -406,6 +445,7 @@ function initFloor2() {
                 hideElement(memoScene);
                 showMemoBtn.classList.add('hidden');
                 showDoorlockBtn.classList.remove('hidden');
+                showElement(f2Doorlock); // 도어락 바로 표시
             }, 800);
         });
     }
@@ -413,91 +453,181 @@ function initFloor2() {
     showDoorlockBtn.addEventListener('click', function() { showElement(f2Doorlock); });
     setupDoorlock('f2', '1001', function() {
         hideElement(f2EntranceScene);
-        if (f2InsideScene) { showElement(f2InsideScene); f2InsideScene.classList.remove('hidden'); }
+        if (roomBackground) {
+            roomBackground.style.transition = 'none';
+            roomBackground.style.transform = 'scale(1) translate(0, 0)';
+            roomBackground.style.backgroundImage = "url('201호신혼부부 하우스.png')";
+        }
+        
+        // 1. 전체 모습 1.5초간 보여주고 대사 등장
+        setTimeout(function() {
+            if (f2InsideScene) { showElement(f2InsideScene); f2InsideScene.classList.remove('hidden'); }
+            var d = document.getElementById('f2-dialogue');
+            if (d) d.style.display = 'block';
+        }, 1500);
     }, null);
 
-    if (startF2Btn) {
-        startF2Btn.addEventListener('click', function() {
+    var showFridgeMemoBtn = document.getElementById('show-fridge-memo-btn');
+    if (showFridgeMemoBtn) {
+        showFridgeMemoBtn.addEventListener('click', function() {
             var d = document.getElementById('f2-dialogue');
             if (d) d.style.display = 'none';
-            showElement(m1); setupDragDrop('room-items');
+            
+            // 2. 냉장고 쪽으로 줌인
+            if (roomBackground) {
+                roomBackground.style.transition = 'transform 2s ease-in-out';
+                roomBackground.style.transform = 'scale(2.2) translate(15%, 5%)';
+            }
+            
+            // 3. 줌인 완료 후 메모 표시
+            setTimeout(function() {
+                var memoPopup = document.getElementById('f2-couple-memo-popup');
+                var memoImg = document.getElementById('f2-couple-memo-img');
+                if (memoPopup) {
+                    showElement(memoPopup); memoPopup.classList.remove('hidden');
+                    if (memoImg) {
+                        setTimeout(function() { memoImg.style.transform = 'scale(1)'; }, 50);
+                    }
+                }
+            }, 2000);
         });
     }
 
-    var correctMap1 = {
-        '수면및학업': '개인생활공간', '가족휴식및접대': '공동생활공간',
-        '조리및세탁': '가사작업공간', '배설및목욕': '생리위생공간', '내외부연결': '부수공간'
-    };
+    var closeCoupleMemoBtn = document.getElementById('close-couple-memo-btn');
+    if (closeCoupleMemoBtn) {
+        closeCoupleMemoBtn.addEventListener('click', function() {
+            var memoPopup = document.getElementById('f2-couple-memo-popup');
+            if (memoPopup) hideElement(memoPopup);
+            
+            // 줌아웃 (다시 원래 뷰로 복귀)
+            if (roomBackground) {
+                roomBackground.style.transition = 'transform 1s ease-in-out';
+                roomBackground.style.transform = 'scale(1) translate(0, 0)';
+            }
+            
+            // 4. 메모 닫은 후 새로운 대사창 등장
+            setTimeout(function() {
+                var d2 = document.getElementById('f2-dialogue-2');
+                if (d2) d2.style.display = 'block';
+            }, 1000);
+        });
+    }
+
+    var startF2Btn = document.getElementById('start-f2-btn');
+    if (startF2Btn) {
+        startF2Btn.onclick = function() {
+            var d2 = document.getElementById('f2-dialogue-2');
+            if (d2) d2.style.display = 'none';
+            var m1 = document.getElementById('f2-minigame-1');
+            if (m1) showElement(m1);
+            setupDragDrop('room-items');
+        };
+    }
+
     if (checkM1) {
         checkM1.addEventListener('click', function() {
             var allCorrect = true;
             document.querySelectorAll('#f2-minigame-1 .drop-zone').forEach(function(zone) {
+                var requiredTarget = zone.dataset.target;
                 zone.querySelectorAll('.draggable-item').forEach(function(item) {
-                    if (correctMap1[item.dataset.room] !== zone.dataset.zone) allCorrect = false;
+                    if (item.dataset.zone !== requiredTarget) allCorrect = false;
                 });
             });
             if (document.querySelectorAll('#room-items .draggable-item').length > 0) allCorrect = false;
             if (allCorrect) {
                 state.f2m1Done = true;
-                showAlert('정답! 공간 구역 분류 완료!', '#4cd964');
-                setTimeout(function() { hideElement(m1); showElement(m2); setupDragDrop('furniture-items'); }, 1000);
+                showAlert('정답! 공간 구역 분류 완료! 다음 문제로 넘어갑니다.', '#4cd964');
+                setTimeout(function() { 
+                    var m1 = document.getElementById('f2-minigame-1');
+                    var m2 = document.getElementById('f2-minigame-2');
+                    if (m1) hideElement(m1); 
+                    if (m2) showElement(m2);
+                    setupDragDrop('furniture-items');
+                }, 1000);
             } else { showAlert('다시 확인해봐!', '#ff6b6b'); }
         });
     }
 
-    var correctMap2 = {
-        '옷장': '수납용', '책장': '수납용', '서랍장': '수납용',
-        '책상': '작업용', '의자': '작업용', '침대': '휴식용', '소파': '휴식용'
-    };
+    // MCQ 헬퍼 함수
+    function setupMCQ(gameId, checkBtnId) {
+        var options = document.querySelectorAll('#' + gameId + ' .mcq-btn');
+        var checkBtn = document.getElementById(checkBtnId);
+        options.forEach(function(btn) {
+            btn.addEventListener('click', function() {
+                options.forEach(function(b) { b.classList.remove('selected'); });
+                btn.classList.add('selected');
+                if (checkBtn) checkBtn.classList.remove('hidden');
+            });
+        });
+    }
+    setupMCQ('f2-minigame-2', 'check-f2-m2');
+    setupMCQ('f2-minigame-3', 'check-f2-m3');
+
     if (checkM2) {
         checkM2.addEventListener('click', function() {
-            var wrongCount = 0;
-            document.querySelectorAll('#f2-minigame-2 .drop-zone').forEach(function(zone) {
-                zone.querySelectorAll('.draggable-item').forEach(function(item) {
-                    if (item.dataset.room === '침대겸수납장') return;
-                    if (correctMap2[item.dataset.room] !== zone.dataset.zone) wrongCount++;
-                });
-            });
-            document.querySelectorAll('#furniture-items .draggable-item').forEach(function(item) {
-                if (item.dataset.room !== '침대겸수납장') wrongCount++;
-            });
-            if (wrongCount === 0) {
+            var selected = document.querySelector('#f2-minigame-2 .mcq-btn.selected');
+            if (selected && selected.dataset.correct === 'true') {
                 state.f2m2Done = true;
-                showAlert('정답! 가구 분류 완료!', '#4cd964');
-                setTimeout(function() { hideElement(m2); showElement(m3); setupDragDrop('space-items'); }, 1000);
-            } else { showAlert('분류가 틀렸어요. 다시 확인!', '#ff6b6b'); }
+                showAlert('정답! 가사 동선이 훨씬 효율적으로 개선되었어요.', '#4cd964');
+                setTimeout(function() { 
+                    var m2 = document.getElementById('f2-minigame-2');
+                    var m3 = document.getElementById('f2-minigame-3');
+                    if (m2) hideElement(m2); 
+                    if (m3) showElement(m3);
+                }, 1500);
+            } else { showAlert('오답입니다. 동선이 겹치거나 너무 길어지면 안 돼요!', '#ff6b6b'); }
         });
     }
 
-    var correctMap3 = {
-        '침실': '정적공간', '서재': '정적공간', '욕실': '정적공간',
-        '거실': '동적공간', '부엌': '동적공간', '식사실': '동적공간', '현관': '동적공간'
-    };
     if (checkM3) {
         checkM3.addEventListener('click', function() {
-            var allCorrect = true;
-            document.querySelectorAll('#f2-minigame-3 .drop-zone').forEach(function(zone) {
-                zone.querySelectorAll('.draggable-item').forEach(function(item) {
-                    if (correctMap3[item.dataset.room] !== zone.dataset.zone) allCorrect = false;
-                });
-            });
-            if (document.querySelectorAll('#space-items .draggable-item').length > 0) allCorrect = false;
-            if (allCorrect) {
+            var selected = document.querySelector('#f2-minigame-3 .mcq-btn.selected');
+            if (selected && selected.dataset.correct === 'true') {
                 state.f2m3Done = true;
-                collectLetter(0, '집');
-                showElement(hint); if (hint) hint.classList.remove('hidden');
-                showAlert('정답! 글자 조각 획득!', '#4cd964');
-                showElement(hiddenMagnet);
-                if (hint && !hint.querySelector('.esc-btn')) {
-                    var eb = document.createElement('button');
-                    eb.className = 'action-btn esc-btn'; eb.style.marginTop = '10px'; eb.textContent = '탈출 시도';
-                    hint.appendChild(eb);
-                    eb.addEventListener('click', function() {
-                        showElement(f2Doorlock);
-                        setupDoorlock('f2', '0301', function() { moveToFloor(3, '3F'); }, null);
-                    });
-                }
-            } else { showAlert('다시 확인해봐!', '#ff6b6b'); }
+                showAlert('정답! 모든 문제 해결 완료!', '#4cd964');
+                
+                setTimeout(function() { 
+                    var m3 = document.getElementById('f2-minigame-3');
+                    if (m3) hideElement(m3); 
+                    
+                    // 화면 하얗게 번쩍이는 효과
+                    var flash = document.createElement('div');
+                    flash.style.position = 'absolute';
+                    flash.style.top = '0'; flash.style.left = '0'; flash.style.width = '100%'; flash.style.height = '100%';
+                    flash.style.backgroundColor = 'white';
+                    flash.style.opacity = '0';
+                    flash.style.zIndex = '9999';
+                    flash.style.transition = 'opacity 0.5s ease-in-out';
+                    document.body.appendChild(flash);
+                    
+                    setTimeout(function() { flash.style.opacity = '1'; }, 50);
+                    
+                    setTimeout(function() {
+                        var roomBackground = document.getElementById('room-background');
+                        if (roomBackground) {
+                            roomBackground.style.backgroundImage = "url('201호 신혼부부 공간 정리된 공간.png')";
+                        }
+                        flash.style.opacity = '0';
+                        setTimeout(function() { flash.remove(); }, 500);
+                        
+                        var d = document.getElementById('f2-dialogue');
+                        if (d) {
+                            d.style.display = 'block';
+                            d.innerHTML = '<p class="speaker">미스터리 공인중개사</p><p class="text">"어떠신가요? 공간을 잘 분리하니 꽤 살만한 집이 되었죠?"</p><button id="f2-after-magic-btn" class="action-btn">다음</button>';
+                            document.getElementById('f2-after-magic-btn').addEventListener('click', function() {
+                                d.innerHTML = '<p class="speaker">나(플레이어)</p><p class="text">"음... 생각보다 괜찮긴 한데, 다른 집도 보고 싶어요."</p><button id="f2-close-magic-btn" class="action-btn">다음</button>';
+                                document.getElementById('f2-close-magic-btn').addEventListener('click', function() {
+                                    d.innerHTML = '<p class="speaker">미스터리 공인중개사</p><p class="text">"알겠습니다. 그럼 다음 집으로 가보시죠!"</p><button id="f2-go-f3-btn" class="action-btn">301호로 이동</button>';
+                                    document.getElementById('f2-go-f3-btn').addEventListener('click', function() {
+                                        d.style.display = 'none';
+                                        moveToFloor(3, '3F');
+                                    });
+                                });
+                            });
+                        }
+                    }, 1500);
+                }, 1000);
+            } else { showAlert('다시 한 번 생각해 보세요. 소음을 피해 편히 쉴 수 있어야 해요!', '#ff6b6b'); }
         });
     }
     if (hiddenMagnet) {
@@ -516,13 +646,40 @@ function initFloor3() {
     var m2 = document.getElementById('f3-minigame-2');
     var m3 = document.getElementById('f3-minigame-3');
     var hint = document.getElementById('f3-password-hint');
+    var f3EntranceDialogue1 = document.getElementById('f3-entrance-dialogue');
+    var f3EntranceDialogue2 = document.getElementById('f3-entrance-dialogue-2');
+    var f3NextDialogueBtn = document.getElementById('f3-next-dialogue-btn');
+    var showF3M0Btn = document.getElementById('show-f3-m0-btn');
+    var m0 = document.getElementById('f3-minigame-0');
     if (!showDoorlockBtn) return;
 
-    showDoorlockBtn.addEventListener('click', function() { showElement(f3Doorlock); });
-    setupDoorlock('f3', '0301', function() {
+    if (f3NextDialogueBtn) {
+        f3NextDialogueBtn.addEventListener('click', function() {
+            hideElement(f3EntranceDialogue1);
+            if (f3EntranceDialogue2) { showElement(f3EntranceDialogue2); f3EntranceDialogue2.classList.remove('hidden'); }
+        });
+    }
+
+    if (showF3M0Btn) {
+        showF3M0Btn.addEventListener('click', function() {
+            hideElement(f3EntranceDialogue2);
+            if (m0) { showElement(m0); m0.classList.remove('hidden'); }
+        });
+    }
+
+    showDoorlockBtn.addEventListener('click', function() { showElement(f3Doorlock); hideElement(m0); });
+    setupDoorlock('f3', '3962', function() {
         hideElement(f3EntranceScene);
-        if (f3InsideScene) { showElement(f3InsideScene); f3InsideScene.classList.remove('hidden'); }
-    }, null);
+        if (f3InsideScene) { 
+            showElement(f3InsideScene); f3InsideScene.classList.remove('hidden'); 
+            if (roomBackground) roomBackground.style.backgroundImage = "url('2. 301호 방 안 (정리 전 - 엉망인 부엌 동선).png')";
+        }
+    }, function() {
+        setTimeout(function() {
+            hideElement(f3Doorlock);
+            if (m0) { showElement(m0); m0.classList.remove('hidden'); }
+        }, 500);
+    });
 
     if (startF3Btn) {
         startF3Btn.addEventListener('click', function() {
@@ -573,18 +730,34 @@ function initFloor3() {
         { q: '두 명이서 요리할 때 서로 맞은편에서 작업할 수 있어 효율적인 부엌 유형은?', opts: ['일자형', 'ㄱ자형', 'ㄷ자형', '아일랜드형'], ans: 'ㄷ자형' },
         { q: '오픈형 거실과 연결되어 손님 접대가 가능한 독립된 조리 공간이 있는 유형은?', opts: ['일자형', 'ㄱ자형', '아일랜드형', 'ㄷ자형'], ans: '아일랜드형' }
     ];
+    var f3m2Ans = {};
     function initF3M2() {
         var area = document.getElementById('f3-matching-area'); if (!area) return; area.innerHTML = '';
         kitchenQs.forEach(function(q, i) {
             var div = document.createElement('div'); div.style.cssText = 'background:rgba(255,255,255,0.05);padding:15px;border-radius:8px;border:1px solid #444;';
-            div.innerHTML = '<p style="color:#fff;margin-bottom:10px;">' + (i+1) + '. ' + q.q + '</p><select id="f3-q' + i + '" style="width:100%;padding:8px;background:#1a1a1a;border:1px solid var(--accent);color:#fff;border-radius:4px;"><option value="">-- 선택 --</option>' +
-                q.opts.map(function(o) { return '<option value="' + o + '">' + o + '</option>'; }).join('') + '</select>';
+            var html = '<p style="color:#fff;margin-bottom:10px;">' + (i+1) + '. ' + q.q + '</p><div class="mcq-options" style="display:grid;grid-template-columns:1fr 1fr;gap:10px;">';
+            q.opts.forEach(function(opt) {
+                html += '<button class="mcq-btn f3-m2-btn" data-i="' + i + '" data-val="' + opt + '" style="text-align:center;">' + opt + '</button>';
+            });
+            html += '</div>';
+            div.innerHTML = html;
             area.appendChild(div);
+        });
+
+        document.querySelectorAll('.f3-m2-btn').forEach(function(btn) {
+            btn.addEventListener('click', function() {
+                var idx = btn.dataset.i;
+                var val = btn.dataset.val;
+                f3m2Ans[idx] = val;
+                document.querySelectorAll('.f3-m2-btn[data-i="' + idx + '"]').forEach(function(b) { b.classList.remove('selected'); });
+                btn.classList.add('selected');
+            });
         });
     }
     var checkF3M2 = document.getElementById('check-f3-m2');
     if (checkF3M2) checkF3M2.addEventListener('click', function() {
-        var correct = kitchenQs.every(function(q, i) { var s = document.getElementById('f3-q' + i); return s && s.value === q.ans; });
+        if (Object.keys(f3m2Ans).length < kitchenQs.length) { showAlert('모든 문제에 답해주세요!', '#ff9'); return; }
+        var correct = kitchenQs.every(function(q, i) { return f3m2Ans[i] === q.ans; });
         if (correct) { state.f3m2Done = true; showAlert('정답! 부엌 유형 매칭 완료!', '#4cd964'); setTimeout(function() { hideElement(m2); showElement(m3); initF3M3(); }, 1000); }
         else { showAlert('틀린 답이 있어요!', '#ff6b6b'); }
     });
@@ -615,8 +788,21 @@ function initFloor3() {
         if (Object.keys(f3m3Ans).length < 3) { showAlert('모든 문제에 답해주세요!', '#ff9'); return; }
         var correct = oxQs3.every(function(q, i) { return f3m3Ans[i] === q.ans; });
         if (correct) {
-            state.f3m3Done = true; collectLetter(1, '이'); showElement(hint); if (hint) hint.classList.remove('hidden');
-            showAlert('정답! 글자 조각 획득!', '#4cd964');
+            state.f3m3Done = true; showElement(hint); if (hint) hint.classList.remove('hidden');
+            showAlert('정답! 힌트 획득!', '#4cd964');
+            
+            // 방이 정리되는 효과
+            var flash = document.createElement('div');
+            flash.style.position = 'absolute'; flash.style.top = '0'; flash.style.left = '0'; flash.style.width = '100%'; flash.style.height = '100%';
+            flash.style.backgroundColor = 'white'; flash.style.opacity = '0'; flash.style.zIndex = '9999'; flash.style.transition = 'opacity 0.5s ease-in-out';
+            document.body.appendChild(flash);
+            setTimeout(function() { flash.style.opacity = '1'; }, 50);
+            
+            setTimeout(function() {
+                if (roomBackground) roomBackground.style.backgroundImage = "url('3. 301호 방 안 (정리 후 - 완벽한 동선).png')";
+                flash.style.opacity = '0'; setTimeout(function() { flash.remove(); }, 500);
+            }, 1000);
+
             if (hint && !hint.querySelector('.esc-btn')) {
                 var eb = document.createElement('button'); eb.className = 'action-btn esc-btn'; eb.style.marginTop = '10px'; eb.textContent = '탈출 시도';
                 hint.appendChild(eb);
@@ -718,8 +904,8 @@ function initFloor4() {
     if (checkF4M3) checkF4M3.addEventListener('click', function() {
         var correct = divideQs.every(function(q, i) { var s = document.getElementById('f4-dq' + i); return s && s.value === q.ans; });
         if (correct) {
-            state.f4m3Done = true; collectLetter(2, '꿈'); showElement(hint); if (hint) hint.classList.remove('hidden');
-            showAlert('정답! 글자 조각 획득!', '#4cd964');
+            state.f4m3Done = true; showElement(hint); if (hint) hint.classList.remove('hidden');
+            showAlert('정답! 힌트 획득!', '#4cd964');
             if (hint && !hint.querySelector('.esc-btn')) {
                 var eb = document.createElement('button'); eb.className = 'action-btn esc-btn'; eb.style.marginTop = '10px'; eb.textContent = '탈출 시도';
                 hint.appendChild(eb);
@@ -832,8 +1018,8 @@ function initFloor5() {
     if (checkF5M3) checkF5M3.addEventListener('click', function() {
         if (f5m3Selected.length !== 6) { showAlert('6개를 모두 순서대로 클릭하세요!', '#ff9'); return; }
         if (JSON.stringify(f5m3Selected) === JSON.stringify(furnitureOrder)) {
-            state.f5m3Done = true; collectLetter(3, '터'); showElement(hint); if (hint) hint.classList.remove('hidden');
-            showAlert('정답! 글자 조각 획득!', '#4cd964');
+            state.f5m3Done = true; showElement(hint); if (hint) hint.classList.remove('hidden');
+            showAlert('정답! 힌트 획득!', '#4cd964');
             if (hint && !hint.querySelector('.esc-btn')) {
                 var eb = document.createElement('button'); eb.className = 'action-btn esc-btn'; eb.style.marginTop = '10px'; eb.textContent = '옥상으로 이동';
                 hint.appendChild(eb); eb.addEventListener('click', function() { moveToFloor('roof', 'ROOF'); });
@@ -939,28 +1125,29 @@ function initRoof() {
     if (checkRoofC) checkRoofC.addEventListener('click', function() {
         if (Object.keys(roofOxAns).length < 4) { showAlert('모든 문제에 답해주세요!', '#ff9'); return; }
         if (oxQsRoof.every(function(q, i) { return roofOxAns[i] === q.ans; })) {
-            state.roofBonusC = true; collectLetter(4, '집'); showAlert('정답! 서랍 위치가 드러납니다!', '#4cd964');
+            state.roofBonusC = true; showAlert('정답! 서랍 위치가 드러납니다!', '#4cd964');
             setTimeout(function() { hideElement(bonusC); showElement(drawerReveal); }, 1000);
         } else { showAlert('틀린 답이 있어요!', '#ff6b6b'); }
     });
 
     if (openDrawerBtn) openDrawerBtn.addEventListener('click', function() {
         hideElement(drawerReveal); showElement(finalPuzzle);
-        var display = document.getElementById('collected-letters-display');
-        if (display) {
-            display.innerHTML = state.collectedLetters.map(function(l) {
-                return '<div style="width:45px;height:45px;border:2px solid ' + (l ? '#b38b59' : '#444') + ';border-radius:8px;display:flex;align-items:center;justify-content:center;font-size:1.3rem;color:' + (l ? '#b38b59' : '#555') + ';">' + (l || '?') + '</div>';
-            }).join('');
-        }
+        setupDragDrop('floorplan-pieces');
     });
 
     if (checkPuzzle) checkPuzzle.addEventListener('click', function() {
-        var inputs = document.querySelectorAll('.letter-input');
-        var entered = Array.from(inputs).map(function(i) { return i.value; }).join('');
-        if (entered === '집이꿈터집') {
-            showAlert('수수께끼가 풀렸습니다!', '#ffd700');
-            setTimeout(function() { moveToFloor('penthouse', 'PH'); }, 1500);
-        } else { showAlert('틀렸어요! 각 층에서 모은 글자 조각을 확인하세요.', '#ff6b6b'); }
+        var allCorrect = true;
+        document.querySelectorAll('#roof-final-puzzle .drop-zone').forEach(function(zone) {
+            var requiredPiece = zone.dataset.zone;
+            var child = zone.querySelector('.draggable-item');
+            if (!child || child.dataset.piece !== requiredPiece) allCorrect = false;
+        });
+        if (document.querySelectorAll('#floorplan-pieces .draggable-item').length > 0) allCorrect = false;
+
+        if (allCorrect) {
+            showAlert('수수께끼가 풀렸습니다! 완벽한 도면이 완성되었습니다.', '#ffd700');
+            setTimeout(function() { moveToFloor('penthouse', 'PH'); }, 2000);
+        } else { showAlert('아직 완성되지 않았습니다. 조각 위치를 다시 확인하세요!', '#ff6b6b'); }
     });
 }
 
@@ -1052,8 +1239,6 @@ function showEnding() {
 
 // ===================== 초기화 =====================
 function init() {
-    // 인벤토리는 로비 진입 후에만 표시
-    if (inventory) hideElement(inventory);
     initIntroAndLobby();
     initFloor2();
     initFloor3();
