@@ -698,12 +698,24 @@ function initFloor3() {
             var btn = document.createElement('button');
             btn.className = 'action-btn'; btn.style.cssText = 'font-size:0.9rem;padding:8px 14px;margin:4px;'; btn.textContent = name;
             btn.addEventListener('click', function() {
-                if (!btn.disabled) {
-                    btn.disabled = true; btn.style.opacity = '0.4'; f3m1Selected.push(name);
-                    var disp = document.getElementById('f3-order-display');
-                    if (disp) disp.innerHTML = f3m1Selected.map(function(n) {
-                        return '<span style="background:#b38b59;color:#000;padding:4px 8px;border-radius:4px;font-size:0.85rem;">' + n + '</span>';
-                    }).join(' → ');
+                var idx = f3m1Selected.indexOf(name);
+                if (idx !== -1) {
+                    // 재클릭 → 선택 취소
+                    f3m1Selected.splice(idx, 1);
+                    btn.style.opacity = '1'; btn.style.outline = '';
+                } else {
+                    f3m1Selected.push(name);
+                    btn.style.opacity = '0.4'; btn.style.outline = '2px solid #b38b59';
+                }
+                var disp = document.getElementById('f3-order-display');
+                if (disp) {
+                    if (f3m1Selected.length === 0) {
+                        disp.innerHTML = '<span style="color:#666;font-size:0.85rem;">클릭한 순서가 여기 표시됩니다...</span>';
+                    } else {
+                        disp.innerHTML = f3m1Selected.map(function(n) {
+                            return '<span style="background:#b38b59;color:#000;padding:4px 8px;border-radius:4px;font-size:0.85rem;">' + n + '</span>';
+                        }).join(' → ');
+                    }
                 }
             });
             area.appendChild(btn);
@@ -816,29 +828,38 @@ function initFloor3() {
 function initFloor4() {
     var f4EntranceScene = document.getElementById('f4-entrance-scene');
     var f4InsideScene = document.getElementById('f4-inside-scene');
-    var f4PadlockScene = document.getElementById('f4-padlock-scene');
+    var f4SketchHintScene = document.getElementById('f4-sketch-hint-scene');
     var f4Doorlock = document.getElementById('f4-doorlock');
-    var showLockBtn = document.getElementById('show-f4-lock-btn');
-    var padlockCloseBtn = document.getElementById('f4-padlock-close');
-    var hiddenKey = document.getElementById('f4-hidden-key');
+    var showSketchBtn = document.getElementById('show-f4-sketch-btn');
+    var sketchCloseBtn = document.getElementById('f4-sketch-close-btn');
+    var showDoorlockBtn = document.getElementById('show-f4-doorlock-btn');
     var startF4Btn = document.getElementById('start-f4-btn');
     var m1 = document.getElementById('f4-minigame-1');
     var m2 = document.getElementById('f4-minigame-2');
     var m3 = document.getElementById('f4-minigame-3');
     var hint = document.getElementById('f4-password-hint');
-    if (!showLockBtn) return;
+    if (!showSketchBtn) return;
 
-    showLockBtn.addEventListener('click', function() {
-        hideElement(f4EntranceScene); showElement(f4PadlockScene); showElement(hiddenKey);
+    showSketchBtn.addEventListener('click', function() {
+        hideElement(f4EntranceScene); showElement(f4SketchHintScene);
     });
-    if (padlockCloseBtn) padlockCloseBtn.addEventListener('click', function() {
-        hideElement(f4PadlockScene); showElement(f4EntranceScene); hideElement(hiddenKey);
+    if (sketchCloseBtn) sketchCloseBtn.addEventListener('click', function() {
+        hideElement(f4SketchHintScene); showElement(f4EntranceScene);
     });
-    if (hiddenKey) hiddenKey.addEventListener('click', function() {
-        state.f4keyFound = true; hideElement(hiddenKey); hideElement(f4PadlockScene);
+    if (showDoorlockBtn) showDoorlockBtn.addEventListener('click', function() {
+        hideElement(f4SketchHintScene); showElement(f4Doorlock);
+    });
+
+    setupDoorlock('f4', 'LOFT', function() {
+        hideElement(f4EntranceScene);
         if (f4InsideScene) { showElement(f4InsideScene); f4InsideScene.classList.remove('hidden'); }
-        showAlert('열쇠를 찾았습니다!', '#b38b59');
+    }, function() {
+        setTimeout(function() {
+            hideElement(f4Doorlock);
+            if (f4SketchHintScene) { showElement(f4SketchHintScene); f4SketchHintScene.classList.remove('hidden'); }
+        }, 500);
     });
+
     if (startF4Btn) startF4Btn.addEventListener('click', function() {
         var d = document.getElementById('f4-dialogue'); if (d) d.style.display = 'none';
         showElement(m1); initF4M1();

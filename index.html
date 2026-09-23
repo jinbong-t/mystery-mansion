@@ -377,7 +377,7 @@
                     <div id="f3-ox-area" style="display:flex;flex-direction:column;gap:12px;"></div>
                     <button id="check-f3-m3" class="action-btn" style="margin-top:15px;width:100%;padding:12px;">확인</button>
                     <div id="f3-password-hint" class="hidden hint-box" style="margin-top:15px;">
-                        <p class="hint-title">✨ 다이어리 뒷장에 번호가 나타났습니다!</p>
+                        <p class="hint-title">📝 401호로 향하는 비밀번호가 나타났습니다!</p>
                         <p class="hint-code">0 4 0 1</p>
                         <p class="hint-sub">다음 집인 401호로 향하는 비밀번호</p>
                     </div>
@@ -402,23 +402,27 @@
             <div id="f4-entrance-scene" style="width:100%;height:100%;position:absolute;z-index:15;">
                 <div class="dialogue-box" id="f4-entrance-dialogue" style="top:120px;bottom:auto;">
                     <p class="speaker">미스터리 공인중개사</p>
-                    <p class="text">"401호입니다. 복층 원룸이에요. 스케치북에 낙서가 가득하군요 — 좁은 공간을 어떻게든 넓게 쓰려고 애쓴 흔적들이에요. 이 방은 번호키가 아니라 구식 자물쇠로 잠겨 있어요. 방 안에 숨겨진 열쇠를 찾아야 해요."</p>
-                    <button id="show-f4-lock-btn" class="action-btn">자물쇠 살펴보기</button>
+                    <p class="text">"401호입니다. 복층 원룸이에요. 어? 문 손잡이에 누군가 남겨둔 찢어진 스케치북 조각이 걸려있네요. 그리고 이 방의 도어락은 특이하게도 숫자가 아니라 알파벳 키패드예요! 스케치북 조각에 그려진 집 안의 구조(자투리 공간)를 상상해서 문자를 조합해야 문이 열릴 것 같아요."</p>
+                    <button id="show-f4-sketch-btn" class="action-btn">스케치북 조각 보기</button>
                 </div>
             </div>
 
-            <!-- 구식 자물쇠 UI -->
-            <div id="f4-padlock-scene" class="hidden" style="width:100%;height:100%;position:absolute;z-index:16;display:flex;align-items:center;justify-content:center;">
-                <div class="padlock-panel">
-                    <div class="padlock-icon">🔒</div>
-                    <p style="color:#ccc;margin-bottom:20px;text-align:center;">방 안 어딘가에 열쇠가 숨겨져 있습니다.<br>배경을 잘 살펴보세요!</p>
-                    <button id="f4-padlock-close" class="action-btn" style="background:#333;margin:0 auto;">뒤로</button>
-                </div>
-            </div>
+            <!-- 스케치북 조각 힌트 UI -->
+            <div id="f4-sketch-hint-scene" class="hidden" style="width:100%;height:100%;position:absolute;z-index:16;display:flex;align-items:center;justify-content:center;background:rgba(0,0,0,0.8);">
+                <div style="background:#f4ecd8; padding:20px; border-radius:5px; box-shadow: 0 10px 30px rgba(0,0,0,0.8); width:85%; max-width:500px; position:relative; display:flex; flex-direction:column; align-items:center;">
+                    <h3 style="text-align:center; color:#333; margin-bottom:15px; border-bottom:2px dashed #999; padding-bottom:10px; width:100%;">찢어진 스케치북 조각</h3>
+                    
+                    <!-- 유저가 그린 힌트 이미지 삽입 -->
+                    <img src="401호 도어락 스케치북 힌트 그림.png" alt="스케치북 힌트" style="max-width:100%; max-height:50vh; object-fit:contain; border-radius:4px; margin-bottom:15px; border:1px solid #ccc;">
 
-            <!-- 숨겨진 열쇠 -->
-            <div id="f4-hidden-key" class="hidden-object hidden" style="top:55%;left:70%;width:40px;height:40px;cursor:pointer;position:absolute;z-index:17;">
-                <div style="font-size:1.8rem;animation:pulse 1.5s infinite;">🗝️</div>
+                    <div style="width:100%; background:rgba(0,0,0,0.05); padding:10px; border-radius:4px; font-style:italic; color:#444; font-size:0.9rem; text-align:center; margin-bottom:15px;">
+                        "자투리 공간에 숨겨진 4개의 문자를 조합하면 복층(_ _ _ _)의 문이 열린다!"
+                    </div>
+                    <div style="display:flex; justify-content:center; gap:10px; width:100%;">
+                        <button id="f4-sketch-close-btn" class="action-btn" style="background:#333; flex:1;">닫기</button>
+                        <button id="show-f4-doorlock-btn" class="action-btn" style="flex:1;">도어락 누르기</button>
+                    </div>
+                </div>
             </div>
 
             <div id="f4-inside-scene" class="hidden" style="width:100%;height:100%;position:absolute;z-index:15;">
@@ -468,10 +472,10 @@
         <div id="f4-doorlock" class="hidden doorlock-panel" style="z-index:30;">
             <div class="doorlock-display" id="f4-display">----</div>
             <div class="keypad">
-                <button class="key-btn f4-key">1</button><button class="key-btn f4-key">2</button><button class="key-btn f4-key">3</button>
-                <button class="key-btn f4-key">4</button><button class="key-btn f4-key">5</button><button class="key-btn f4-key">6</button>
-                <button class="key-btn f4-key">7</button><button class="key-btn f4-key">8</button><button class="key-btn f4-key">9</button>
-                <button class="key-btn f4-key clr-btn">C</button><button class="key-btn f4-key">0</button><button class="key-btn f4-key enter-btn">E</button>
+                <button class="key-btn f4-key">L</button><button class="key-btn f4-key">A</button><button class="key-btn f4-key">O</button>
+                <button class="key-btn f4-key">F</button><button class="key-btn f4-key">B</button><button class="key-btn f4-key">T</button>
+                <button class="key-btn f4-key">R</button><button class="key-btn f4-key">S</button><button class="key-btn f4-key">M</button>
+                <button class="key-btn f4-key clr-btn">C</button><button class="key-btn f4-key">N</button><button class="key-btn f4-key enter-btn">E</button>
             </div>
             <button id="f4-doorlock-close" class="action-btn" style="margin-top:15px;background:#333;">닫기</button>
         </div>
@@ -711,6 +715,6 @@
 
     </div>
     
-    <script src="app.js?v=202609202141"></script>
+    <script src="app.js?v=202609202200"></script>
 </body>
 </html>
