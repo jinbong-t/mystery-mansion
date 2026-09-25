@@ -10,42 +10,13 @@ let currentSelectedStudentId = null;
 const tbody = document.getElementById('student-table-body');
 const classFilter = document.getElementById('classFilter');
 const btnRefresh = document.getElementById('btnRefresh');
-const btnGenDummy = document.getElementById('btnGenDummy');
 const btnResetAll = document.getElementById('btnResetAll');
 const modal = document.getElementById('detailModal');
 const closeModal = document.getElementById('closeModal');
 const btnDeleteStudent = document.getElementById('btnDeleteStudent');
 
-// 더미 데이터 생성 함수
-function generateDummyData() {
-    const dummyNames = ['김바이브', '이코딩', '박맨션', '최주거', '정공간', '강설계', '조도면', '윤건축', '임가구', '한인테리어'];
-    const dummyTypes = ['자연 친화형 오두막', '스마트 도심형 캡슐', '오픈 스튜디오 하우스', '미니멀리스트 젠 하우스'];
-    const dummyHouseNames = ['초록 쉼터', '미래 아지트', '자유의 공간', '여백의 미'];
-    
-    let newData = [];
-    for(let i=1; i<=15; i++) {
-        let cls = Math.floor(Math.random() * 3) + 1; // 1~3반
-        let num = Math.floor(Math.random() * 20) + 1;
-        let floor = Math.floor(Math.random() * 7) + 1; // 1~7 (7은 엔딩)
-        let isDone = floor === 7;
-        let level = isDone ? (Math.random() > 0.3 ? 'A' : 'B') : (floor > 3 ? 'B' : 'C');
-        
-        newData.push({
-            id: 'stu_' + Date.now() + '_' + i,
-            classNum: cls,
-            studentNum: num,
-            name: dummyNames[i % dummyNames.length],
-            floor: floor,
-            level: level,
-            houseType: isDone ? dummyTypes[i % dummyTypes.length] : '미정',
-            houseName: isDone ? dummyHouseNames[i % dummyHouseNames.length] : '-',
-            reflection: isDone ? '나의 생활 습관과 가치관이 주거 공간에 얼마나 중요한지 깨달았다. 앞으로 내 방을 더 실용적으로 꾸미고 싶다.' : '진행 중...',
-            timestamp: new Date().toLocaleString()
-        });
-    }
-    studentsData = newData;
-    saveData();
-    renderTable();
+function saveData() {
+    localStorage.setItem(STORAGE_KEY, JSON.stringify(studentsData));
 }
 
 function saveData() {
@@ -158,7 +129,6 @@ function showDetail(id) {
 // 이벤트 리스너 설정
 classFilter.addEventListener('change', (e) => { currentFilter = e.target.value; renderTable(); });
 btnRefresh.addEventListener('click', renderTable);
-btnGenDummy.addEventListener('click', generateDummyData);
 
 const btnExportExcel = document.getElementById('btnExportExcel');
 if(btnExportExcel) {
