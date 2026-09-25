@@ -14,7 +14,32 @@ var roomBackground = document.getElementById('room-background');
 var elevatorUI = document.getElementById('elevator-ui');
 var audioCtx = null; // 전역으로 선언하여 엘리베이터 효과 등에서 사용
 
-function saveState() { localStorage.setItem('mansionState', JSON.stringify(state)); }
+const DB_URL = "https://script.google.com/macros/s/AKfycbypf5yiMywSxdVrgSyweD7SXbIDGVNklTcYvRIxl_Xh_C3x8P--fPF5ar5ylxbYa43w/exec";
+
+function saveState() { 
+    localStorage.setItem('mansionState', JSON.stringify(state));
+    // 구글 시트로 데이터 전송
+    if(state.playerName && state.classNum) {
+        let level = state.floor >= 6 ? (Object.keys(state.housingVector || {}).length > 0 ? 'A' : 'B') : (state.floor > 3 ? 'B' : 'C');
+        let payload = {
+            id: state.classNum + '_' + state.studentNum + '_' + state.playerName,
+            classNum: state.classNum,
+            studentNum: state.studentNum,
+            name: state.playerName,
+            floor: state.floor,
+            level: level,
+            houseType: state.houseType || '진행중',
+            houseName: state.houseName || '',
+            reflection: state.reflection || ''
+        };
+        fetch(DB_URL, {
+            method: 'POST',
+            mode: 'no-cors',
+            headers: { 'Content-Type': 'text/plain' },
+            body: JSON.stringify(payload)
+        }).catch(e => console.log('DB 전송 에러', e));
+    }
+}
 function showElement(el) { if (el) { el.classList.remove('hidden'); if (el.classList.contains('floor-content')) el.classList.add('active'); } }
 function hideElement(el) { if (el) { el.classList.add('hidden'); if (el.classList.contains('floor-content')) el.classList.remove('active'); } }
 
@@ -300,7 +325,6 @@ function initIntroAndLobby() {
     if (realStartBtn) {
         realStartBtn.addEventListener('click', function() {
             hideElement(startScreen);
-            moveToFloor(5); return;
             if (introVideoScreen) { showElement(introVideoScreen); introVideoScreen.classList.remove('hidden'); }
             if (introVideo) {
                 var playPromise = introVideo.play();
@@ -1103,7 +1127,7 @@ function initFloor5() {
 
     setupDoorlock('f5', '0501', function() {
         hideElement(f5EntranceScene);
-        if (roomBackground) roomBackground.style.backgroundImage = "url('501호 내부.png')";
+        if (roomBackground) roomBackground.style.backgroundImage = "url('501%ED%98%B8%20%EB%82%B4%EB%B6%80.png')";
         setTimeout(function() {
             if (f5InsideScene) { 
                 showElement(f5InsideScene); f5InsideScene.classList.remove('hidden'); 
@@ -1682,8 +1706,8 @@ function initRoof() {
                 showAlert('정답입니다!', '#4cd964');
                 setTimeout(function() { 
                     hideElement(gameFloor);
-                    // 곧바로 정전 모드로 돌입 (원래 구조체계 유지하되 find-flashlight-scene 우회)
-                    triggerBlackout();
+                    // 손전등 찾기 씬을 표시
+                    showElement(document.getElementById('find-flashlight-scene'));
                 }, 1000);
             } else {
                 showAlert('글자가 틀렸습니다.', '#ff6b6b');
@@ -1692,13 +1716,14 @@ function initRoof() {
     }
 
     function triggerBlackout() {
-        showAlert('앗! 갑자기 정전이 일어났습니다! 어둠 속을 더듬어 책상 위를 클릭해 손전등을 켜보세요.', '#ff9');
+        
         var floorRoof = document.getElementById('floor-roof');
         // 배경 이미지를 가구 문제가 있는 이미지로 변경
         floorRoof.style.backgroundImage = 'url("2. 루프탑 가구개수 맞추기 문제 찐이미지.png")';
         floorRoof.style.backgroundSize = 'cover';
         floorRoof.style.backgroundPosition = 'center';
         
+        blackoutOverlay.style.background = ''; // reset style
         showElement(blackoutOverlay);
         
         blackoutOverlay.addEventListener('mousemove', function(e) {
@@ -1732,7 +1757,7 @@ function initRoof() {
         if(safeInput.value === '243') {
             showAlert('찰칵! 서랍이 열렸습니다!', '#4cd964');
             hideElement(safePopup);
-            showElement(document.getElementById('housing-type-test')); initHousingQuestions();
+            showElement(document.getElementById('roof-offline-guide'));
         } else {
             
             roofFailCnt++;
@@ -1746,7 +1771,7 @@ function initRoof() {
     });
 
     goToPenthouseBtn.addEventListener('click', function() {
-        hideElement(safePopup); showElement(document.getElementById('housing-type-test')); initHousingQuestions();
+        hideElement(document.getElementById('roof-offline-guide')); changeFloorUI('penthouse');
     });
 }
 
@@ -1836,7 +1861,8 @@ function initPenthouse() {
     function showNextTarotCard() {
         var area = document.getElementById('housing-questions');
         if(currentQIndex >= housingQs.length) {
-            var btn = document.getElementById('submit-housing-test');
+            hideElement(document.getElementById('housing-questions'));
+            var btn = document.getElementById('submit-housing-container');
             if(btn) showElement(btn);
             return;
         }
@@ -1942,7 +1968,7 @@ function initPenthouse() {
                 '<p style="color:#ddd;font-size:1.1rem;line-height:1.6;margin-bottom:25px;">' + selectedType.d + '</p>' +
                 '<div style="background:rgba(255,255,255,0.1); padding:20px; border-radius:10px; margin-top:20px;">' +
                 '<p style="color:#f0d080;font-size:1.05rem;font-weight:bold;margin-bottom:10px;">💬 나만의 공간을 찾은 소감</p>' +
-                '<textarea placeholder="활동을 마치며 느낀 점을 자유롭게 적어보세요..." style="width:100%;height:80px;background:rgba(0,0,0,0.5);color:white;border:1px solid #a67c00;border-radius:5px;padding:10px;margin-bottom:15px;font-family:inherit;"></textarea>' +
+                '<textarea placeholder="활동을 통해 알게 된 점, 새롭게 깨달은 점, 그리고 앞으로 나의 공간에서 실천하고 싶은 점을 구체적으로 적어보세요..." style="width:100%;height:120px;background:rgba(0,0,0,0.5);color:white;border:1px solid #a67c00;border-radius:5px;padding:10px;margin-bottom:15px;font-family:inherit;line-height:1.5;"></textarea>' +
                 '<p style="color:white;font-size:1.2rem;font-weight:bold;border-top:1px dashed #666;padding-top:15px;margin-top:10px;">✨ <strong>당신을 이 운명의 집으로 초대합니다.</strong> ✨</p></div>' +
                 '</div>';
             }

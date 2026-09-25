@@ -5,8 +5,9 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>미스터리 맨션 - 나의 주거 공간 구성</title>
     <link rel="stylesheet" href="style.css?v=202609201955">
-    <link href="https://fonts.googleapis.com/css2?family=Noto+Serif+KR:wght@400;700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Serif+KR:wght@400;700&family=Jua&display=swap" rel="stylesheet">
 <style>
+        .cute-font, #housing-type-test, #housing-type-test *, #housing-result, #housing-result *, #house-naming, #house-naming *, #ending-screen, #ending-screen * { font-family: 'Jua', sans-serif !important; }
         @keyframes tarot-card-enter {
             0% { transform: translateY(50px) rotateY(90deg); opacity: 0; }
             100% { transform: translateY(0) rotateY(0deg); opacity: 1; }
@@ -179,8 +180,12 @@
             
             <div id="name-input-container" class="hidden glass-panel">
                 <h2>명함을 건네받았지만, 이름 칸이 얼룩져 있다.</h2>
-                <p>당신의 이름을 적어보세요.</p>
-                <input type="text" id="player-name" placeholder="이름 또는 애칭" autocomplete="off">
+                <p style="margin-bottom:15px;">당신의 학번과 이름을 적어보세요.</p>
+                <div style="display:flex; gap:10px; margin-bottom:15px; justify-content:center;">
+                    <input type="number" id="player-class" placeholder="반" style="width:70px; text-align:center;">
+                    <input type="number" id="player-number" placeholder="번호" style="width:70px; text-align:center;">
+                    <input type="text" id="player-name" placeholder="이름" style="width:120px; text-align:center;" autocomplete="off">
+                </div>
                 <button id="start-btn" class="action-btn">서명하기</button>
             </div>
         </div>
@@ -567,7 +572,7 @@
         </div>
 
         <!-- ===================== 5층: 모델하우스 (가구 배치) ===================== -->
-        <div id="floor-5" class="floor-content" data-bg="501호 복도.png">
+        <div id="floor-5" class="floor-content" data-bg="501%ED%98%B8%20%EB%B3%B5%EB%8F%84.png">
             <div id="f5-entrance-scene" style="width:100%;height:100%;position:absolute;z-index:15;">
                 <div class="dialogue-box" id="f5-entrance-dialogue" style="top:120px;bottom:auto;display:none;">
                     <p class="speaker">나(플레이어)</p>
@@ -683,7 +688,7 @@
 
                     <!-- 501호 클리어 씬 (숨겨진 벽면 패널 애니메이션) -->
                     <div id="f5-password-hint" class="hidden" style="position:absolute;top:0;left:0;width:100%;height:100%;z-index:30;background:rgba(0,0,0,0.85);display:flex;align-items:center;justify-content:center;">
-                        <div id="f5-secret-wall" style="position:relative;width:450px;height:350px;overflow:hidden;border:4px solid #444;box-shadow:0 0 40px #000;background:#1a1510;">
+                        <div id="f5-secret-wall" style="position:relative;width:450px;height:480px;overflow:hidden;border:4px solid #444;box-shadow:0 0 40px #000;background:#1a1510;">
                             <!-- 내부 금고 및 쪽지 -->
                             <div style="position:absolute;top:0;left:0;width:100%;height:100%;z-index:1;display:flex;flex-direction:column;align-items:center;justify-content:center;padding:25px;text-align:center;">
                                 <h3 style="color:gold;margin-bottom:15px;font-size:1.4rem;">✨ 벽면의 패널이 열렸습니다!</h3>
@@ -692,8 +697,11 @@
                                     <p style="color:#f0d080;font-style:italic;line-height:1.8;font-size:1.1rem; text-shadow:0 0 5px rgba(240,208,128,0.5);">"집의 진정한 완성은 4개의 벽 안에 있지 않습니다.<br>하늘 아래 탁 트인 공간 — 가장 높은 곳에서<br>우리는 비로소 삶의 방향을 봅니다.<br>이 쪽지를 들고 마지막 공간으로 오세요."</p>
                                 </div>
                                 
-            <!-- 정답 해설 버튼 -->
-            <button id="show-f4-solution-btn" class="action-btn" style="background:#5a3a1b; color:#f0d080; border:1px solid #f0d080; padding:8px 16px; margin-top:20px; font-size:0.9rem;">💡 배치 원칙 정답 해설 보기</button>
+            <!-- 정답 해설 버튼 & 마지막 공간 이동 버튼 -->
+            <div style="display:flex; gap:10px; justify-content:center; width:100%; margin-top:10px;">
+                <button id="show-f4-solution-btn" class="action-btn" style="flex:1; background:#5a3a1b; color:#f0d080; border:1px solid #f0d080; padding:12px; font-size:0.95rem;">💡 정답 해설 보기</button>
+                <button id="f5-go-roof-btn" class="action-btn" style="flex:1; background:#4a6fa5; padding:12px; font-size:0.95rem;">루프탑으로 이동하기</button>
+            </div>
             
             <!-- 정답 해설 모달 -->
             <div id="f4-solution-modal" style="display:none; position:fixed; top:50%; left:50%; transform:translate(-50%, -50%); width:90%; max-width:400px; background:rgba(20,20,20,0.95); border:2px solid gold; border-radius:10px; padding:20px; z-index:9999; text-align:left; box-shadow:0 0 20px rgba(255,215,0,0.3);">
@@ -708,8 +716,6 @@
                     <button id="close-f4-solution-btn" style="background:gold; color:black; border:none; padding:8px 20px; border-radius:5px; font-weight:bold; cursor:pointer;">닫기</button>
                 </div>
             </div>
-
-            <button id="f5-go-roof-btn" class="action-btn" style="padding:15px 30px;font-size:1.1rem;background:#4a6fa5;">마지막 공간으로 이동하기</button>
                             </div>
                             <!-- 벽지 (좌/우로 열림 애니메이션 용) -->
                             <div class="wall-door left" style="position:absolute;top:0;left:0;width:50%;height:100%;background:url('201호 복도.png') center;background-size:cover;z-index:2;border-right:1px solid #111;transition:transform 1.5s cubic-bezier(0.25,1,0.5,1);"></div>
@@ -789,29 +795,17 @@
                     
                     
                     <!-- 수납 완료 후 5글자 직접 입력창 -->
-                    <div id="storage-word-input" style="display:none;
-<div id="storage-hints-list" style="margin-bottom: 20px; padding: 15px; background: rgba(255,255,255,0.05); border: 1px dashed gold; border-radius: 8px;">
-    <p style="color: gold; margin-bottom: 10px; font-weight: bold;">[ 정리된 물건 목록 ]</p>
-    <ul style="color: #ccc; list-style: none; padding: 0; line-height: 1.6; font-size: 0.95rem;">
-        <li>• <span style="color:#fff;">비</span>어있는 샴푸통</li>
-        <li>• <span style="color:#fff;">밀</span>봉된 안 쓰는 여분 이불</li>
-        <li>• <span style="color:#fff;">은</span>은한 향이 나는 디퓨저</li>
-        <li>• <span style="color:#fff;">책</span>상 위 굴러다니는 영수증</li>
-        <li>• <span style="color:#fff;">상</span>자에 담긴 철 지난 옷</li>
-    </ul>
-</div>
-
-<div id="storage-hints-list" style="margin-bottom: 20px; padding: 15px; background: rgba(255,255,255,0.05); border: 1px dashed gold; border-radius: 8px;">
-    <p style="color: gold; margin-bottom: 10px; font-weight: bold;">[ 정리된 물건 목록 ]</p>
-    <ul style="color: #ccc; list-style: none; padding: 0; line-height: 1.6; font-size: 0.95rem;">
-        <li>• <span style="color:#fff;">비</span>어있는 샴푸통</li>
-        <li>• <span style="color:#fff;">밀</span>봉된 안 쓰는 여분 이불</li>
-        <li>• <span style="color:#fff;">은</span>은한 향이 나는 디퓨저</li>
-        <li>• <span style="color:#fff;">책</span>상 위 굴러다니는 영수증</li>
-        <li>• <span style="color:#fff;">상</span>자에 담긴 철 지난 옷</li>
-    </ul>
-</div>
-
+                    <div id="storage-word-input" style="display:none;flex-direction:column;align-items:center;">
+                        <div id="storage-hints-list" style="margin-bottom: 20px; padding: 15px; background: rgba(255,255,255,0.05); border: 1px dashed gold; border-radius: 8px;">
+                            <p style="color: gold; margin-bottom: 10px; font-weight: bold;">[ 정리된 물건 목록 ]</p>
+                            <ul style="color: #ccc; list-style: none; padding: 0; line-height: 1.6; font-size: 0.95rem;">
+                                <li>• <span style="color:#fff;">비</span>어있는 샴푸통</li>
+                                <li>• <span style="color:#fff;">밀</span>봉된 안 쓰는 여분 이불</li>
+                                <li>• <span style="color:#fff;">은</span>은한 향이 나는 디퓨저</li>
+                                <li>• <span style="color:#fff;">책</span>상 위 굴러다니는 영수증</li>
+                                <li>• <span style="color:#fff;">상</span>자에 담긴 철 지난 옷</li>
+                            </ul>
+                        </div>
                         <p style="color:gold;font-size:1.1rem;font-weight:bold;margin-bottom:8px;">🔍 비밀의 글자를 찾아라!</p>
                         <p style="color:#ccc;font-size:0.9rem;margin-bottom:15px;">위에서 찾은 단서의 앞글자를 합치면? 5글자를 직접 입력하세요.</p>
                         <div style="display:flex;justify-content:center;margin-bottom:15px;">
@@ -821,11 +815,14 @@
                     </div>
                 </div>
 
-                <!-- 손전등 찾기 씬 -->
-                <div id="find-flashlight-scene" class="hidden glass-panel game-panel" style="z-index:25;">
-                    <h2>💡 앗! 갑자기 정전이 일어났습니다!</h2>
-                    <p style="color:#ccc;">어둠 속을 더듬어 책상 위를 클릭해 손전등을 켜보세요.</p>
-                    <button id="find-flashlight-btn" class="action-btn" style="padding:15px 30px;font-size:1.2rem;margin-top:20px;background:#b38b59;color:#000;">정전 모드로 진입하기</button>
+                <!-- 손전등 찾기 씬 (정전 직후) -->
+                <div id="find-flashlight-scene" class="hidden" style="position:absolute;top:0;left:0;width:100%;height:100%;background:#050505;z-index:40;display:flex;flex-direction:column;align-items:center;justify-content:center;padding:20px;">
+                    <div class="dialogue-box" style="position:relative;margin-bottom:40px;width:90%;max-width:500px;top:auto;bottom:auto;">
+                        <p class="speaker">미스터리 공인중개사</p>
+                        <p class="text" style="text-align:center;line-height:1.6;">"앗! 갑자기 정전이...?! 아무것도 안 보여요!<br>아까 적은 단서 글자들을 잘 생각해보세요!<br>가방 속 손전등을 꺼내서 단서가 가리키는 곳을 찾아봐야겠어요!"</p>
+                    </div>
+                    <div id="find-flashlight-btn" style="font-size:6rem; cursor:pointer; filter:drop-shadow(0 0 20px rgba(255,255,255,0.4)); transition:transform 0.2s;" onmouseover="this.style.transform='scale(1.1)'" onmouseout="this.style.transform='scale(1)'" title="손전등 켜기">🔦</div>
+                    <p style="color:#888;margin-top:15px;font-size:1rem;animation:pulse 1.5s infinite;">(손전등을 클릭하세요)</p>
                 </div>
 
                 <!-- OX게임 영역 삭제됨 -->
@@ -833,7 +830,7 @@
                 <!-- 정전 암전 효과 및 손전등 -->
                 <div id="blackout-overlay" class="hidden" style="position:absolute;top:0;left:0;width:100%;height:100%;z-index:30;cursor:none;pointer-events:auto;">
                     <!-- 배경색이 JS와 CSS mask-image로 제어됨 -->
-                    <div id="desk-clickable-area" style="position:absolute;width:200px;height:140px;top:55%;left:60%;cursor:pointer;/* border hidden */border-radius:8px;" title="여기를 클릭하세요"></div>
+                    <div id="desk-clickable-area" style="position:absolute;width:40%;height:50%;top:20%;right:5%;left:auto;cursor:pointer;border-radius:8px;z-index:50;pointer-events:auto;" title="여기를 클릭하세요"></div>
                 </div>
 
                 <!-- 3자리 암호 문제 팝업 -->
@@ -865,18 +862,19 @@
                     <p style="color:#ddd;margin-bottom:20px;line-height:1.6;">모둠이 협력해 완성한 도면 암호를 입력하세요.<br><span style="color:#aaa;font-size:0.85rem;">(선생님께 암호를 확인하세요)</span></p>
                     <input type="text" id="penthouse-code" placeholder="모둠 암호 입력" style="width:100%;padding:12px;background:#1a1a1a;border:2px solid var(--accent);color:#fff;border-radius:6px;font-size:1.1rem;margin-bottom:15px;text-align:center;" autocomplete="off">
                     <button id="check-penthouse-code" class="action-btn" style="width:100%;padding:12px;font-size:1.1rem;">입장하기</button>
-                    <p style="color:#555;font-size:0.8rem;margin-top:10px;text-align:center;">개발 테스트용: "HOUSING" 입력 시 통과</p>
                 </div>
 
                 <!-- 설계자 정체 반전 & 학습 목표 멘트 -->
-                <div id="penthouse-reveal" class="hidden" style="position:absolute;top:0;left:0;width:100%;height:100%;background:rgba(0,0,0,0.95);z-index:25;display:flex;flex-direction:column;align-items:center;justify-content:center;padding:40px;text-align:center;">
-                    <p style="color:var(--accent);font-size:1.1rem;margin-bottom:15px;">미스터리 공인중개사:</p>
-                    <p style="color:#ddd;font-size:1.1rem;line-height:1.8;margin-bottom:20px;">"비밀번호를 맞추셨군요. 그런데 잠깐... 당신이 처음 이 맨션에 올 때 명함에 적어준 이름 말이에요... 방금 완성하신 그 도면 구석에 적힌 설계자 서명과 똑같은데요?"</p>
-                    <div id="reveal-name-display" style="font-size:2rem;color:gold;margin-bottom:20px;text-shadow:0 0 10px gold;"></div>
-                    <img id="final-blueprint-img" src="" alt="도면 이미지" style="width:100%;max-width:500px;border-radius:10px;margin-bottom:20px;display:none;border:2px solid rgba(255,215,0,0.5);box-shadow:0 0 15px rgba(255,215,0,0.3);">
-                    <p style="color:#ddd;font-size:1.1rem;line-height:1.8;margin-bottom:20px;">"이 맨션은 주인이 없던 게 아니라, 언젠가 여기 살게 될 사람을 기다리고 있었나 봐요. 그 도면도, 처음부터 당신을 위한 설계였나 봐요."</p>
-                    <p style="color:#f0d080;font-size:1.1rem;line-height:1.8;margin-bottom:30px;font-style:italic;">"지금까지 여러 집들을 둘러보며 보셨죠? 좋은 집이란 무조건 넓고 비싼 곳이 아닙니다.<br>내가 어떤 삶을 살고 싶은지 <strong>'자신의 요구'</strong>를 정확히 파악하고, 그에 맞게 공간을 효율적이고 창의적으로 구성해 낸 곳... 그곳이 바로 세상에서 가장 완벽한 나만의 안식처랍니다.<br><br>이제 당신에게 가장 어울리는 주거 공간을 찾을 시간입니다."</p>
-                    <button id="go-to-housing-test" class="action-btn" style="font-size:1.1rem;padding:12px 30px;">나에게 맞는 집 찾기 →</button>
+                <div id="penthouse-reveal" class="hidden" style="position:absolute;top:0;left:0;width:100%;height:100%;background:rgba(0,0,0,0.95);z-index:25;display:flex;flex-direction:column;align-items:center;padding:40px;text-align:center;overflow-y:auto;">
+                    <div style="max-width:600px; margin:auto;">
+                        <p style="color:var(--accent);font-size:1.1rem;margin-bottom:20px;">미스터리 공인중개사:</p>
+                        <p style="color:#ddd;font-size:1.1rem;line-height:2.0;margin-bottom:25px;">"비밀번호를 맞추셨군요. 그런데 잠깐... 당신이 처음 이 맨션에 올 때 명함에 적어준 이름 말이에요... 방금 완성하신 그 도면 구석에 적힌 설계자 서명과 똑같은데요?"</p>
+                        <div id="reveal-name-display" style="font-size:2.2rem;color:gold;margin-bottom:25px;text-shadow:0 0 10px gold;padding:10px;"></div>
+                        <img id="final-blueprint-img" src="" alt="도면 이미지" style="width:100%;max-width:500px;border-radius:10px;margin-bottom:25px;display:none;border:2px solid rgba(255,215,0,0.5);box-shadow:0 0 15px rgba(255,215,0,0.3);">
+                        <p style="color:#ddd;font-size:1.1rem;line-height:2.0;margin-bottom:25px;">"이 맨션은 주인이 없던 게 아니라, 언젠가 여기 살게 될 사람을 기다리고 있었나 봐요. 그 도면도, 처음부터 당신을 위한 설계였나 봐요."</p>
+                        <p style="color:#f0d080;font-size:1.1rem;line-height:2.0;margin-bottom:40px;font-style:italic;">"지금까지 여러 집들을 둘러보며 보셨죠? 좋은 집이란 무조건 넓고 비싼 곳이 아닙니다.<br><br>내가 어떤 삶을 살고 싶은지 <strong>'자신의 요구'</strong>를 정확히 파악하고, 그에 맞게 공간을 효율적이고 창의적으로 구성해 낸 곳... 그곳이 바로 세상에서 가장 완벽한 나만의 안식처랍니다.<br><br>이제 당신에게 가장 어울리는 주거 공간을 찾을 시간입니다."</p>
+                        <button id="go-to-housing-test" class="action-btn" style="font-size:1.2rem;padding:15px 40px;margin-bottom:40px;">나에게 맞는 집 찾기 →</button>
+                    </div>
                 </div>
 
                 <!-- 주거 유형 테스트 -->
@@ -888,7 +886,10 @@
                         <div id="housing-questions" style="position:relative;width:100%;min-height:450px;display:flex;justify-content:center;align-items:center;perspective:1000px;">
                             <!-- JS에서 타로 카드가 한 장씩 생성됨 -->
                         </div>
-                        <button id="submit-housing-test" class="action-btn hidden" style="margin-top:25px;width:100%;padding:15px;font-size:1.1rem;background:linear-gradient(135deg, #a67c00, #bf953f);color:#fff;">나의 운명적인 주거 공간 확인하기</button>
+                        <div id="submit-housing-container" class="hidden" style="display:flex; flex-direction:column; justify-content:center; align-items:center; min-height:450px;">
+                            <h2 style="color:gold; margin-bottom:30px; font-size:1.8rem; text-shadow:0 0 15px gold;">✨ 운명의 주거 공간이 정해졌습니다 ✨</h2>
+                            <button id="submit-housing-test" class="action-btn" style="width:80%; max-width:400px; padding:20px; font-size:1.3rem; background:linear-gradient(135deg, #a67c00, #bf953f); color:#fff; border-radius:30px; box-shadow:0 0 20px rgba(166,124,0,0.5);">나의 운명적인 주거 공간 확인하기</button>
+                        </div>
                     </div>
                 </div>
 
