@@ -20,13 +20,16 @@ function saveState() {
     localStorage.setItem('mansionState', JSON.stringify(state));
     // 구글 시트로 데이터 전송
     if(state.playerName && state.classNum) {
-        let level = state.floor >= 6 ? (Object.keys(state.housingVector || {}).length > 0 ? 'A' : 'B') : (state.floor > 3 ? 'B' : 'C');
+        let floorNum = parseInt(state.floor) || 0;
+        if (state.floor === 'roof') floorNum = 6;
+        if (state.floor === 'penthouse') floorNum = 7;
+        let level = floorNum >= 6 ? (Object.keys(state.housingVector || {}).length > 0 ? 'A' : 'B') : (floorNum > 3 ? 'B' : 'C');
         let payload = {
             id: state.classNum + '_' + state.studentNum + '_' + state.playerName,
             classNum: state.classNum,
             studentNum: state.studentNum,
             name: state.playerName,
-            floor: state.floor,
+            floor: floorNum,
             level: level,
             houseType: state.houseType || '진행중',
             houseName: state.houseName || '',
