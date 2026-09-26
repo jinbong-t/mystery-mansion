@@ -407,8 +407,19 @@ function initIntroAndLobby() {
     if (startBtn) {
         startBtn.addEventListener('click', function() {
             var name = playerNameInput ? playerNameInput.value.trim() : '';
-            if (!name) { showAlert('이름을 입력해주세요!', '#ff6b6b'); return; }
-            state.playerName = name; saveState();
+            var classInput = document.getElementById('player-class');
+            var numInput = document.getElementById('player-number');
+            var cNum = classInput ? classInput.value.trim() : '';
+            var sNum = numInput ? numInput.value.trim() : '';
+            
+            if (!cNum || !sNum || !name) { 
+                showAlert('반, 번호, 이름을 모두 입력해주세요!', '#ff6b6b'); 
+                return; 
+            }
+            state.classNum = cNum;
+            state.studentNum = sNum;
+            state.playerName = name; 
+            saveState();
             hideElement(nameInputContainer); showElement(personalityTestModal);
         });
     }
