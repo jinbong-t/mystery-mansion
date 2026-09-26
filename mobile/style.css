@@ -1,10 +1,1152 @@
 :root {
-    --bg-dark: #121212;
-    --text-light: #e0e0e0;
-    --accent: #b38b59; /* 신비로운 골드 느낌 */
-    --glass-bg: rgba(20, 20, 20, 0.7);
-    --glass-border: rgba(179, 139, 89, 0.3);
+    --bg-dark: #0d0d0d;
+    --text-light: #f0f0f0;
+    --accent: #c8975e;
+    --accent-bright: #f0c070;
+    --glass-bg: rgba(15, 15, 20, 0.85);
+    --glass-border: rgba(200, 151, 94, 0.4);
+    --btn-h: 52px;
+    --radius: 12px;
+    --font-main: 'Noto Sans KR', sans-serif;
+    --font-serif: 'Noto Serif KR', serif;
 }
+
+/* ============================================================
+   기본 초기화 & 레이아웃
+   ============================================================ */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    -webkit-tap-highlight-color: transparent;
+    word-break: keep-all;
+}
+
+body {
+    background-color: #000;
+    color: var(--text-light);
+    font-family: var(--font-main);
+    display: flex;
+    justify-content: center;
+    align-items: flex-start;
+    min-height: 100dvh;
+    overflow: hidden;
+    overscroll-behavior: none;
+}
+
+#game-container {
+    position: relative;
+    width: 100%;
+    max-width: 480px;
+    height: 100dvh;
+    background-color: #000;
+    overflow: hidden;
+    box-shadow: 0 0 60px rgba(0,0,0,0.9);
+    border: 1px solid var(--glass-border);
+}
+
+/* ============================================================
+   배경 & 층 콘텐츠
+   ============================================================ */
+#room-background {
+    position: absolute;
+    top: 0; left: 0;
+    width: 100%; height: 100%;
+    background-image: url('bg_lobby.jpg');
+    background-size: cover;
+    background-position: center;
+    transition: background-image 1s ease-in-out;
+    opacity: 0.75;
+}
+
+.floor-content {
+    position: absolute;
+    top: 0; left: 0;
+    width: 100%; height: 100%;
+    display: none;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    z-index: 10;
+    overflow: hidden;
+}
+
+.floor-content.active {
+    display: flex;
+}
+
+/* ============================================================
+   대화 박스 (모바일 최적화)
+   ============================================================ */
+.dialogue-box {
+    position: absolute;
+    bottom: 16px;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 94%;
+    background: rgba(10, 8, 5, 0.92);
+    border: 1px solid var(--glass-border);
+    backdrop-filter: blur(12px);
+    -webkit-backdrop-filter: blur(12px);
+    padding: 16px 18px;
+    border-radius: var(--radius);
+    box-shadow: 0 8px 32px rgba(0,0,0,0.6);
+    z-index: 10;
+}
+
+.speaker {
+    font-size: 0.85rem;
+    color: var(--accent-bright);
+    margin-bottom: 8px;
+    font-weight: 700;
+    letter-spacing: 0.03em;
+}
+
+.text {
+    font-size: 1rem;
+    line-height: 1.75;
+    margin-bottom: 14px;
+    color: #f0ece5;
+    text-shadow: 0 1px 3px rgba(0,0,0,0.7);
+}
+
+/* ============================================================
+   버튼 스타일 (터치 최적화)
+   ============================================================ */
+.action-btn {
+    background: transparent;
+    color: var(--accent-bright);
+    border: 1.5px solid var(--accent);
+    padding: 0 20px;
+    height: var(--btn-h);
+    min-height: var(--btn-h);
+    font-size: 1rem;
+    font-weight: 600;
+    font-family: var(--font-main);
+    cursor: pointer;
+    border-radius: 10px;
+    transition: all 0.2s ease;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    touch-action: manipulation;
+    letter-spacing: 0.02em;
+    -webkit-font-smoothing: antialiased;
+}
+
+.action-btn:active {
+    background: var(--accent);
+    color: #000;
+    transform: scale(0.97);
+}
+
+.action-btn:hover {
+    background: rgba(200, 151, 94, 0.2);
+    color: var(--accent-bright);
+    border-color: var(--accent-bright);
+}
+
+/* ============================================================
+   유리 패널
+   ============================================================ */
+.glass-panel {
+    background: var(--glass-bg);
+    border: 1px solid var(--glass-border);
+    backdrop-filter: blur(14px);
+    -webkit-backdrop-filter: blur(14px);
+    padding: 20px 18px;
+    border-radius: var(--radius);
+    text-align: center;
+    width: 94%;
+    max-width: 460px;
+}
+
+/* ============================================================
+   게임 패널 (스크롤 가능)
+   ============================================================ */
+.game-panel {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    width: 94%;
+    max-width: 460px;
+    z-index: 20;
+    overflow-y: auto;
+    max-height: 90dvh;
+    border-radius: var(--radius);
+    /* iOS 탄성 스크롤 */
+    -webkit-overflow-scrolling: touch;
+}
+
+/* ============================================================
+   이름 입력 컨테이너
+   ============================================================ */
+#name-input-container {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    z-index: 20;
+    background: rgba(10, 8, 5, 0.96);
+    border: 1.5px solid var(--accent);
+    border-radius: 16px;
+    padding: 28px 20px;
+    width: 90%;
+    max-width: 420px;
+    box-shadow: 0 15px 50px rgba(0,0,0,0.8), 0 0 0 1px rgba(255,255,255,0.05);
+    text-align: center;
+}
+
+#name-input-container h2 {
+    margin-bottom: 12px;
+    font-size: 1rem;
+    color: var(--accent-bright);
+    font-family: var(--font-serif);
+    font-weight: 700;
+    line-height: 1.6;
+}
+
+#name-input-container p {
+    color: #aaa;
+    font-size: 0.88rem;
+    margin-bottom: 20px;
+}
+
+#name-input-container input {
+    padding: 12px 10px;
+    background: rgba(255,255,255,0.06);
+    border: 1px solid rgba(200, 151, 94, 0.5);
+    border-radius: 8px;
+    color: #fff;
+    font-size: 1.05rem;
+    font-family: var(--font-main);
+    text-align: center;
+    transition: border-color 0.2s;
+}
+
+#name-input-container input:focus {
+    outline: none;
+    border-color: var(--accent-bright);
+    box-shadow: 0 0 0 2px rgba(240, 192, 112, 0.2);
+}
+
+#name-input-container .action-btn {
+    margin: 0 auto;
+    margin-top: 18px;
+    width: 100%;
+}
+
+/* ============================================================
+   모달
+   ============================================================ */
+.modal {
+    position: absolute;
+    top: 0; left: 0;
+    width: 100%; height: 100%;
+    background: rgba(0, 0, 0, 0.88);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 2000;
+    backdrop-filter: blur(4px);
+    -webkit-backdrop-filter: blur(4px);
+}
+
+.modal.hidden, .hidden {
+    display: none !important;
+}
+
+.modal-content {
+    text-align: center;
+    max-width: 440px;
+    width: 90%;
+    background: rgba(15,12,8,0.97);
+    border: 1px solid var(--glass-border);
+    border-radius: 16px;
+    padding: 28px 20px;
+}
+
+.modal-content h2 {
+    color: #ff453a;
+    margin-bottom: 12px;
+    font-size: 1.4rem;
+}
+
+.modal-content p {
+    color: #ddd;
+    margin-bottom: 22px;
+    font-size: 1rem;
+    line-height: 1.7;
+}
+
+.modal .options {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+}
+
+.modal .options .action-btn {
+    width: 100%;
+    font-size: 1rem;
+}
+
+/* ============================================================
+   인벤토리
+   ============================================================ */
+#inventory {
+    position: absolute;
+    top: 14px;
+    right: 14px;
+    background: rgba(0,0,0,0.75);
+    border: 1px solid var(--accent);
+    padding: 10px 12px;
+    border-radius: 10px;
+    z-index: 100;
+}
+
+.inventory-title {
+    font-size: 0.78rem;
+    color: var(--accent);
+    margin-bottom: 6px;
+    text-align: center;
+    font-weight: 600;
+}
+
+#letter-pieces {
+    display: flex;
+    gap: 6px;
+}
+
+.letter {
+    width: 32px;
+    height: 32px;
+    background: #1a1a1a;
+    border: 1px dashed var(--accent);
+    border-radius: 6px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-weight: bold;
+    font-size: 1rem;
+    color: var(--accent-bright);
+}
+
+/* ============================================================
+   퀴즈 & 옵션 버튼
+   ============================================================ */
+.options {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+    margin-top: 16px;
+}
+
+.test-btn {
+    margin: 0 auto;
+    width: 100%;
+    min-height: var(--btn-h);
+    touch-action: manipulation;
+}
+
+/* ============================================================
+   구역 배치 게임
+   ============================================================ */
+.zoning-game {
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+    margin-top: 12px;
+}
+
+.items, .drop-zones {
+    display: flex;
+    gap: 8px;
+    flex-wrap: wrap;
+    justify-content: center;
+}
+
+.draggable-item {
+    background: #2a2a2a;
+    color: #fff;
+    border: 1px solid var(--accent);
+    padding: 10px 14px;
+    cursor: grab;
+    user-select: none;
+    border-radius: 8px;
+    font-size: 0.9rem;
+    touch-action: none;
+}
+
+.drop-zone {
+    width: 90px;
+    min-height: 75px;
+    border: 2px dashed #555;
+    border-radius: 8px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    font-size: 0.78rem;
+    padding: 6px;
+    text-align: center;
+    color: #aaa;
+}
+
+.drop-zone.hover {
+    background: rgba(200, 151, 94, 0.15);
+    border-color: var(--accent);
+}
+
+/* ============================================================
+   도어락 키패드 (모바일 최적화)
+   ============================================================ */
+.doorlock-panel {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    background: linear-gradient(145deg, #1a1a1a, #080808);
+    border: 2px solid #2a2a2a;
+    padding: 24px 20px;
+    border-radius: 18px;
+    z-index: 25;
+    box-shadow: 0 20px 50px rgba(0,0,0,0.9), inset 0 1px 4px rgba(255,255,255,0.07);
+    width: 85%;
+    max-width: 300px;
+    text-align: center;
+}
+
+.doorlock-display {
+    background: #000;
+    color: #0ff;
+    font-family: 'Courier New', monospace;
+    font-size: 2.2rem;
+    padding: 14px;
+    margin-bottom: 20px;
+    border-radius: 10px;
+    text-align: center;
+    letter-spacing: 8px;
+    box-shadow: inset 0 0 15px rgba(0, 255, 255, 0.15), 0 0 10px rgba(0,255,255,0.05);
+    border: 1px solid #111;
+}
+
+.keypad {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 14px;
+    justify-items: center;
+}
+
+.key-btn {
+    width: 58px;
+    height: 58px;
+    border-radius: 50%;
+    border: 1px solid #2a2a2a;
+    background: #161616;
+    color: #eee;
+    font-size: 1.4rem;
+    font-weight: bold;
+    cursor: pointer;
+    box-shadow: 0 4px 8px rgba(0,0,0,0.5), inset 0 1px 2px rgba(255,255,255,0.06);
+    transition: all 0.15s;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    touch-action: manipulation;
+    -webkit-font-smoothing: antialiased;
+}
+
+.key-btn:active {
+    background: #222;
+    color: #0ff;
+    text-shadow: 0 0 10px #0ff;
+    border-color: #0ff;
+    transform: scale(0.93);
+}
+
+/* ============================================================
+   숨겨진 오브젝트
+   ============================================================ */
+.hidden-object {
+    position: absolute;
+    z-index: 15;
+}
+
+.magnet-glow {
+    width: 100%;
+    height: 100%;
+    border-radius: 50%;
+    box-shadow: 0 0 12px rgba(200, 151, 94, 0.8);
+    animation: pulse 2s infinite;
+}
+
+@keyframes pulse {
+    0% { transform: scale(1); opacity: 0.8; }
+    50% { transform: scale(1.2); opacity: 0.4; }
+    100% { transform: scale(1); opacity: 0.8; }
+}
+
+/* ============================================================
+   스마트폰 씬
+   ============================================================ */
+.smartphone-wrapper {
+    position: relative;
+    display: inline-flex;
+    align-items: center;
+    transform: scale(0.92);
+    transform-origin: center center;
+}
+
+.power-btn-side {
+    position: absolute;
+    right: -14px;
+    top: 50%;
+    transform: translateY(-50%);
+    width: 4px;
+    height: 60px;
+    background: linear-gradient(180deg, #444, #999, #444);
+    border-radius: 0 3px 3px 0;
+    box-shadow: 2px 0 6px rgba(0,0,0,0.7);
+    z-index: 1;
+}
+
+.smartphone-frame {
+    width: 300px;
+    height: 600px;
+    background: #000;
+    border-radius: 38px;
+    position: relative;
+    box-shadow: 0 0 0 10px #222, 0 0 40px rgba(0,0,0,0.8);
+    overflow: hidden;
+    display: flex;
+    flex-direction: column;
+}
+
+.phone-caller-name {
+    font-size: 2.4rem !important;
+    color: #fff !important;
+    font-family: var(--font-serif) !important;
+    font-weight: 700 !important;
+    letter-spacing: 0.1em !important;
+    text-shadow: 0 2px 16px rgba(255,255,255,0.3) !important;
+    margin-bottom: 6px !important;
+}
+
+.notch {
+    position: absolute;
+    top: 0;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 110px;
+    height: 24px;
+    background: #111;
+    border-bottom-left-radius: 14px;
+    border-bottom-right-radius: 14px;
+    z-index: 10;
+}
+
+.status-bar {
+    position: absolute;
+    top: 0;
+    width: 100%;
+    height: 28px;
+    display: flex;
+    justify-content: space-between;
+    padding: 0 20px;
+    align-items: center;
+    color: #fff;
+    font-size: 0.78rem;
+    z-index: 5;
+}
+
+.phone-screen {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: flex-start;
+    padding-top: 75px;
+    background: linear-gradient(160deg, #1a2a3a, #0d1a28);
+    position: absolute;
+    width: 100%;
+    height: 100%;
+}
+
+.caller-id-circle {
+    width: 90px;
+    height: 90px;
+    background: linear-gradient(135deg, #8a9ba8, #bdc3c7);
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 1.6rem;
+    color: #333;
+    margin-bottom: 16px;
+    box-shadow: 0 6px 20px rgba(0,0,0,0.4);
+}
+
+.status {
+    font-size: 0.9rem;
+    color: #aaa;
+}
+
+.bottom-controls {
+    margin-top: auto;
+    margin-bottom: 45px;
+    width: 100%;
+    display: flex;
+    justify-content: center;
+}
+
+/* 스와이프 UI */
+.swipe-container {
+    width: 240px;
+    height: 58px;
+    position: relative;
+}
+
+.swipe-track {
+    width: 100%;
+    height: 100%;
+    background: rgba(255, 255, 255, 0.18);
+    border-radius: 29px;
+    position: relative;
+    overflow: hidden;
+    backdrop-filter: blur(8px);
+}
+
+.swipe-text {
+    position: absolute;
+    width: 100%;
+    line-height: 58px;
+    text-align: center;
+    color: #fff;
+    font-size: 1rem;
+    pointer-events: none;
+    z-index: 1;
+    animation: shimmer 2.5s infinite linear;
+    background: linear-gradient(90deg, rgba(255,255,255,0.4) 0%, rgba(255,255,255,1) 50%, rgba(255,255,255,0.4) 100%);
+    background-size: 200% auto;
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+}
+
+@keyframes shimmer {
+    to { background-position: 200% center; }
+}
+
+.swipe-slider {
+    position: absolute;
+    top: 0; left: 0;
+    width: 100%; height: 100%;
+    opacity: 0;
+    cursor: pointer;
+    z-index: 3;
+}
+
+.swipe-icon-overlay {
+    position: absolute;
+    top: 4px; left: 4px;
+    width: 50px; height: 50px;
+    background: #30d158;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 1.4rem;
+    z-index: 2;
+    pointer-events: none;
+    transition: transform 0.1s;
+}
+
+.caller-info-small {
+    text-align: center;
+    margin-bottom: 16px;
+}
+
+.caller-info-small .caller {
+    font-size: 1.7rem;
+}
+
+.end-call-container {
+    margin-top: auto;
+    margin-bottom: 36px;
+    text-align: center;
+}
+
+.end-call-btn {
+    width: 68px;
+    height: 68px;
+    border-radius: 50%;
+    background: #ff3b30;
+    border: none;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 1.8rem;
+    cursor: pointer;
+    margin: 0 auto 8px auto;
+    box-shadow: 0 5px 15px rgba(255,59,48,0.4);
+    transition: transform 0.2s;
+}
+
+.end-call-btn:active {
+    transform: scale(0.92);
+}
+
+.end-call-btn .end-icon {
+    transform: rotate(135deg);
+    display: inline-block;
+}
+
+.end-call-container p {
+    color: #ccc;
+    font-size: 0.88rem;
+}
+
+/* ============================================================
+   영화적 연출
+   ============================================================ */
+@keyframes bounce {
+    0%, 20%, 50%, 80%, 100% { transform: translateY(0); }
+    40% { transform: translateY(-14px); }
+    60% { transform: translateY(-6px); }
+}
+
+.cinematic-text {
+    color: #fff;
+    font-size: 2rem;
+    text-shadow: 0 4px 15px rgba(0,0,0,0.8);
+    opacity: 0;
+    transition: opacity 2s ease-in-out;
+    text-align: center;
+    padding: 20px;
+    line-height: 1.5;
+}
+
+.cinematic-text.fade-in {
+    opacity: 1;
+}
+
+#scene-exterior {
+    transition: transform 4s ease-in-out, opacity 2s ease-in-out;
+}
+
+#scene-exterior.zoom-in {
+    transform: scale(3);
+    opacity: 0;
+}
+
+.cinematic-portrait {
+    position: absolute;
+    bottom: 0;
+    right: 5%;
+    width: 40%;
+    max-width: 340px;
+    height: auto;
+    filter: drop-shadow(0 0 20px rgba(0,0,0,0.8));
+    transform: translateY(120%);
+    transition: transform 1s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+    z-index: 5;
+    pointer-events: none;
+}
+
+.cinematic-portrait.pop-up {
+    transform: translateY(0);
+}
+
+/* ============================================================
+   엘리베이터 UI
+   ============================================================ */
+#elevator-ui {
+    position: absolute;
+    top: 0; left: 0;
+    width: 100%; height: 100%;
+    z-index: 1000;
+    display: flex;
+    flex-direction: column;
+    pointer-events: none;
+    background-color: transparent;
+}
+
+#elevator-ui:not(.hidden) {
+    pointer-events: all;
+}
+
+.elevator-doors {
+    position: absolute;
+    top: 0; left: 0;
+    width: 100%; height: 100%;
+    display: flex;
+    z-index: 1001;
+    overflow: hidden;
+}
+
+.door {
+    width: 50%;
+    height: 100%;
+    background: linear-gradient(90deg, #5c6266 0%, #9ca2a6 40%, #7d8489 60%, #4a5054 100%);
+    border: 2px solid #222;
+    box-shadow: inset 0 0 40px rgba(0,0,0,0.6);
+    transition: transform 1.5s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.left-door {
+    transform: translateX(-100%);
+    border-right: 4px solid #111;
+}
+
+.right-door {
+    transform: translateX(100%);
+    border-left: 4px solid #111;
+}
+
+#elevator-ui.closed .left-door { transform: translateX(0); }
+#elevator-ui.closed .right-door { transform: translateX(0); }
+
+.floor-indicator {
+    position: absolute;
+    top: 50px;
+    left: 50%;
+    transform: translateX(-50%);
+    background: #080808;
+    color: #ff453a;
+    font-family: monospace;
+    font-size: 3rem;
+    padding: 14px 36px;
+    border-radius: 8px;
+    border: 3px solid #222;
+    z-index: 1002;
+    box-shadow: 0 0 20px rgba(255, 69, 58, 0.5), inset 0 0 10px rgba(255, 69, 58, 0.2);
+    opacity: 0;
+    transition: opacity 0.5s;
+    font-weight: bold;
+    letter-spacing: 5px;
+}
+
+#elevator-ui.closed .floor-indicator { opacity: 1; }
+
+@keyframes elevatorShake {
+    0% { transform: translateY(0); }
+    50% { transform: translateY(-1px); }
+    100% { transform: translateY(0); }
+}
+
+.elevator-shake {
+    animation: elevatorShake 0.5s infinite ease-in-out;
+}
+
+.walk-to-elevator {
+    transform-origin: 70% 50%;
+    transform: scale(2.5);
+    transition: transform 2.5s ease-in-out !important;
+}
+
+/* ============================================================
+   힌트 & 자물쇠 UI
+   ============================================================ */
+.hint-box {
+    padding: 18px;
+    border: 1.5px dashed #0ff;
+    background: rgba(0,255,255,0.04);
+    text-align: center;
+    border-radius: 10px;
+}
+
+.hint-title {
+    color: #0ff;
+    font-weight: bold;
+    font-size: 1rem;
+    margin-bottom: 10px;
+}
+
+.hint-code {
+    color: #0ff;
+    font-size: 1.7rem;
+    letter-spacing: 6px;
+    font-weight: bold;
+    margin: 10px 0;
+    font-family: monospace;
+}
+
+.hint-sub {
+    color: #999;
+    font-size: 0.82rem;
+}
+
+.padlock-panel {
+    background: rgba(10,10,10,0.97);
+    border: 2px solid #555;
+    border-radius: 16px;
+    padding: 30px 24px;
+    text-align: center;
+    max-width: 320px;
+    width: 92%;
+    box-shadow: 0 20px 50px rgba(0,0,0,0.85);
+}
+
+.padlock-icon {
+    font-size: 2.5rem;
+    margin-bottom: 14px;
+}
+
+/* ============================================================
+   결과 카드
+   ============================================================ */
+.result-card {
+    width: 100%;
+}
+
+/* ============================================================
+   라디오 & 퀴즈 레이블
+   ============================================================ */
+.radio-label:hover {
+    background: rgba(200, 151, 94, 0.12) !important;
+    border-color: var(--accent) !important;
+    transition: all 0.2s ease;
+}
+
+.quiz-container {
+    text-align: left;
+    margin: 16px 0;
+}
+
+.quiz-container label {
+    display: block;
+    margin: 10px 0;
+    cursor: pointer;
+    font-size: 0.95rem;
+    line-height: 1.5;
+}
+
+/* ============================================================
+   스마트폰 이중 스크린 지원 (더 작은 화면)
+   ============================================================ */
+@media (max-height: 700px) {
+    .smartphone-wrapper {
+        transform: scale(0.82);
+    }
+    .glass-panel {
+        padding: 14px;
+    }
+    .game-panel {
+        max-height: 92dvh;
+    }
+}
+
+/* ============================================================
+   타로 카드 (주거 유형 테스트)
+   ============================================================ */
+.tarot-card {
+    background: linear-gradient(145deg, #1a1a2e, #16213e);
+    border: 2px solid #a67c00;
+    border-radius: 15px;
+    padding: 28px 22px;
+    text-align: center;
+    width: 100%;
+    max-width: 400px;
+    position: relative;
+    box-shadow: 0 12px 40px rgba(0,0,0,0.8), inset 0 0 15px rgba(166,124,0,0.15);
+}
+
+.tarot-title {
+    font-size: 1.3rem;
+    font-weight: bold;
+    margin-bottom: 10px;
+    border-bottom: 1px solid #a67c00;
+    padding-bottom: 10px;
+    color: #f0d080;
+}
+
+.tarot-desc {
+    font-size: 0.95rem;
+    line-height: 1.65;
+    color: #ddd;
+}
+
+/* ============================================================
+   엔딩 화면
+   ============================================================ */
+#ending-screen {
+    overflow-y: auto;
+    height: 100%;
+}
+
+#ending-screen.active {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+}
+
+#ending-title {
+    text-shadow: 0 0 30px rgba(255, 215, 0, 0.6), 0 0 60px rgba(255, 215, 0, 0.3);
+    animation: goldGlow 3s ease-in-out infinite;
+}
+
+@keyframes goldGlow {
+    0%, 100% { text-shadow: 0 0 30px rgba(255, 215, 0, 0.6); }
+    50% { text-shadow: 0 0 50px rgba(255, 215, 0, 1), 0 0 80px rgba(255, 215, 0, 0.5); }
+}
+
+/* ============================================================
+   진행도 애니메이션
+   ============================================================ */
+@keyframes fadeInUp {
+    from { opacity: 0; transform: translateY(10px); }
+    to { opacity: 1; transform: translateY(0); }
+}
+
+#collected-letters-display > div {
+    animation: fadeInUp 0.4s ease forwards;
+}
+
+@keyframes hintFadeIn {
+    from { opacity: 0; }
+    to { opacity: 1; }
+}
+
+#f2-password-hint, #f3-password-hint, #f4-password-hint, #f5-password-hint {
+    animation: hintFadeIn 0.8s ease;
+}
+
+/* ============================================================
+   정전 손전등
+   ============================================================ */
+#blackout-overlay {
+    background: radial-gradient(
+        circle 150px at var(--cursor-x, 50%) var(--cursor-y, 50%),
+        transparent 0%,
+        transparent 30%,
+        rgba(0,0,0,0.97) 100%
+    );
+}
+
+/* ============================================================
+   컨베이어 벨트 아이템
+   ============================================================ */
+#classification-item {
+    background: linear-gradient(135deg, #f0d080, #ffb020, #e8900a) !important;
+    color: #1a0a00 !important;
+    font-size: 0.95rem !important;
+    font-weight: bold !important;
+    padding: 12px 20px !important;
+    border-radius: 10px !important;
+    box-shadow: 0 6px 20px rgba(0,0,0,0.6), 0 0 12px rgba(255,180,0,0.4) !important;
+    border: 2px solid rgba(255,255,255,0.5) !important;
+    animation: itemGlow 1.5s ease-in-out infinite alternate;
+    cursor: grab !important;
+    user-select: none;
+    white-space: nowrap;
+    touch-action: none;
+}
+
+@keyframes itemGlow {
+    from { box-shadow: 0 6px 20px rgba(0,0,0,0.6), 0 0 8px rgba(255,180,0,0.3); }
+    to { box-shadow: 0 6px 25px rgba(0,0,0,0.7), 0 0 20px rgba(255,180,0,0.7); }
+}
+
+.drop-box.drag-over {
+    transform: scale(1.08) !important;
+    filter: brightness(1.3) !important;
+}
+
+.mess-item {
+    user-select: none;
+    transition: transform 0.2s;
+    touch-action: none;
+}
+
+.mess-item:hover {
+    transform: scale(1.15);
+}
+
+/* ============================================================
+   4층 자물쇠 씬
+   ============================================================ */
+#f4-padlock-scene {
+    background: rgba(0,0,0,0.8);
+    z-index: 16;
+    align-items: center;
+    justify-content: center;
+}
+
+/* ============================================================
+   마지막 공간 (penthouse)
+   ============================================================ */
+#floor-penthouse .glass-panel {
+    border-color: gold;
+    box-shadow: 0 0 20px rgba(255, 215, 0, 0.15);
+}
+
+/* ============================================================
+   글자 입력 포커스
+   ============================================================ */
+.letter-input:focus {
+    outline: none;
+    border-color: gold !important;
+    box-shadow: 0 0 12px rgba(255, 215, 0, 0.4);
+}
+
+/* ============================================================
+   텍스트 크기 (모바일 기본)
+   ============================================================ */
+h1 { font-size: 1.7rem; line-height: 1.3; }
+h2 { font-size: 1.15rem; line-height: 1.4; }
+h3 { font-size: 1rem; line-height: 1.4; }
+p  { font-size: 0.92rem; line-height: 1.65; }
+
+/* ============================================================
+   별 / 우주 배경
+   ============================================================ */
+.space-bg {
+    background: radial-gradient(ellipse at bottom, #1b2735 0%, #090a0f 100%);
+    position: absolute;
+    top: 0; left: 0;
+    width: 100%; height: 100%;
+    z-index: -1;
+    overflow: hidden;
+}
+
+.star-point {
+    position: absolute;
+    background: white;
+    border-radius: 50%;
+    animation: twinkling infinite ease-in-out;
+}
+
+.shooting-star {
+    position: absolute;
+    width: 2px;
+    height: 70px;
+    background: linear-gradient(to bottom, rgba(255,255,255,0), #fff);
+    transform: rotate(45deg);
+    animation: shootingStar 3s linear infinite;
+}
+
+@keyframes twinkling {
+    0%, 100% { opacity: 0.2; transform: scale(1); }
+    50% { opacity: 1; transform: scale(1.2); }
+}
+
+@keyframes shootingStar {
+    0% { transform: translateY(-100px) translateX(50vw) rotate(45deg); opacity: 1; }
+    100% { transform: translateY(100vw) translateX(-50vw) rotate(45deg); opacity: 0; }
+}
+
+@keyframes crystal-spin {
+    0% { transform: rotate(0deg); }
+    100% { transform: rotate(360deg); }
+}
+
+@keyframes bounce {
+    0%, 20%, 50%, 80%, 100% { transform: translateY(0); }
+    40% { transform: translateY(-15px); }
+    60% { transform: translateY(-7px); }
+}
+
 
 * {
     margin: 0;
