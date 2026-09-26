@@ -1834,6 +1834,8 @@ function initPenthouse() {
         var allowedPasswords = ['HOUSING', 'HABITAT', 'SHELTER', 'COMFORT', 'HARMONY', 'INTERIOR'];
         
         if (allowedPasswords.includes(val)) {
+            var codeInputPanel = document.getElementById('penthouse-code-input');
+            if (codeInputPanel) codeInputPanel.style.display = 'none'; // 입력창 숨기기 (겹침 방지)
             showElement(penthouseReveal);
             var nameDisplay = document.getElementById('reveal-name-display');
             if (nameDisplay) nameDisplay.textContent = state.playerName + '의 설계도';
@@ -2003,14 +2005,14 @@ function initPenthouse() {
             var card = document.getElementById('result-card');
             if (card) {
                 card.innerHTML = '<div class="tarot-card" style="position:relative; max-width:700px; width:100%; margin:0 auto; animation:none; transform:none;">' +
-                '<p style="color:#aaa;font-size:0.9rem;margin-bottom:10px;">🌟 운명이 점지한 당신의 주거 공간 🌟</p>' +
-                '<div style="font-size:6rem; margin:20px 0; text-shadow:0 0 20px rgba(255,255,255,0.5);">' + selectedType.img + '</div>' +
-                '<h2 style="color:gold;margin-bottom:20px;font-size:1.6rem;line-height:1.4;">' + selectedType.t + '</h2>' +
-                '<p style="color:#ddd;font-size:1.1rem;line-height:1.6;margin-bottom:25px;">' + selectedType.d + '</p>' +
-                '<div style="background:rgba(255,255,255,0.1); padding:20px; border-radius:10px; margin-top:20px;">' +
-                '<p style="color:#f0d080;font-size:1.05rem;font-weight:bold;margin-bottom:10px;">💬 나만의 공간을 찾은 소감</p>' +
-                '<textarea placeholder="활동을 통해 알게 된 점, 새롭게 깨달은 점, 그리고 앞으로 나의 공간에서 실천하고 싶은 점을 구체적으로 적어보세요..." style="width:100%;height:100px;background:rgba(0,0,0,0.5);color:white;border:1px solid #a67c00;border-radius:5px;padding:10px;margin-bottom:15px;font-family:inherit;line-height:1.5;"></textarea>' +
-                '<p style="color:white;font-size:1.2rem;font-weight:bold;border-top:1px dashed #666;padding-top:15px;margin-top:10px;">✨ <strong>당신을 이 운명의 집으로 초대합니다.</strong> ✨</p></div>' +
+                '<p style="color:#aaa;font-size:0.9rem;margin-bottom:5px;">🌟 운명이 점지한 당신의 주거 공간 🌟</p>' +
+                '<div style="font-size:5rem; margin:10px 0; text-shadow:0 0 20px rgba(255,255,255,0.5);">' + selectedType.img + '</div>' +
+                '<h2 style="color:gold;margin-bottom:10px;font-size:1.4rem;line-height:1.2;">' + selectedType.t + '</h2>' +
+                '<p style="color:#ddd;font-size:1rem;line-height:1.4;margin-bottom:15px;">' + selectedType.d + '</p>' +
+                '<div style="background:rgba(255,255,255,0.1); padding:15px; border-radius:10px; margin-top:10px;">' +
+                '<p style="color:#f0d080;font-size:1rem;font-weight:bold;margin-bottom:8px;">💬 나만의 공간을 찾은 소감</p>' +
+                '<textarea placeholder="활동을 통해 알게 된 점, 새롭게 깨달은 점, 그리고 앞으로 나의 공간에서 실천하고 싶은 점을 구체적으로 적어보세요..." style="width:100%;height:70px;background:rgba(0,0,0,0.5);color:white;border:1px solid #a67c00;border-radius:5px;padding:8px;margin-bottom:10px;font-family:inherit;line-height:1.4;font-size:0.9rem;"></textarea>' +
+                '<p style="color:white;font-size:1.1rem;font-weight:bold;border-top:1px dashed #666;padding-top:10px;margin-top:5px;">✨ <strong>당신을 이 운명의 집으로 초대합니다.</strong> ✨</p></div>' +
                 '</div>';
             }
             hideElement(housingTypeTest); showElement(housingResult);
