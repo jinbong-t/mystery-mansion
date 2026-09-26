@@ -2023,7 +2023,16 @@ function initPenthouse() {
 
     });
     
-    if (goToNaming) goToNaming.addEventListener('click', function() { hideElement(housingResult); showElement(houseNaming); });
+    if (goToNaming) goToNaming.addEventListener('click', function() { 
+        var reflectionArea = document.querySelector('#result-card textarea');
+        var reflection = reflectionArea ? reflectionArea.value.trim() : '';
+        if (reflection.length < 10) {
+            showAlert('공간 소감을 10글자 이상 작성해야 넘어갈 수 있습니다.', '#ff6b6b');
+            return;
+        }
+        hideElement(housingResult); 
+        showElement(houseNaming); 
+    });
     if (submitHouseName) submitHouseName.addEventListener('click', function() {
         var input = document.getElementById('house-name-input');
         var name = input ? input.value.trim() : '';
@@ -2031,6 +2040,11 @@ function initPenthouse() {
         
         // 소감 및 집 이름 이유 수집
         var reason = document.getElementById('house-name-reason') ? document.getElementById('house-name-reason').value.trim() : '';
+        if (reason.length < 10) {
+            showAlert('집 이름을 지은 이유를 10글자 이상 작성해주세요!', '#ff6b6b');
+            return;
+        }
+        
         var reflectionArea = document.querySelector('#result-card textarea');
         var reflection = reflectionArea ? reflectionArea.value.trim() : '';
         

@@ -56,10 +56,11 @@ function updateDashboardUI() {
     let levelARate = filtered.length > 0 ? Math.round((levelA / filtered.length) * 100) : 0;
     document.getElementById('stat-level-a').textContent = levelARate + '%';
     
-    // 정렬 (반 -> 번호 순)
+    // 정렬 (최신순 상단)
     filtered.sort((a,b) => {
-        if(a.classNum !== b.classNum) return parseInt(a.classNum) - parseInt(b.classNum);
-        return parseInt(a.studentNum) - parseInt(b.studentNum);
+        let timeA = new Date(a.timestamp || 0).getTime();
+        let timeB = new Date(b.timestamp || 0).getTime();
+        return timeB - timeA;
     });
     
     tbody.innerHTML = '';
@@ -73,9 +74,13 @@ function updateDashboardUI() {
         let tr = document.createElement('tr');
         
         // 진행도 바
-        let progressPercent = Math.min((s.floor / 7) * 100, 100);
+        let floorNum = parseInt(s.floor) || 0;
+        let isPenthouse = (s.floor === 'penthouse');
+        let progressPercent = isPenthouse ? 85 : Math.min((floorNum / 7) * 100, 100);
+        let progressText = isPenthouse ? '마지막 공간 진행 중' : (floorNum >= 6 ? '엔딩 완료' : s.floor + '층 진행 중');
+        
         let progressHtml = `
-            <div>${s.floor >= 6 ? '엔딩 완료' : s.floor + '층 진행 중'}</div>
+            <div>${progressText}</div>
             <div class="progress-bar"><div class="progress-fill" style="width:${progressPercent}%"></div></div>
         `;
         
@@ -110,7 +115,7 @@ function showDetail(id) {
     document.getElementById('modal-title').textContent = `${student.classNum}반 ${student.studentNum}번 ${student.name} 리포트`;
     
     let html = `
-        <p><strong>현재 위치:</strong> ${student.floor === 7 ? '미스터리 맨션 클리어' : student.floor + '층'}</p>
+        <p><strong>현재 위치:</strong> ${student.floor === 7 || student.floor >= 6 ? '미스터리 맨션 클리어' : (student.floor === 'penthouse' ? '마지막 공간' : student.floor + '층')}</p>
         <p><strong>성취 수준:</strong> <span class="badge ${student.level}">${student.level} 수준</span></p>
         <hr style="border:0; border-top:1px solid #333; margin:15px 0;">
         <p><strong>진단된 주거 유형:</strong> <span style="color:gold;">${student.houseType}</span></p>
