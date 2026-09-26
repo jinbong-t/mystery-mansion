@@ -241,16 +241,33 @@ function setupDoorlock(floorPrefix, correctCode, onSuccess, onClose) {
 function setupDragDrop(itemsId) {
     var items = document.querySelectorAll('#' + itemsId + ' .draggable-item');
     var dragged = null;
+    window.selectedDragItem = null;
     items.forEach(function(item) {
         item.addEventListener('dragstart', function() { dragged = item; item.style.opacity = '0.5'; });
         item.addEventListener('dragend', function() { item.style.opacity = '1'; dragged = null; });
+        item.addEventListener('click', function(e) {
+            e.stopPropagation();
+            document.querySelectorAll('.draggable-item').forEach(i => i.style.border = '1px solid var(--accent)');
+            window.selectedDragItem = item;
+            item.style.border = '3px solid #0ff';
+        });
     });
     document.querySelectorAll('.drop-zone').forEach(function(zone) {
         zone.addEventListener('dragover', function(e) { e.preventDefault(); zone.classList.add('hover'); });
         zone.addEventListener('dragleave', function() { zone.classList.remove('hover'); });
         zone.addEventListener('drop', function(e) {
             e.preventDefault(); zone.classList.remove('hover');
-            if (dragged) zone.appendChild(dragged);
+            if (dragged) {
+                zone.appendChild(dragged);
+                dragged.style.border = '1px solid var(--accent)';
+            }
+        });
+        zone.addEventListener('click', function() {
+            if (window.selectedDragItem) {
+                zone.appendChild(window.selectedDragItem);
+                window.selectedDragItem.style.border = '1px solid var(--accent)';
+                window.selectedDragItem = null;
+            }
         });
     });
 }
@@ -781,8 +798,8 @@ function initFloor3() {
                         disp.innerHTML = '<span style="color:#666;font-size:0.85rem;">클릭한 순서가 여기 표시됩니다...</span>';
                     } else {
                         disp.innerHTML = f3m1Selected.map(function(n) {
-                            return '<span style="background:#b38b59;color:#000;padding:4px 8px;border-radius:4px;font-size:0.85rem;">' + n + '</span>';
-                        }).join(' → ');
+                            return '<span style="background:#b38b59;color:#000;padding:3px 5px;border-radius:4px;font-size:0.75rem;">' + n + '</span>';
+                        }).join('<span style="font-size:0.75rem; color:#aaa; margin:0 2px;">→</span>');
                     }
                 }
             });
@@ -1208,7 +1225,8 @@ function initFloor5() {
     var f5m3Selected = [];
     function initF5M3() {
         var area = document.getElementById('f5-order-area'); if (!area) return; area.innerHTML = ''; f5m3Selected = [];
-        furnitureOrder.slice().sort(function() { return Math.random()-0.5; }).forEach(function(name) {
+        var scrambledOrder = ['협탁', '옷장', '책상', '침대']; // 정답과 섞인 순서로 고정
+        scrambledOrder.forEach(function(name) {
             var btn = document.createElement('button'); btn.className = 'action-btn'; btn.style.cssText = 'font-size:0.9rem;padding:8px 14px;margin:4px;'; btn.textContent = name;
             btn.addEventListener('click', function() {
                 if (!btn.disabled) {
@@ -1785,9 +1803,18 @@ function initPenthouse() {
     var housingResult = document.getElementById('housing-result');
     var goToNaming = document.getElementById('go-to-naming');
     var houseNaming = document.getElementById('house-naming');
-    var submitHouseName = document.getElementById('submit-house-name');
+    var submitHouseName = document.getElementById('finish-game');
     
     if (!checkCode) return;
+
+    // reveal 1→2 페이지 전환
+    var revealNextBtn = document.getElementById('reveal-next-page');
+    if (revealNextBtn) revealNextBtn.addEventListener('click', function() {
+        var p1 = document.getElementById('reveal-page-1');
+        var p2 = document.getElementById('reveal-page-2');
+        if (p1) p1.style.display = 'none';
+        if (p2) { p2.style.display = 'flex'; }
+    });
 
     checkCode.addEventListener('click', function() {
         var input = document.getElementById('penthouse-code');
@@ -1862,6 +1889,7 @@ function initPenthouse() {
         var area = document.getElementById('housing-questions');
         if(currentQIndex >= housingQs.length) {
             hideElement(document.getElementById('housing-questions'));
+            hideElement(document.getElementById('housing-intro'));
             var btn = document.getElementById('submit-housing-container');
             if(btn) showElement(btn);
             return;
@@ -1961,14 +1989,14 @@ function initPenthouse() {
         setTimeout(function() {
             var card = document.getElementById('result-card');
             if (card) {
-                card.innerHTML = '<div class="tarot-card" style="position:relative; max-width:500px; margin:0 auto; animation:none; transform:none;">' +
+                card.innerHTML = '<div class="tarot-card" style="position:relative; max-width:700px; width:100%; margin:0 auto; animation:none; transform:none;">' +
                 '<p style="color:#aaa;font-size:0.9rem;margin-bottom:10px;">🌟 운명이 점지한 당신의 주거 공간 🌟</p>' +
                 '<div style="font-size:6rem; margin:20px 0; text-shadow:0 0 20px rgba(255,255,255,0.5);">' + selectedType.img + '</div>' +
                 '<h2 style="color:gold;margin-bottom:20px;font-size:1.6rem;line-height:1.4;">' + selectedType.t + '</h2>' +
                 '<p style="color:#ddd;font-size:1.1rem;line-height:1.6;margin-bottom:25px;">' + selectedType.d + '</p>' +
                 '<div style="background:rgba(255,255,255,0.1); padding:20px; border-radius:10px; margin-top:20px;">' +
                 '<p style="color:#f0d080;font-size:1.05rem;font-weight:bold;margin-bottom:10px;">💬 나만의 공간을 찾은 소감</p>' +
-                '<textarea placeholder="활동을 통해 알게 된 점, 새롭게 깨달은 점, 그리고 앞으로 나의 공간에서 실천하고 싶은 점을 구체적으로 적어보세요..." style="width:100%;height:120px;background:rgba(0,0,0,0.5);color:white;border:1px solid #a67c00;border-radius:5px;padding:10px;margin-bottom:15px;font-family:inherit;line-height:1.5;"></textarea>' +
+                '<textarea placeholder="활동을 통해 알게 된 점, 새롭게 깨달은 점, 그리고 앞으로 나의 공간에서 실천하고 싶은 점을 구체적으로 적어보세요..." style="width:100%;height:100px;background:rgba(0,0,0,0.5);color:white;border:1px solid #a67c00;border-radius:5px;padding:10px;margin-bottom:15px;font-family:inherit;line-height:1.5;"></textarea>' +
                 '<p style="color:white;font-size:1.2rem;font-weight:bold;border-top:1px dashed #666;padding-top:15px;margin-top:10px;">✨ <strong>당신을 이 운명의 집으로 초대합니다.</strong> ✨</p></div>' +
                 '</div>';
             }
@@ -1990,17 +2018,33 @@ function initPenthouse() {
 }
 
 function showEnding() {
-    var endingEl = document.getElementById('floor-ending');
+    var endingEl = document.getElementById('ending-screen');
     if (!endingEl) { showAlert(state.playerName + '님의 꿈의 집: "' + state.houseName + '" 완성!', '#ffd700'); return; }
     endingEl.classList.remove('hidden'); endingEl.classList.add('active');
+    
+    // ending-galaxy 생성
+    var bg = document.getElementById('ending-galaxy');
+    if (bg && bg.children.length === 0) {
+        for(let i=0; i<80; i++) {
+            let star = document.createElement('div');
+            star.className = 'star-point';
+            star.style.width = Math.random() * 4 + 'px';
+            star.style.height = star.style.width;
+            star.style.left = Math.random() * 100 + '%';
+            star.style.top = Math.random() * 100 + '%';
+            star.style.animationDuration = (Math.random() * 3 + 1) + 's';
+            bg.appendChild(star);
+        }
+    }
+
     var titleEl = document.getElementById('ending-title');
     var letterEl = document.getElementById('ending-letter');
     var moralEl = document.getElementById('ending-moral');
     var nameEl = document.getElementById('ending-player-name');
     var houseNameEl = document.getElementById('ending-house-name');
-    if (letterEl) { var p = letterEl.querySelector('p'); if (p) p.textContent = state.playerName + '에게,\n\n당신이 이 맨션을 둘러보는 동안 내내 지켜봤어요.\n각 층에서 전 주민들의 흔적을 찾고, 문제를 해결하는 모습을...\n\n이 집의 글자들처럼, 좋은 집도 조각들이 모여 완성됩니다.\n구역화, 동선, 입체적 활용, 가구 배치...\n이제 당신만의 주거 공간을 설계할 준비가 되었습니다.\n\n— 설계자로부터'; }
-    if (houseNameEl) houseNameEl.textContent = '내 집의 이름: "' + state.houseName + '"';
-    if (nameEl) nameEl.textContent = state.playerName + '님, 미스터리 맨션 탈출 성공!';
+    if (letterEl) { var p = letterEl.querySelector('p'); if (p) p.innerHTML = state.playerName + '님에게,<br><br>처음 이 맨션에 발을 들였을 때를 기억하나요?<br>빈 방과 남겨진 흔적들 속에서 당신은 훌륭하게 공간의 의미를 찾아냈습니다.<br><br>결국 가장 좋은 집이란, 비싼 가구나 넓은 평수가 아니라<br>나의 일상과 취향, 그리고 꿈이 다정하게 녹아있는 곳이랍니다.<br>이곳에서 배운 작은 지혜들이 훗날 큰 도움이 되길 바랍니다.<br><br>당신이 그려낼 앞으로의 공간이 무척이나 기대됩니다.'; }
+    if (houseNameEl) houseNameEl.innerHTML = '✨ 내 집의 이름: <span style="color:gold;">"' + state.houseName + '"</span> ✨';
+    if (nameEl) nameEl.innerHTML = '👑 <strong>' + state.playerName + '</strong>님, 모든 임무를 완수했습니다!';
     if (titleEl) setTimeout(function() { titleEl.style.opacity = '1'; }, 100);
     if (letterEl) setTimeout(function() { letterEl.style.opacity = '1'; }, 1200);
     if (moralEl) setTimeout(function() { moralEl.style.opacity = '1'; }, 2500);
