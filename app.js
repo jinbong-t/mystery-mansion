@@ -2013,7 +2013,17 @@ function initPenthouse() {
         var input = document.getElementById('house-name-input');
         var name = input ? input.value.trim() : '';
         if (!name) { showAlert('집 이름을 입력해주세요!', '#ff6b6b'); return; }
-        state.houseName = name; saveState(); hideElement(houseNaming); showEnding();
+        
+        // 소감 및 집 이름 이유 수집
+        var reason = document.getElementById('house-name-reason') ? document.getElementById('house-name-reason').value.trim() : '';
+        var reflectionArea = document.querySelector('#result-card textarea');
+        var reflection = reflectionArea ? reflectionArea.value.trim() : '';
+        
+        state.houseName = name; 
+        state.reflection = "공간 소감: " + (reflection || '없음') + " | 이름 이유: " + (reason || '없음');
+        saveState(); 
+        hideElement(houseNaming); 
+        showEnding();
     });
 }
 
