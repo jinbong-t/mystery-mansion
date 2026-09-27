@@ -502,21 +502,8 @@ body {
     position: relative;
     display: inline-flex;
     align-items: center;
-    transform: scale(0.92);
     transform-origin: center center;
-    /* 화면 높이가 작을 때 자동으로 줄어들도록 설정 */
-    max-height: 90dvh;
-}
-
-@media (max-height: 700px) {
-    .smartphone-wrapper {
-        transform: scale(0.7);
-    }
-}
-@media (max-height: 550px) {
-    .smartphone-wrapper {
-        transform: scale(0.55);
-    }
+    transform: scale(min(1, calc(min(100vh, calc(100vw * 4 / 3)) / 750)));
 }
 
 .power-btn-side {
@@ -1567,8 +1554,8 @@ body {
     display: inline-flex;
     align-items: center;
     justify-content: center;
-    height: 100%;
-    width: 100%;
+    transform-origin: center center;
+    transform: scale(min(1, calc(min(100vh, 768px, calc(100vw * 3 / 4)) / 750)));
 }
 
 .power-btn-side {

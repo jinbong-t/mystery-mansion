@@ -411,8 +411,8 @@ body {
     display: inline-flex;
     align-items: center;
     justify-content: center;
-    height: 100%;
-    width: 100%;
+    transform-origin: center center;
+    transform: scale(min(1, calc(min(100vh, 768px, calc(100vw * 3 / 4)) / 750)));
 }
 
 .power-btn-side {
@@ -429,10 +429,8 @@ body {
 }
 
 .smartphone-frame {
-    height: 85%;
-    max-height: 650px;
-    aspect-ratio: 32 / 65;
-    width: auto;
+    width: 320px;
+    height: 650px;
     background: #000;
     border-radius: 40px;
     position: relative;
