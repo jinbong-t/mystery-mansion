@@ -461,15 +461,7 @@ function initFloor2() {
 
     // 201호 배경이 완전히 나타난 후 1초 뒤 대화창 표시
     // moveToFloor(2) 호출: 1200ms 후 시작 → 엘리베이터 완전 소멸: +4900ms → 배경 노출 후 1초 대기 = 총 7100ms
-    setTimeout(function() {
-        var d = document.getElementById('f2-entrance-dialogue');
-        if (d) {
-            d.style.opacity = '0';
-            d.style.transition = 'opacity 0.6s ease';
-            d.style.display = 'block';
-            setTimeout(function() { d.style.opacity = '1'; }, 50);
-        }
-    }, 7100);
+    
 
     // OX 퀴즈 인터랙션
     var oxAnswers = { 1: null, 2: null, 3: null, 4: null };
@@ -750,15 +742,7 @@ function initFloor3() {
 
     // 301호 배경이 완전히 나타난 후 1초 뒤 대화창 표시
     // moveToFloor(3) 호출: 1200ms 후 시작 → 엘리베이터 완전 소멸: +4900ms → 배경 노출 후 1초 대기 = 총 7100ms
-    setTimeout(function() {
-        var d = document.getElementById('f3-entrance-dialogue');
-        if (d) {
-            d.style.opacity = '0';
-            d.style.transition = 'opacity 0.6s ease';
-            d.style.display = 'block';
-            setTimeout(function() { d.style.opacity = '1'; }, 50);
-        }
-    }, 7100);
+    
 
     if (f3NextDialogueBtn) {
         f3NextDialogueBtn.addEventListener('click', function() {
@@ -965,15 +949,7 @@ function initFloor4() {
 
     // 401호 배경이 완전히 나타난 후 1초 뒤 대화창 표시
     // moveToFloor(4) 호출: 1200ms 후 시작 → 엘리베이터 완전 소멸: +4900ms → 배경 노출 후 1초 대기 = 총 7100ms
-    setTimeout(function() {
-        var d = document.getElementById('f4-entrance-dialogue');
-        if (d) {
-            d.style.opacity = '0';
-            d.style.transition = 'opacity 0.6s ease';
-            d.style.display = 'block';
-            setTimeout(function() { d.style.opacity = '1'; }, 50);
-        }
-    }, 7100);
+    
 
     showSketchBtn.addEventListener('click', function() {
         hideElement(f4EntranceScene); showElement(f4SketchHintScene);
@@ -1141,15 +1117,7 @@ function initFloor5() {
 
     // 501호 배경이 완전히 나타난 후 1초 뒤 대화창 표시
     // moveToFloor(5) 호출: 1200ms 후 시작 → 엘리베이터 완전 소멸: +4900ms → 배경 노출 후 1초 대기 = 총 7100ms
-    setTimeout(function() {
-        var d = document.getElementById('f5-entrance-dialogue');
-        if (d) {
-            d.style.opacity = '0';
-            d.style.transition = 'opacity 0.6s ease';
-            d.style.display = 'block';
-            setTimeout(function() { d.style.opacity = '1'; }, 50);
-        }
-    }, 7100);
+    
 
     var dEnt = document.getElementById('f5-entrance-dialogue');
     var entBtn1 = document.getElementById('f5-ent-btn-1');
@@ -1549,7 +1517,7 @@ function initRoof() {
     if (!startRoofBtn) return;
 
     // 장면이 나타나고 2초 후 진입 대화창 표시
-    setTimeout(function() { if (dDialogue) dDialogue.style.display = 'block'; }, 2000);
+    
 
     // 1단계 시작: 책장 정리
     startRoofBtn.addEventListener('click', function() {
