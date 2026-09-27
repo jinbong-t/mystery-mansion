@@ -2284,3 +2284,105 @@ p  { font-size: 0.9rem; }
 /* 공인중개사 텍스트 크기 원상복구 */
 .speaker { font-size: 1.35rem !important; text-shadow: none !important; }
 
+
+/* ============================================================
+   🔥 모바일 전체 UI/UX 디자인 하모니 개선 (글씨체, 박스 크기 등)
+   ============================================================ */
+
+/* 1. 기본 폰트 크기 반응형 조절 (전체 rem 기준점) */
+html {
+    font-size: clamp(14px, 4vw, 17px) !important;
+}
+
+/* 2. 대화창 (Dialogue Box) 디자인 및 여백 최적화 */
+.dialogue-box {
+    width: 92% !important;
+    max-width: 500px !important;
+    padding: 1.2rem 1.5rem !important;
+    border-radius: 16px !important;
+    background: rgba(12, 10, 8, 0.9) !important;
+    border: 1px solid rgba(200, 151, 94, 0.5) !important;
+    box-shadow: 0 10px 35px rgba(0,0,0,0.7) !important;
+    bottom: 25px !important; /* 화면 하단에서 약간 띄움 */
+}
+
+/* 3. 대화창 텍스트 및 스피커(화자) */
+.speaker {
+    font-size: 1.25rem !important;
+    color: #f0c070 !important;
+    margin-bottom: 8px !important;
+    font-weight: 800 !important;
+    letter-spacing: 0.05em !important;
+    text-shadow: 0 2px 4px rgba(0,0,0,0.8) !important;
+}
+
+.text {
+    font-size: 1.05rem !important;
+    line-height: 1.6 !important;
+    color: #f0f0f0 !important;
+    word-break: keep-all !important;
+    font-family: var(--font-main) !important;
+}
+
+/* 4. 공통 버튼 (Action Buttons) 일관성 부여 */
+.action-btn {
+    font-size: 1.1rem !important;
+    font-weight: 700 !important;
+    padding: 12px 24px !important;
+    min-height: 48px !important;
+    border-radius: 25px !important;
+    margin-top: 15px !important;
+    background: linear-gradient(135deg, #a67c00, #c8975e) !important;
+    color: #fff !important;
+    border: 1px solid #ffe57f !important;
+    box-shadow: 0 4px 15px rgba(166,124,0,0.4) !important;
+    display: inline-flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+    transition: transform 0.2s, box-shadow 0.2s !important;
+}
+.action-btn:active {
+    transform: scale(0.95) !important;
+    box-shadow: 0 2px 8px rgba(166,124,0,0.3) !important;
+}
+
+/* 5. 미니게임 및 패널 박스 (Glass Panels) */
+.glass-panel, #housing-questions .question-card {
+    width: 90% !important;
+    max-width: 480px !important;
+    padding: 1.5rem !important;
+    border-radius: 20px !important;
+    background: rgba(20, 20, 25, 0.85) !important;
+    backdrop-filter: blur(10px) !important;
+    border: 1px solid rgba(255,255,255,0.15) !important;
+    box-shadow: 0 15px 40px rgba(0,0,0,0.6) !important;
+    font-size: 1rem !important;
+    line-height: 1.5 !important;
+}
+
+/* 6. 인풋창(비밀번호 등) 크기 통일 */
+input[type="text"], input[type="number"], input[type="password"] {
+    font-size: 1.2rem !important;
+    padding: 12px 15px !important;
+    border-radius: 12px !important;
+    border: 2px solid #555 !important;
+    background: #111 !important;
+    color: #fff !important;
+    text-align: center !important;
+    width: 80% !important;
+    max-width: 250px !important;
+    margin: 15px auto !important;
+    display: block !important;
+}
+
+/* 7. 제목 (미스터리 맨션 등) 비율 최적화 */
+h1, h2, h3 {
+    word-break: keep-all !important;
+    line-height: 1.3 !important;
+    text-align: center !important;
+}
+h2 {
+    font-size: 1.5rem !important;
+    margin-bottom: 12px !important;
+}
+
