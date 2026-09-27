@@ -524,7 +524,6 @@ function initFloor2() {
             crumpledMemo.style.opacity = '0';
             setTimeout(function() {
                 hideElement(memoScene);
-                showMemoBtn.classList.add('hidden');
                 showDoorlockBtn.classList.remove('hidden');
                 showElement(f2Doorlock); // 도어락 바로 표시
             }, 800);
@@ -1688,12 +1687,17 @@ function initRoof() {
     var conveyorInterval;
     var isDraggingItem = false;
     
+    var isTouchSelected = false;
+    
     function showNextItem() {
         if(currentItemIdx < itemsToClassify.length) {
             classificationItem.textContent = itemsToClassify[currentItemIdx].name;
             classificationItem.style.display = 'block';
             itemPos = 0;
             classificationItem.style.left = itemPos + 'px';
+            isTouchSelected = false;
+            classificationItem.style.border = 'none';
+            classificationItem.style.opacity = '1';
             
             clearInterval(conveyorInterval);
             conveyorInterval = setInterval(function() {
@@ -1705,6 +1709,7 @@ function initRoof() {
                         // 떨어짐 (실패)
                         clearInterval(conveyorInterval);
                         classificationItem.style.display = 'none';
+                        isTouchSelected = false;
                         showAlert('물건이 지나가버렸어요! 다시 시작!', '#ff6b6b');
                         setTimeout(showNextItem, 1000);
                     }
@@ -1739,13 +1744,13 @@ function initRoof() {
     
     // Tablet touch support: click to select
     classificationItem.addEventListener('click', function(e) {
-        if (!isDraggingItem) {
-            isDraggingItem = true;
+        if (!isTouchSelected) {
+            isTouchSelected = true;
             classificationItem.style.border = '2px solid red';
             classificationItem.style.opacity = '0.7';
             e.stopPropagation();
         } else {
-            isDraggingItem = false;
+            isTouchSelected = false;
             classificationItem.style.border = 'none';
             classificationItem.style.opacity = '1';
         }
@@ -1775,8 +1780,8 @@ function initRoof() {
         
         // Tablet touch support: click to drop
         box.addEventListener('click', function(e) {
-            if (isDraggingItem) {
-                isDraggingItem = false;
+            if (isTouchSelected) {
+                isTouchSelected = false;
                 classificationItem.style.border = 'none';
                 classificationItem.style.opacity = '1';
                 if (currentItemIdx >= itemsToClassify.length) return;

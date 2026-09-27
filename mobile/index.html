@@ -273,14 +273,14 @@
                 
                 <!-- 부부 공간 요구사항 메모 팝업 -->
                 <div id="f2-couple-memo-popup" class="hidden" style="position:absolute;top:0;left:0;width:100%;height:100%;background:rgba(0,0,0,0.7);z-index:25;display:flex;flex-direction:column;align-items:center;justify-content:center;">
-                    <img src="201호 부부 공간 요구사항.png" alt="부부 요구사항 메모" style="max-width:85%;max-height:75%;border:2px solid #ddd;border-radius:8px;box-shadow:0 10px 30px rgba(0,0,0,0.8);transform:scale(0.8);transition:transform 0.5s ease-out;" id="f2-couple-memo-img">
+                    <img src="201%ED%98%B8%20%EB%B6%80%EB%B6%80%20%EA%B3%B5%EA%B0%84%20%EC%9A%94%EA%B5%AC%EC%82%AC%ED%95%AD.png" alt="부부 요구사항 메모" style="max-width:85%;max-height:75%;border:2px solid #ddd;border-radius:8px;box-shadow:0 10px 30px rgba(0,0,0,0.8);transform:scale(0.8);transition:transform 0.5s ease-out;" id="f2-couple-memo-img">
                     <button id="close-couple-memo-btn" class="action-btn" style="margin-top:20px;background:#b38b59;">확인</button>
                 </div>
 
                 <!-- 문제 1: 평면도 구역 분류 -->
                 <div id="f2-minigame-1" class="hidden glass-panel game-panel">
                     <h2>문제 1: 평면도 구획 나누기</h2>
-                    <p style="color:#ccc;margin-bottom:10px;">아래 공간 구역 카드를 평면도의 알맞은 방에 드래그하세요.</p>
+                    <p style="color:#ccc;margin-bottom:10px;">아래 공간 구역 카드를 평면도의 알맞은 방에 드래그 또는 터치해 주세요.</p>
                     
                     <div class="zoning-game" style="flex-direction: column;">
                         <div class="items" id="room-items" style="justify-content: center; gap: 8px;">
@@ -301,30 +301,30 @@
                                 <!-- Room 1 (방) -->
                                 <div class="floor-plan-room" style="background: #e6f7ff; display: flex; flex-direction: column; align-items: center; justify-content: center; position: relative;">
                                     <span style="color: #333; font-weight: bold; font-size: 1.1rem; margin-bottom: 10px;">🛏️ 안방 (침실)</span>
-                                    <div class="drop-zone" data-target="개인생활공간" style="width: 85%; min-height: 50px; background: rgba(0,0,0,0.1); border: 2px dashed #888; margin: 0; padding: 5px; font-size: 0.8rem; color: #555;">여기에 드래그</div>
+                                    <div class="drop-zone" data-target="개인생활공간" style="width: 85%; min-height: 50px; background: rgba(0,0,0,0.1); border: 2px dashed #888; margin: 0; padding: 5px; font-size: 0.8rem; color: #555;">여기에 드래그/터치</div>
                                 </div>
                                 
                                 <!-- Room 2 (화장실) -->
                                 <div class="floor-plan-room" style="background: #e6ffed; display: flex; flex-direction: column; align-items: center; justify-content: center; position: relative; border-left: 4px solid #555; border-bottom: 4px solid #555;">
                                     <span style="color: #333; font-weight: bold; font-size: 1.1rem; margin-bottom: 10px;">🚿 화장실</span>
-                                    <div class="drop-zone" data-target="생리위생공간" style="width: 85%; min-height: 50px; background: rgba(0,0,0,0.1); border: 2px dashed #888; margin: 0; padding: 5px; font-size: 0.8rem; color: #555;">여기에 드래그</div>
+                                    <div class="drop-zone" data-target="생리위생공간" style="width: 85%; min-height: 50px; background: rgba(0,0,0,0.1); border: 2px dashed #888; margin: 0; padding: 5px; font-size: 0.8rem; color: #555;">여기에 드래그/터치</div>
                                 </div>
                                 
                                 <!-- Room 3 (거실) -->
                                 <div class="floor-plan-room" style="background: #fff5e6; display: flex; flex-direction: column; align-items: center; justify-content: center; position: relative;">
                                     <span style="color: #333; font-weight: bold; font-size: 1.1rem; margin-bottom: 10px;">🛋️ 거실</span>
-                                    <div class="drop-zone" data-target="공동생활공간" style="width: 85%; min-height: 50px; background: rgba(0,0,0,0.1); border: 2px dashed #888; margin: 0; padding: 5px; font-size: 0.8rem; color: #555;">여기에 드래그</div>
+                                    <div class="drop-zone" data-target="공동생활공간" style="width: 85%; min-height: 50px; background: rgba(0,0,0,0.1); border: 2px dashed #888; margin: 0; padding: 5px; font-size: 0.8rem; color: #555;">여기에 드래그/터치</div>
                                 </div>
                                 
                                 <!-- Room 4 (부엌 + 현관) -->
                                 <div class="floor-plan-room" style="background: #fff0f5; display: flex; flex-direction: column; align-items: center; justify-content: flex-start; position: relative;">
                                     <div style="height: 60%; width: 100%; display: flex; flex-direction: column; align-items: center; justify-content: center; border-bottom: 4px solid #555;">
                                         <span style="color: #333; font-weight: bold; font-size: 1.1rem; margin-bottom: 5px;">🍳 주방</span>
-                                        <div class="drop-zone" data-target="가사작업공간" style="width: 85%; min-height: 40px; background: rgba(0,0,0,0.1); border: 2px dashed #888; margin: 0; padding: 5px; font-size: 0.8rem; color: #555;">여기에 드래그</div>
+                                        <div class="drop-zone" data-target="가사작업공간" style="width: 85%; min-height: 40px; background: rgba(0,0,0,0.1); border: 2px dashed #888; margin: 0; padding: 5px; font-size: 0.8rem; color: #555;">여기에 드래그/터치</div>
                                     </div>
                                     <div style="height: 40%; width: 100%; background: #f0f0f0; display: flex; flex-direction: column; align-items: center; justify-content: center;">
                                         <span style="color: #333; font-weight: bold; font-size: 0.9rem; margin-bottom: 5px;">🚪 현관</span>
-                                        <div class="drop-zone" data-target="부수공간" style="width: 85%; min-height: 30px; background: rgba(0,0,0,0.1); border: 2px dashed #888; margin: 0; padding: 2px; font-size: 0.7rem; color: #555;">여기에 드래그</div>
+                                        <div class="drop-zone" data-target="부수공간" style="width: 85%; min-height: 30px; background: rgba(0,0,0,0.1); border: 2px dashed #888; margin: 0; padding: 2px; font-size: 0.7rem; color: #555;">여기에 드래그/터치</div>
                                     </div>
                                 </div>
                                 
@@ -767,12 +767,12 @@
                     
                     
                     <!-- 책장 완료 후 5글자 직접 입력창 -->
-                    <div id="bookshelf-word-input" style="display:none;
+                    <div id="bookshelf-word-input" style="display:none;flex-direction:column;align-items:center;">
                         <p style="color:gold;font-size:1.1rem;font-weight:bold;margin-bottom:8px;">🔍 비밀의 글자를 찾아라!</p>
                         <p style="color:#ccc;font-size:0.9rem;margin-bottom:15px;">책 제목의 앞글자를 세로로 읽으면? 5글자를 직접 입력하세요.</p>
                         <div style="display:flex;justify-content:center;margin-bottom:15px;">
-    <input id="book-word-full" type="text" maxlength="5" placeholder="5글자 입력" style="width:200px;height:50px;font-size:1.5rem;text-align:center;background:#111;border:2px solid gold;color:gold;border-radius:8px;font-weight:bold;letter-spacing:10px;">
-</div>
+                            <input id="book-word-full" type="text" maxlength="5" placeholder="5글자 입력" style="width:200px;height:50px;font-size:1.5rem;text-align:center;background:#111;border:2px solid gold;color:gold;border-radius:8px;font-weight:bold;letter-spacing:10px;">
+                        </div>
                         <button id="check-book-word" class="action-btn" style="background:gold;color:#000;font-weight:bold;padding:10px 24px;">확인</button>
                     </div>
                 </div>
@@ -780,7 +780,7 @@
                 <!-- 미니게임 2: 수납 개념 심화 분류 (E, S, K 획득) -->
                 <div id="roof-game-floor" class="hidden glass-panel game-panel" style="max-width:700px; width:90%;">
                     <h2>🧹 두 번째 단서: 수납의 고수 (컨베이어 벨트)</h2>
-                    <p style="color:#ccc;margin-bottom:15px;font-size:0.9rem;">물건이 지나가기 전에 알맞은 곳으로 드래그 앤 드롭 하세요!<br>(정리: 버림 / 수납: 제자리 보관 / 보관: 창고행)</p>
+                    <p style="color:#ccc;margin-bottom:15px;font-size:0.9rem;">물건이 지나가기 전에 알맞은 곳으로 드래그 또는 터치해 주세요!<br>(정리: 버림 / 수납: 제자리 보관 / 보관: 창고행)</p>
                     
                     <!-- 컨베이어 벨트 영역 -->
                     <div style="position:relative;width:100%;height:100px;background:#333;border:4px solid #222;border-radius:8px;overflow:hidden;margin-bottom:20px;box-shadow:inset 0 0 15px rgba(0,0,0,0.8);">
