@@ -2502,3 +2502,13 @@ button, .action-btn, .test-btn, .drop-box, .key-btn, .glass-panel, .dialogue-box
     100% { transform: scale(1.05); box-shadow: 0 15px 45px rgba(255,77,77,0.8); }
 }
 
+
+/* 버튼들 왼쪽 치우침 방지 및 중앙 정렬 복구 */
+.action-btn {
+    display: flex !important;
+    justify-content: center !important;
+    align-items: center !important;
+    margin-left: auto !important;
+    margin-right: auto !important;
+}
+
