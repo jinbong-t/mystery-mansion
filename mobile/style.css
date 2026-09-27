@@ -2523,3 +2523,16 @@ button, .action-btn, .test-btn, .drop-box, .key-btn, .glass-panel, .dialogue-box
     padding: 15px !important;
 }
 
+
+/* ============================================================
+   🔥 부엌 작업대 순서 맞추기 줄바꿈 허용 (가로 스크롤 제거)
+   ============================================================ */
+#f3-order-display {
+    flex-wrap: wrap !important;
+    white-space: normal !important;
+    height: auto !important;
+    min-height: 40px !important;
+    overflow-x: hidden !important;
+    justify-content: flex-start !important; /* 가운데 정렬 대신 왼쪽 정렬이 줄바꿈 시 더 자연스러울 수 있음 */
+}
+
