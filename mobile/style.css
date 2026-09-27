@@ -2537,22 +2537,13 @@ button, .action-btn, .test-btn, .drop-box, .key-btn, .glass-panel, .dialogue-box
 }
 
 
+
+
 /* ============================================================
-   🔥 엄마 통화 휴대폰 화면 원래 크기 복구 및 공인중개사 크기 확대
+   🔥 엄마 통화 휴대폰 화면 축소 방지 및 공인중개사 크기 확대
    ============================================================ */
 .smartphone-wrapper {
-    transform: scale(1) !important;
-    width: 100% !important;
-    height: 95vh !important;
-    justify-content: center !important;
-}
-
-.smartphone-frame {
-    height: 100% !important;
-    width: 100% !important;
-    max-width: 400px !important;
-    max-height: 850px !important;
-    margin: 0 auto !important;
+    transform: none !important;
 }
 
 #agent-portrait {
