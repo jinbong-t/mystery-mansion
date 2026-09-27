@@ -412,7 +412,22 @@ body {
     align-items: center;
     justify-content: center;
     transform-origin: center center;
-    transform: scale(min(1, calc(min(100vh, 768px, calc(100vw * 3 / 4)) / 750)));
+}
+
+@media (max-height: 850px), (max-width: 850px) {
+    .smartphone-wrapper { transform: scale(0.85); }
+}
+@media (max-height: 750px), (max-width: 750px) {
+    .smartphone-wrapper { transform: scale(0.75); }
+}
+@media (max-height: 650px), (max-width: 650px) {
+    .smartphone-wrapper { transform: scale(0.65); }
+}
+@media (max-height: 550px), (max-width: 550px) {
+    .smartphone-wrapper { transform: scale(0.55); }
+}
+@media (max-height: 450px), (max-width: 450px) {
+    .smartphone-wrapper { transform: scale(0.45); }
 }
 
 .power-btn-side {
