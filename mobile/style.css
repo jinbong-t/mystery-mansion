@@ -2512,3 +2512,14 @@ button, .action-btn, .test-btn, .drop-box, .key-btn, .glass-panel, .dialogue-box
     margin-right: auto !important;
 }
 
+
+/* ============================================================
+   🔥 소감(이름 지은 이유) 입력칸 크기 확대
+   ============================================================ */
+#house-name-reason {
+    height: 180px !important;
+    font-size: 1.05rem !important;
+    line-height: 1.5 !important;
+    padding: 15px !important;
+}
+
