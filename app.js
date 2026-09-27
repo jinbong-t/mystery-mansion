@@ -1212,11 +1212,22 @@ function initFloor5() {
     var checkF5M1 = document.getElementById('check-f5-m1');
     if (checkF5M1) checkF5M1.addEventListener('click', function() {
         var selected = errorItems.filter(function(item) { var cb = document.getElementById('err-' + item.id); return cb && cb.checked; });
-        if (selected.length < 2) { showAlert('2개 이상 선택하세요!', '#ff9'); return; }
-        if (selected.every(function(item) { return item.wrong; })) {
-            state.f5m1Done = true; showAlert('정답! 잘못된 배치 발견!', '#4cd964');
+        var correctCount = errorItems.filter(function(item) { return item.wrong; }).length;
+        
+        if (selected.length === 0) { 
+            showAlert('틀린 배치를 선택하세요!', '#ff9'); 
+            return; 
+        }
+        
+        if (selected.length === correctCount && selected.every(function(item) { return item.wrong; })) {
+            if(window.playCorrectSound) playCorrectSound();
+            state.f5m1Done = true; 
+            showAlert('정답! 잘못된 배치를 모두 찾았습니다!', '#4cd964');
             setTimeout(function() { hideElement(m1); showElement(m2); initF5M2(); }, 1000);
-        } else { showAlert('잘못된 선택이 포함되어 있어요!', '#ff6b6b'); }
+        } else { 
+            if(window.playWrongSound) playWrongSound();
+            showAlert('오답입니다! 다시 잘 살펴보세요.', '#ff6b6b'); 
+        }
     });
 
     var sizeItems = [
