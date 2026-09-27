@@ -2248,3 +2248,27 @@ if (document.readyState === 'loading') {
 } else {
     init();
 }
+
+// 스마트폰 크기 자동 조절 스크립트
+function resizeSmartphone() {
+    var wrapper = document.querySelector('.smartphone-wrapper');
+    var container = document.getElementById('game-container');
+    if(wrapper && container) {
+        var ch = container.clientHeight;
+        var scale = Math.min(1, ch / 750);
+        wrapper.style.transform = 'scale(' + scale + ')';
+    }
+}
+window.addEventListener('resize', resizeSmartphone);
+document.addEventListener('DOMContentLoaded', function() {
+    setTimeout(resizeSmartphone, 100);
+});
+var phoneScene = document.getElementById('scene-phone');
+if(phoneScene) {
+    var observer = new MutationObserver(function(mutations) {
+        mutations.forEach(function(m) {
+            if(m.attributeName === 'class' && !phoneScene.classList.contains('hidden')) resizeSmartphone();
+        });
+    });
+    observer.observe(phoneScene, { attributes: true });
+}
