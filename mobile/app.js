@@ -2220,49 +2220,7 @@ if (document.readyState === 'loading') {
 
 
 
-// ============================================================
-// 🔥 층 이동 시 대화창 1초 딜레이 패치
-// ============================================================
-var originalChangeFloorUI = changeFloorUI;
-changeFloorUI = function(floorId) {
-    originalChangeFloorUI(floorId);
-    
-    var dialogues = [
-        document.getElementById('f2-entrance-dialogue'),
-        document.getElementById('f3-entrance-dialogue'),
-        document.getElementById('f4-entrance-dialogue'),
-        document.getElementById('f5-entrance-dialogue'),
-        document.getElementById('roof-dialogue')
-    ];
-    
-    dialogues.forEach(function(d) {
-        if(d) {
-            d.style.display = 'none';
-            d.style.opacity = '0';
-            d.style.transition = 'opacity 0.6s ease';
-        }
-    });
-
-    var targetDialogue;
-    if(floorId === 2) targetDialogue = dialogues[0];
-    else if(floorId === 3) targetDialogue = dialogues[1];
-    else if(floorId === 4) targetDialogue = dialogues[2];
-    else if(floorId === 5) targetDialogue = dialogues[3];
-    else if(floorId === 'roof') targetDialogue = dialogues[4];
-
-    if(targetDialogue) {
-        setTimeout(function() {
-            targetDialogue.style.display = 'block';
-            setTimeout(function() { targetDialogue.style.opacity = '1'; }, 50);
-        }, 1000); // 1초 대기 후 대화창 등장
-    }
-};
-
-
-// ============================================================
-// 🔥 층 이동 시 대화창 진짜 1초 딜레이 (엘리베이터 시간 1.2초 + 1초 = 2.2초) 패치
-// ============================================================
-var originalChangeFloorUI2 = originalChangeFloorUI; // 원래꺼 보존
+var originalChangeFloorUI2 = changeFloorUI; // 원래꺼 보존
 changeFloorUI = function(floorId) {
     originalChangeFloorUI2(floorId);
     
