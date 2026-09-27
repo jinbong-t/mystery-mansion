@@ -1,4 +1,4 @@
-// 미스터리 맨션 - app.js (완전 재작성, UTF-8)
+﻿// 미스터리 맨션 - app.js (완전 재작성, UTF-8)
 
 var state = {
     floor: 1, playerName: '', personalityType: '',
@@ -510,8 +510,10 @@ function initFloor2() {
         if (d) {
             d.style.opacity = '0';
             d.style.transition = 'opacity 0.6s ease';
-            d.style.display = 'block';
-            setTimeout(function() { d.style.opacity = '1'; }, 50);
+            setTimeout(function() {
+                d.style.display = 'block';
+                setTimeout(function() { d.style.opacity = '1'; }, 50);
+            }, 1000);
         }
     }, 7100);
 
@@ -801,8 +803,10 @@ function initFloor3() {
         if (d) {
             d.style.opacity = '0';
             d.style.transition = 'opacity 0.6s ease';
-            d.style.display = 'block';
-            setTimeout(function() { d.style.opacity = '1'; }, 50);
+            setTimeout(function() {
+                d.style.display = 'block';
+                setTimeout(function() { d.style.opacity = '1'; }, 50);
+            }, 1000);
         }
     }, 7100);
 
@@ -1018,8 +1022,10 @@ function initFloor4() {
         if (d) {
             d.style.opacity = '0';
             d.style.transition = 'opacity 0.6s ease';
-            d.style.display = 'block';
-            setTimeout(function() { d.style.opacity = '1'; }, 50);
+            setTimeout(function() {
+                d.style.display = 'block';
+                setTimeout(function() { d.style.opacity = '1'; }, 50);
+            }, 1000);
         }
     }, 7100);
 
@@ -1197,8 +1203,10 @@ function initFloor5() {
         if (d) {
             d.style.opacity = '0';
             d.style.transition = 'opacity 0.6s ease';
-            d.style.display = 'block';
-            setTimeout(function() { d.style.opacity = '1'; }, 50);
+            setTimeout(function() {
+                d.style.display = 'block';
+                setTimeout(function() { d.style.opacity = '1'; }, 50);
+            }, 1000);
         }
     }, 7100);
 
@@ -1590,7 +1598,7 @@ function initRoof() {
     if (!startRoofBtn) return;
 
     // 장면이 나타나고 2초 후 진입 대화창 표시
-    setTimeout(function() { if (dDialogue) dDialogue.style.display = 'block'; }, 2000);
+    setTimeout(function() { if (dDialogue) dDialogue.style.display = 'block'; }, 1000);
 
     // 1단계 시작: 책장 정리
     startRoofBtn.addEventListener('click', function() {
@@ -2248,3 +2256,4 @@ if (document.readyState === 'loading') {
 } else {
     init();
 }
+
