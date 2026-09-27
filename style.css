@@ -25,9 +25,9 @@ body {
 
 #game-container {
     position: relative;
-    width: 100%;
-    max-width: 1024px;
-    height: 768px;
+    aspect-ratio: 4 / 3;
+    width: min(100vw, 1024px, calc(100vh * 4 / 3));
+    height: min(100vh, 768px, calc(100vw * 3 / 4));
     background-color: #000;
     overflow: hidden;
     box-shadow: 0 0 50px rgba(0,0,0,0.8);
