@@ -2207,12 +2207,28 @@ if (document.readyState === 'loading') {
 } else {
     init();
 }
-/ /   ��ȹ����  l�0�  ��ٳ  p��  ��lн���
- 
- f u n c t i o n   r e s i z e S m a r t p h o n e ( )   {   v a r   w r a p p e r   =   d o c u m e n t . q u e r y S e l e c t o r ( ' . s m a r t p h o n e - w r a p p e r ' ) ;   v a r   c o n t a i n e r   =   d o c u m e n t . g e t E l e m e n t B y I d ( ' g a m e - c o n t a i n e r ' ) ;   i f ( w r a p p e r   & &   c o n t a i n e r )   {   v a r   c h   =   c o n t a i n e r . c l i e n t H e i g h t ;   v a r   s c a l e   =   M a t h . m i n ( 1 ,   c h   /   7 5 0 ) ;   w r a p p e r . s t y l e . t r a n s f o r m   =   ' s c a l e ( '   +   s c a l e   +   ' ) ' ;   }   } 
- 
- w i n d o w . a d d E v e n t L i s t e n e r ( ' r e s i z e ' ,   r e s i z e S m a r t p h o n e ) ;   d o c u m e n t . a d d E v e n t L i s t e n e r ( ' D O M C o n t e n t L o a d e d ' ,   f u n c t i o n ( )   {   s e t T i m e o u t ( r e s i z e S m a r t p h o n e ,   1 0 0 ) ;   } ) ; 
- 
- v a r   p h o n e S c e n e   =   d o c u m e n t . g e t E l e m e n t B y I d ( ' s c e n e - p h o n e ' ) ;   i f ( p h o n e S c e n e )   {   v a r   o b s e r v e r   =   n e w   M u t a t i o n O b s e r v e r ( f u n c t i o n ( m u t a t i o n s )   {   m u t a t i o n s . f o r E a c h ( f u n c t i o n ( m )   {   i f ( m . a t t r i b u t e N a m e   = = =   ' c l a s s '   & &   ! p h o n e S c e n e . c l a s s L i s t . c o n t a i n s ( ' h i d d e n ' ) )   r e s i z e S m a r t p h o n e ( ) ;   } ) ;   } ) ;   o b s e r v e r . o b s e r v e ( p h o n e S c e n e ,   {   a t t r i b u t e s :   t r u e   } ) ;   } 
- 
- 
+
+// 스마트폰 크기 자동 조절 스크립트
+function resizeSmartphone() {
+    var wrapper = document.querySelector('.smartphone-wrapper');
+    var container = document.getElementById('game-container');
+    if(wrapper && container) {
+        var ch = container.clientHeight;
+        var scale = Math.min(1, ch / 750);
+        wrapper.style.transform = 'scale(' + scale + ')';
+    }
+}
+window.addEventListener('resize', resizeSmartphone);
+document.addEventListener('DOMContentLoaded', function() {
+    setTimeout(resizeSmartphone, 100);
+});
+var phoneScene = document.getElementById('scene-phone');
+if(phoneScene) {
+    var observer = new MutationObserver(function(mutations) {
+        mutations.forEach(function(m) {
+            if(m.attributeName === 'class' && !phoneScene.classList.contains('hidden')) resizeSmartphone();
+        });
+    });
+    observer.observe(phoneScene, { attributes: true });
+}
+
