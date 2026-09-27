@@ -2386,3 +2386,14 @@ h2 {
     margin-bottom: 12px !important;
 }
 
+
+/* F5 (벽면 패널 해설/이동) 버튼 텍스트 넘침 해결 */
+#show-f4-solution-btn, #f5-go-roof-btn {
+    font-size: clamp(0.8rem, 3.5vw, 0.95rem) !important;
+    padding: 10px 5px !important;
+    white-space: normal !important;
+    word-break: keep-all !important;
+    line-height: 1.3 !important;
+    min-height: 55px !important;
+}
+
