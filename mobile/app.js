@@ -2298,3 +2298,45 @@ changeFloorUI = function(floorId) {
     }
 };
 
+
+// ============================================================
+// 🔥 층 이동 시 대화창 진짜 1초 딜레이 (엘리베이터 시간 1.2초 + 1초 = 2.2초) 패치
+// ============================================================
+var originalChangeFloorUI2 = originalChangeFloorUI; // 원래꺼 보존
+changeFloorUI = function(floorId) {
+    originalChangeFloorUI2(floorId);
+    
+    var dialogues = [
+        document.getElementById('f2-entrance-dialogue'),
+        document.getElementById('f3-entrance-dialogue'),
+        document.getElementById('f4-entrance-dialogue'),
+        document.getElementById('f5-entrance-dialogue'),
+        document.getElementById('roof-dialogue')
+    ];
+    
+    dialogues.forEach(function(d) {
+        if(d) {
+            d.style.display = 'none';
+            d.style.opacity = '0';
+            d.style.transition = 'opacity 0.6s ease';
+        }
+    });
+
+    var targetDialogue;
+    if(floorId === 2) targetDialogue = dialogues[0];
+    else if(floorId === 3) targetDialogue = dialogues[1];
+    else if(floorId === 4) targetDialogue = dialogues[2];
+    else if(floorId === 5) targetDialogue = dialogues[3];
+    else if(floorId === 'roof') targetDialogue = dialogues[4];
+
+    if(targetDialogue) {
+        // 엘리베이터 문 닫힘(0s) -> 문 열리기 시작(1.2s) -> 완전히 열림(2.2s)
+        // 문이 완전히 열린 후 1초 뒤에 등장해야 하므로 총 3200ms? 
+        // 그냥 문 열리기 시작(1.2초) + 1초 = 2200ms 로 설정!
+        setTimeout(function() {
+            targetDialogue.style.display = 'block';
+            setTimeout(function() { targetDialogue.style.opacity = '1'; }, 50);
+        }, 2200); 
+    }
+};
+
