@@ -1646,7 +1646,7 @@ function initRoof() {
             b.dataset.h = book.h;
             
             var t = document.createElement('span');
-            t.style.cssText = 'writing-mode: vertical-rl; text-orientation: upright; color:#f0d080; font-size:0.8rem; font-weight:bold; letter-spacing:-2px; text-shadow:1px 1px 1px #000;';
+            t.style.cssText = 'writing-mode: vertical-rl; text-orientation: upright; color:#f0d080; font-size:0.8rem; font-weight:bold; letter-spacing:3px; text-shadow:1px 1px 1px #000;';
             t.textContent = book.title;
             b.appendChild(t);
 
