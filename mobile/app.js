@@ -1897,7 +1897,8 @@ function initRoof() {
         var floorRoof = document.getElementById('floor-roof');
         // 배경 이미지를 가구 문제가 있는 이미지로 변경
         floorRoof.style.backgroundImage = 'url("2. 루프탑 가구개수 맞추기 문제 찐이미지.png")';
-        floorRoof.style.backgroundSize = 'cover';
+        floorRoof.style.backgroundSize = 'contain';
+        floorRoof.style.backgroundRepeat = 'no-repeat';
         floorRoof.style.backgroundPosition = 'center';
         
         blackoutOverlay.style.background = ''; // reset style
@@ -2256,4 +2257,5 @@ if (document.readyState === 'loading') {
 } else {
     init();
 }
+
 
