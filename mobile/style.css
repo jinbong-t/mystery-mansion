@@ -1236,15 +1236,11 @@ body {
     padding: 20px 30px;
     border-radius: 8px;
     box-shadow: 0 10px 30px rgba(0,0,0,0.5);
-    z-index: 10;
-}
-
 .speaker {
-    font-size: 1.55rem;
+    font-size: 1.35rem;
     color: var(--accent);
     margin-bottom: 10px;
     font-weight: bold;
-    text-shadow: 0 0 5px rgba(255,180,0,0.5);
 }
 
 .text {
@@ -2281,3 +2277,10 @@ h3 { font-size: 1.05rem; }
 p  { font-size: 0.9rem; }
  k e y f r a m e s   c r y s t a l - s p i n   {   0 %   {   t r a n s f o r m :   r o t a t e ( 0 d e g ) ;   }   1 0 0 %   {   t r a n s f o r m :   r o t a t e ( 3 6 0 d e g ) ;   }   }  
  
+/* 공인중개사 이미지 크기 키우기 오버라이드 */
+.cinematic-portrait { width: 85% !important; max-width: 450px !important; right: -5% !important; }
+
+
+/* 공인중개사 텍스트 크기 원상복구 */
+.speaker { font-size: 1.35rem !important; text-shadow: none !important; }
+
