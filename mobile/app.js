@@ -1917,7 +1917,10 @@ function initRoof() {
     deskArea.addEventListener('click', function() {
         blackoutOverlay.style.background = 'none'; // 정전 해제
         hideElement(blackoutOverlay);
-        showElement(safePopup);
+        // 전체 그림을 2초 보여준 후 자물쇠 문제 팝업 표시
+        setTimeout(function() {
+            showElement(safePopup);
+        }, 2000);
     });
 
     // --- 책상 서랍 3자리 자물쇠 (243) ---
