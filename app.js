@@ -509,6 +509,17 @@ function initFloor2() {
 
     if (closeMemoBtn) {
         closeMemoBtn.addEventListener('click', function() {
+            var code = '';
+            for (var i = 1; i <= 4; i++) {
+                if (oxAnswers[i] === 'O') code += '1';
+                else if (oxAnswers[i] === 'X') code += '0';
+                else code += '_';
+            }
+            if (code !== '1001') {
+                showAlert('정답이 아닙니다. 다시 풀어보세요!', '#ff6b6b');
+                return;
+            }
+            
             crumpledMemo.style.transform = 'scale(0.1) rotate(20deg)';
             crumpledMemo.style.opacity = '0';
             setTimeout(function() {
@@ -1274,7 +1285,10 @@ function initFloor5() {
     function initF5M4() {
         var draggables = document.querySelectorAll('.f5-drag');
         var dropZones = document.querySelectorAll('.f5-drop-zone');
+        var itemsArea = document.getElementById('f5-furniture-items');
         
+        var selectedItem = null;
+
         draggables.forEach(function(item) {
             item.addEventListener('dragstart', function(e) {
                 e.dataTransfer.setData('text/plain', item.id);
@@ -1282,6 +1296,19 @@ function initFloor5() {
             });
             item.addEventListener('dragend', function(e) {
                 item.style.visibility = 'visible';
+            });
+            // Tablet touch support: click to select
+            item.addEventListener('click', function(e) {
+                if (selectedItem) {
+                    selectedItem.style.border = 'none';
+                }
+                if (selectedItem === item) {
+                    selectedItem = null;
+                    return;
+                }
+                selectedItem = item;
+                item.style.border = '2px solid red';
+                e.stopPropagation();
             });
         });
 
@@ -1303,9 +1330,17 @@ function initFloor5() {
                     draggable.style.boxShadow = 'none';
                 }
             });
+            // Tablet touch support: click to drop
+            zone.addEventListener('click', function(e) {
+                if (selectedItem && !zone.querySelector('.draggable-item')) {
+                    zone.appendChild(selectedItem);
+                    selectedItem.style.boxShadow = 'none';
+                    selectedItem.style.border = 'none';
+                    selectedItem = null;
+                }
+            });
         });
 
-        var itemsArea = document.getElementById('f5-furniture-items');
         if (itemsArea) {
             itemsArea.addEventListener('dragover', function(e) { e.preventDefault(); });
             itemsArea.addEventListener('drop', function(e) {
@@ -1315,6 +1350,14 @@ function initFloor5() {
                 if (draggable) {
                     itemsArea.appendChild(draggable);
                     draggable.style.boxShadow = '0 2px 5px rgba(0,0,0,0.5)';
+                }
+            });
+            itemsArea.addEventListener('click', function(e) {
+                if (selectedItem && (e.target === itemsArea || e.target.closest('#f5-furniture-items'))) {
+                    itemsArea.appendChild(selectedItem);
+                    selectedItem.style.boxShadow = '0 2px 5px rgba(0,0,0,0.5)';
+                    selectedItem.style.border = 'none';
+                    selectedItem = null;
                 }
             });
         }
@@ -1694,6 +1737,20 @@ function initRoof() {
         classificationItem.style.opacity = '1';
     });
     
+    // Tablet touch support: click to select
+    classificationItem.addEventListener('click', function(e) {
+        if (!isDraggingItem) {
+            isDraggingItem = true;
+            classificationItem.style.border = '2px solid red';
+            classificationItem.style.opacity = '0.7';
+            e.stopPropagation();
+        } else {
+            isDraggingItem = false;
+            classificationItem.style.border = 'none';
+            classificationItem.style.opacity = '1';
+        }
+    });
+    
     dropBoxes.forEach(function(box) {
         box.addEventListener('dragover', function(e) { e.preventDefault(); box.style.borderColor = 'gold'; });
         box.addEventListener('dragleave', function(e) { box.style.borderColor = 'rgba(255,255,255,0.5)'; });
@@ -1713,6 +1770,29 @@ function initRoof() {
                 clearInterval(conveyorInterval);
                 classificationItem.style.display = 'none';
                 setTimeout(showNextItem, 1000);
+            }
+        });
+        
+        // Tablet touch support: click to drop
+        box.addEventListener('click', function(e) {
+            if (isDraggingItem) {
+                isDraggingItem = false;
+                classificationItem.style.border = 'none';
+                classificationItem.style.opacity = '1';
+                if (currentItemIdx >= itemsToClassify.length) return;
+                var target = box.dataset.target;
+                if (target === itemsToClassify[currentItemIdx].ans) {
+                    clearInterval(conveyorInterval);
+                    classificationItem.style.display = 'none';
+                    currentItemIdx++;
+                    showAlert('정답!', '#4cd964');
+                    setTimeout(showNextItem, 500);
+                } else {
+                    showAlert('그 물건의 올바른 수납 방법이 아닙니다! 다시 컨베이어에 올립니다.', '#ff6b6b');
+                    clearInterval(conveyorInterval);
+                    classificationItem.style.display = 'none';
+                    setTimeout(showNextItem, 1000);
+                }
             }
         });
     });
