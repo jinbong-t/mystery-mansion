@@ -1003,6 +1003,8 @@ body {
     border: 2px solid #b38b59;
     border-radius: 12px;
     padding: 20px;
+    width: 90%;
+    max-width: 600px;
     text-align: center;
     box-shadow: 0 0 20px rgba(179, 139, 89, 0.3);
     color: #f0d080;
@@ -1026,6 +1028,27 @@ body {
     font-size: 1rem;
     line-height: 1.6;
     color: #ddd;
+}
+.tarot-btn {
+    display: block;
+    width: 100%;
+    margin-top: 10px;
+    padding: 15px;
+    background: #111;
+    border: 1px solid #b38b59;
+    color: #f0d080;
+    border-radius: 8px;
+    font-size: 1rem;
+    font-weight: bold;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+.tarot-btn:hover {
+    background: #b38b59;
+    color: #000;
 }
 @ k e y f r a m e s   c r y s t a l - s p i n   {   0 %   {   t r a n s f o r m :   r o t a t e ( 0 d e g ) ;   }   1 0 0 %   {   t r a n s f o r m :   r o t a t e ( 3 6 0 d e g ) ;   }   }  
  
