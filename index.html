@@ -624,6 +624,9 @@
                 <div id="f5-minigame-4" class="hidden glass-panel game-panel">
                     <h2>🛏️ 문제 4: 2D 가구 배치 시뮬레이션</h2>
                     <div style="display:flex; flex-direction:column; align-items:center; gap:15px; margin-top: 20px;">
+                        <!-- 문제 설명 추가 -->
+                        <p style="color:#ccc; font-size:1rem; margin-top:5px; margin-bottom:5px; text-align:center;">👉 <strong>아래의 가구들</strong>을 드래그 또는 터치하여 도면의 <strong>알맞은 위치</strong>에 모두 배치해 보세요!</p>
+
                         <!-- 가구 아이콘들 (깨진 이미지 대신 이모지와 그라데이션) -->
                         <div id="f5-furniture-items" class="items" style="display:flex; gap:15px; flex-wrap:wrap; justify-content:center; padding:15px; background:rgba(255,255,255,0.05); border-radius:12px; width: 100%; min-height: 100px; border:1px solid rgba(255,255,255,0.1);">
                             <div class="draggable-item f5-drag" draggable="true" id="f5-drag-bed" data-type="bed" style="width:70px; height:90px; cursor:grab; background:linear-gradient(135deg, #e6f7ff, #b3e0ff); border:2px solid #0066cc; border-radius:8px; box-shadow: 0 4px 8px rgba(0,0,0,0.3); display:flex; flex-direction:column; align-items:center; justify-content:center; transition:transform 0.2s;">
@@ -643,9 +646,6 @@
                                 <span style="color:#000;font-size:0.7rem;font-weight:bold;">책장</span>
                             </div>
                         </div>
-                        
-                        <!-- 문제 설명 추가 -->
-                        <p style="color:#ccc; font-size:1rem; margin-top:5px; margin-bottom:5px; text-align:center;">👉 <strong>위의 가구들</strong>을 드래그하여 도면의 <strong>알맞은 위치(회색 점선 칸)</strong>에 모두 배치해 보세요!</p>
 
                         <!-- 평면도 (Drop Zones - 깔끔한 인테리어 도면 스타일) -->
                         <div id="f5-floor-plan" style="position:relative; width:340px; height:340px; margin-top:25px; background-color:#fafafa; background-image:linear-gradient(#eee 1px, transparent 1px), linear-gradient(90deg, #eee 1px, transparent 1px); background-size:20px 20px; border:6px solid #333; border-radius:4px; box-shadow:0 10px 25px rgba(0,0,0,0.8);">
