@@ -1,4 +1,4 @@
-:root {
+﻿:root {
     --bg-dark: #0d0d0d;
     --text-light: #f0f0f0;
     --accent: #c8975e;
@@ -2275,7 +2275,8 @@ input[type="text"], input[type="number"] {
 h2 { font-size: 1.2rem; }
 h3 { font-size: 1.05rem; }
 p  { font-size: 0.9rem; }
- k e y f r a m e s   c r y s t a l - s p i n   {   0 %   {   t r a n s f o r m :   r o t a t e ( 0 d e g ) ;   }   1 0 0 %   {   t r a n s f o r m :   r o t a t e ( 3 6 0 d e g ) ;   }   }  
+ k e y f r a m e s   c r y s t a l - s p i n   {   0 %   {   t r a n s f o r m :   r o t a t e ( 0 d e g ) ;   }   1 0 0 %   {   t r a n s f o r m :   r o t a t e ( 3 6 0 d e g ) ;   }   } 
+ 
  
 /* 공인중개사 이미지 크기 키우기 오버라이드 */
 .cinematic-portrait { width: 85% !important; max-width: 450px !important; right: -5% !important; }
@@ -2546,11 +2547,5 @@ button, .action-btn, .test-btn, .drop-box, .key-btn, .glass-panel, .dialogue-box
     transform: none !important;
 }
 
-#agent-portrait {
-    width: 150px !important;
-    height: 150px !important;
-    border-radius: 50% !important;
-    box-shadow: 0 0 15px rgba(255,255,255,0.2) !important;
-    margin-bottom: 20px !important;
-}
+#agent-portrait { width: 85vw !important; max-width: 450px !important; height: auto !important; border-radius: 0 !important; box-shadow: none !important; margin-bottom: 0 !important; bottom: -10px !important; right: 0 !important; z-index: 10 !important; }
 
