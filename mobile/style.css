@@ -2262,5 +2262,38 @@ input[type="text"], input[type="number"] {
 h2 { font-size: 1.2rem; }
 h3 { font-size: 1.05rem; }
 p  { font-size: 0.9rem; }
+
+/* 모바일 전용 전체 화면 오버라이드 (가짜 스마트폰 프레임 제거) */
+#game-container {
+    width: 100vw !important;
+    max-width: 100vw !important;
+    height: 100dvh !important;
+    max-height: 100dvh !important;
+    border: none !important;
+    border-radius: 0 !important;
+}
+
+.smartphone-wrapper {
+    width: 100% !important;
+    height: 100% !important;
+    transform: none !important; 
+    display: block !important; 
+}
+
+.smartphone-frame {
+    width: 100% !important;
+    height: 100% !important;
+    max-width: none !important;
+    max-height: none !important;
+    border: none !important;
+    border-radius: 0 !important;
+    box-shadow: none !important;
+    aspect-ratio: auto !important;
+}
+
+.notch, .power-btn-side, .volume-btns-side {
+    display: none !important;
+}
+
  k e y f r a m e s   c r y s t a l - s p i n   {   0 %   {   t r a n s f o r m :   r o t a t e ( 0 d e g ) ;   }   1 0 0 %   {   t r a n s f o r m :   r o t a t e ( 3 6 0 d e g ) ;   }   }  
  
