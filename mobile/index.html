@@ -530,7 +530,7 @@
                     <div style="background:rgba(0,0,0,0.3); padding:15px; border-radius:8px; margin-bottom:15px; border-left: 4px solid #b38b59; text-align:left;">
                         <p style="margin:0; font-size:1.15rem; line-height:1.6; color:#e0e0e0;">"수납할 책과 옷은 많은데 바닥 면적이 좁아서 가구를 다 놓을 수가 없어 고민입니다. 하지만 다행히 이 원룸은 천장이 높은 복층 구조네요."</p>
                     </div>
-                    <p style="color:#ccc;margin-bottom:15px; font-weight:bold; font-size:1.15rem;">수납 문제를 해결하기 위해 '공간의 입체적 활용'을 적용한 가장 타당한 대안은?</p>
+                    <p style="color:#ccc;margin-bottom:15px; font-weight:bold; font-size:1.15rem; text-align:left;">수납 문제를 해결하기 위해 '공간의 입체적 활용'을 적용한<br>가장 타당한 대안은?</p>
                     <div class="mcq-options" id="f4-m1-options"></div>
                     <button id="check-f4-m1" class="action-btn" style="margin-top:15px;width:100%;padding:12px;display:none;">확인</button>
                 </div>
@@ -541,7 +541,7 @@
                     <div style="background:rgba(0,0,0,0.3); padding:15px; border-radius:8px; margin-bottom:15px; border-left: 4px solid #b38b59; text-align:left;">
                         <p style="margin:0; font-size:1.15rem; line-height:1.6; color:#e0e0e0;">"평소 친구들을 자주 초대해서 과제를 같이 하는 편입니다. 하지만 좁은 원룸에 큰 식탁을 두면 평상시에 지나다닐 동선이 꽉 막혀버려요."</p>
                     </div>
-                    <p style="color:#ccc;margin-bottom:15px; font-weight:bold; font-size:1.15rem;">친구들과의 모임(다인용)과 평상시의 넓은 동선(공간 절약)을 모두 만족시킬 수 있는 가구는?</p>
+                    <p style="color:#ccc;margin-bottom:15px; font-weight:bold; font-size:1.15rem; text-align:left;">친구들과의 모임(다인용)과 평상시의 넓은 동선(공간 절약)을<br>모두 만족시킬 수 있는 가구는?</p>
                     <div class="mcq-options" id="f4-m2-options"></div>
                     <button id="check-f4-m2" class="action-btn" style="margin-top:15px;width:100%;padding:12px;display:none;">확인</button>
                 </div>
@@ -595,10 +595,10 @@
                 <!-- 문제 1: 오류 찾기 -->
                 <div id="f5-minigame-1" class="hidden glass-panel game-panel">
                     <h2>🔍 문제 1: 잘못 배치된 가구 찾기</h2>
-                    <p style="color:#ccc;margin-bottom:5px;">가구 배치 8원칙 중 어긴 것을 <strong>2개 이상</strong> 찾으세요.</p>
+                    <p style="color:#ccc;margin-bottom:5px;">가구 배치 8원칙 중 어긴 것을 <strong>모두</strong> 찾으세요.</p>
                     <p style="color:#aaa;font-size:0.8rem;margin-bottom:15px;">① 동선 고려 ② 큰 가구 먼저 ③ 창문 막지 않기 ④ 콘센트 막지 않기 ⑤ 문 방해 금지 ⑥ 무거운 물건은 낮게 ⑦ 시각적 안정 ⑧ 방 크기에 맞는 가구</p>
                     <div id="f5-error-area" style="display:flex;flex-direction:column;gap:10px;"></div>
-                    <button id="check-f5-m1" class="action-btn" style="margin-top:15px;width:100%;padding:12px;">확인 (2개 이상 선택)</button>
+                    <button id="check-f5-m1" class="action-btn" style="margin-top:15px;width:100%;padding:12px;">확인 (모두 선택)</button>
                 </div>
 
                 <!-- 문제 2: 지나치게 큰 가구 찾기 -->
@@ -646,6 +646,12 @@
                                 <span style="color:#000;font-size:0.7rem;font-weight:bold;">책장</span>
                             </div>
                         </div>
+                        
+                        <!-- 문제 설명 추가 -->
+                        <p style="color:#ccc; font-size:0.95rem; line-height:1.6; text-align:center; padding:10px; background:rgba(0,0,0,0.3); border-left:4px solid #b38b59; border-radius:8px; width:100%; box-sizing:border-box; margin: 5px 0;">
+                            가구들을 아래 평면도의 가장 적절한 구역(A~D)으로 드래그/터치해 보세요.<br>
+                            <span style="color:#f0d080;font-size:0.85rem;">(힌트: 채광, 생활 동선, 프라이버시 등 가구 배치 원칙 고려)</span>
+                        </p>
 
                         <!-- 평면도 (Drop Zones - 깔끔한 인테리어 도면 스타일) -->
                         <div id="f5-floor-plan" style="position:relative; width:340px; height:340px; margin-top:25px; background-color:#fafafa; background-image:linear-gradient(#eee 1px, transparent 1px), linear-gradient(90deg, #eee 1px, transparent 1px); background-size:20px 20px; border:6px solid #333; border-radius:4px; box-shadow:0 10px 25px rgba(0,0,0,0.8);">
@@ -931,31 +937,31 @@
         </div>
 
         <!-- ===================== 최종 클리어 화면 ===================== -->
-        <div id="ending-screen" class="floor-content hidden" style="background:radial-gradient(ellipse at center, #1a0f00 0%, #000 100%);z-index:95;overflow-y:auto;height:100%;">
+        <div id="ending-screen" class="floor-content hidden" style="background:radial-gradient(ellipse at center, #1a0f00 0%, #000 100%);z-index:95;overflow:hidden;height:100%; display:flex; justify-content:center; align-items:center;">
             <div class="space-bg" id="ending-galaxy"></div>
-            <div style="position:relative; z-index:10; text-align:center;padding:20px 20px;max-width:720px;width:100%;margin:0 auto;display:flex;flex-direction:column;align-items:center;min-height:100%;justify-content:center;">
+            <div style="position:relative; z-index:10; text-align:center;padding:10px;max-width:720px;width:100%;margin:0 auto;display:flex;flex-direction:column;align-items:center;justify-content:center;height:100%;box-sizing:border-box;">
 
                 <!-- 불꽃 이모지 애니메이션 -->
-                <div id="ending-fireworks" style="font-size:3rem;margin-bottom:10px;opacity:0;transition:opacity 1s ease; animation: bounce 2s infinite;">🎇 🏡 ✨</div>
+                <div id="ending-fireworks" style="font-size:2rem;margin-bottom:5px;opacity:0;transition:opacity 1s ease; animation: bounce 2s infinite;">🎇 🏡 ✨</div>
 
                 <!-- 제목 -->
-                <div id="ending-title" style="font-size:2.2rem;color:gold;margin-bottom:15px;opacity:0;transition:opacity 2s ease;text-shadow:0 0 30px gold;font-weight:bold;">미스터리 맨션 클리어!</div>
+                <div id="ending-title" style="font-size:1.5rem;color:gold;margin-bottom:10px;opacity:0;transition:opacity 2s ease;text-shadow:0 0 15px gold;font-weight:bold;">미스터리 맨션 클리어!</div>
 
                 <!-- 플레이어 이름 -->
-                <p id="ending-player-name" style="color:#ddd;margin-bottom:20px;font-size:1.2rem;opacity:0;transition:opacity 2s ease 0.5s; background:rgba(255,215,0,0.15); padding:8px 20px; border-radius:30px; border:1px solid gold;"></p>
+                <p id="ending-player-name" style="color:#ddd;margin-bottom:10px;font-size:1rem;opacity:0;transition:opacity 2s ease 0.5s; background:rgba(255,215,0,0.15); padding:5px 15px; border-radius:20px; border:1px solid gold;"></p>
 
                 <!-- 편지 -->
-                <div id="ending-letter" style="background:linear-gradient(135deg, rgba(255,215,0,0.1), rgba(0,0,0,0.5));border:1px solid rgba(255,215,0,0.5);border-radius:12px;padding:20px 25px;margin-bottom:20px;opacity:0;transition:opacity 2s ease 1s;text-align:left;box-shadow:0 0 20px rgba(255,215,0,0.2); backdrop-filter:blur(5px);width:100%;">
-                    <p style="color:#f0d080;font-size:1rem;line-height:1.7;white-space:pre-line;text-shadow:0 0 10px rgba(0,0,0,0.8);"></p>
+                <div id="ending-letter" style="background:linear-gradient(135deg, rgba(255,215,0,0.1), rgba(0,0,0,0.5));border:1px solid rgba(255,215,0,0.5);border-radius:10px;padding:12px 15px;margin-bottom:10px;opacity:0;transition:opacity 2s ease 1s;text-align:left;box-shadow:0 0 15px rgba(255,215,0,0.2); backdrop-filter:blur(5px);width:95%;box-sizing:border-box;">
+                    <p style="color:#f0d080;font-size:0.85rem;line-height:1.4;white-space:pre-line;text-shadow:0 0 5px rgba(0,0,0,0.8);margin:0;"></p>
                 </div>
 
                 <!-- 집 이름 + 마무리 멘트 -->
-                <div id="ending-moral" style="opacity:0;transition:opacity 2s ease 2.5s; width:100%;">
-                    <div id="ending-house-name" style="color:white;font-size:1.5rem;margin-bottom:15px;text-shadow:0 0 15px white, 0 0 25px gold; font-weight:bold; padding:10px; background:rgba(255,255,255,0.05); border-radius:10px; border:1px dashed gold;"></div>
-                    <div style="background:rgba(179,139,89,0.15);border:1px solid rgba(179,139,89,0.4);border-radius:12px;padding:15px 20px;margin-bottom:15px;">
-                        <p style="color:#ddd;font-size:1rem;line-height:1.7;">이곳에서의 모든 활동이 완전히 끝났습니다. 🎉<br>집은 단순히 머무는 곳을 넘어, 그곳에 사는 사람을 비추는 <strong style="color:gold;font-size:1.1rem;">거울</strong>과 같습니다.<br>미스터리 맨션에서 스스로 찾고 배운 주거의 지혜를 잊지 마세요.<br><br>이제 당신의 삶과 꿈이 담긴 진짜 공간을 상상하고 직접 설계해 볼 시간입니다! ✨</p>
+                <div id="ending-moral" style="opacity:0;transition:opacity 2s ease 2.5s; width:95%;box-sizing:border-box;">
+                    <div id="ending-house-name" style="color:white;font-size:1.2rem;margin-bottom:10px;text-shadow:0 0 10px white, 0 0 15px gold; font-weight:bold; padding:8px; background:rgba(255,255,255,0.05); border-radius:8px; border:1px dashed gold;"></div>
+                    <div style="background:rgba(179,139,89,0.15);border:1px solid rgba(179,139,89,0.4);border-radius:10px;padding:10px 15px;margin-bottom:5px;">
+                        <p style="color:#ddd;font-size:0.85rem;line-height:1.4;margin:0;">이곳에서의 모든 활동이 완전히 끝났습니다. 🎉<br>집은 머무는 곳을 넘어, 사람을 비추는 <strong style="color:gold;font-size:0.95rem;">거울</strong>과 같습니다.<br>스스로 찾고 배운 지혜를 잊지 마세요.<br><br>이제 당신의 꿈이 담긴 진짜 공간을 상상해 볼 시간입니다! ✨</p>
                     </div>
-                    <p style="color:gold;font-size:1.1rem;margin-top:15px;font-style:italic;">— 미스터리 맨션 설계자로부터</p>
+                    <p style="color:gold;font-size:0.9rem;margin-top:5px;font-style:italic;">— 미스터리 맨션 설계자</p>
                 </div>
 
             </div>

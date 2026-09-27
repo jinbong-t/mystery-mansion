@@ -28,7 +28,7 @@ body {
     font-family: var(--font-main);
     display: flex;
     justify-content: center;
-    align-items: flex-start;
+    align-items: center; /* 세로 화면에서도 중앙 정렬되도록 변경 */
     min-height: 100dvh;
     overflow: hidden;
     overscroll-behavior: none;
@@ -37,12 +37,19 @@ body {
 #game-container {
     position: relative;
     width: 100%;
-    max-width: 480px;
+    /* 화면 높이에 비례해 최대 너비를 제한하여 가로 모드에서 잘리지 않도록 함 */
+    max-width: min(480px, 100vw, 65dvh); 
     height: 100dvh;
+    /* 지나치게 길어지는 것을 방지 */
+    max-height: min(900px, 100dvh); 
     background-color: #000;
-    overflow: hidden;
+    /* 필요시 내부 스크롤 허용 */
+    overflow-x: hidden;
+    overflow-y: auto;
     box-shadow: 0 0 60px rgba(0,0,0,0.9);
     border: 1px solid var(--glass-border);
+    /* 모바일 외 기기에서 게임 화면처럼 보이도록 모서리 둥글게 */
+    border-radius: 8px; 
 }
 
 /* ============================================================
@@ -68,7 +75,9 @@ body {
     justify-content: center;
     align-items: center;
     z-index: 10;
-    overflow: hidden;
+    /* 세로가 짧은 화면에서 내용을 볼 수 있게 스크롤 허용 */
+    overflow-x: hidden;
+    overflow-y: auto;
 }
 
 .floor-content.active {
@@ -496,6 +505,19 @@ body {
     align-items: center;
     transform: scale(0.92);
     transform-origin: center center;
+    /* 화면 높이가 작을 때 자동으로 줄어들도록 설정 */
+    max-height: 90dvh;
+}
+
+@media (max-height: 700px) {
+    .smartphone-wrapper {
+        transform: scale(0.7);
+    }
+}
+@media (max-height: 550px) {
+    .smartphone-wrapper {
+        transform: scale(0.55);
+    }
 }
 
 .power-btn-side {
@@ -2147,6 +2169,8 @@ body {
     border: 2px solid #b38b59;
     border-radius: 12px;
     padding: 20px;
+    width: 90%;
+    max-width: 500px;
     text-align: center;
     box-shadow: 0 0 20px rgba(179, 139, 89, 0.3);
     color: #f0d080;
@@ -2170,6 +2194,27 @@ body {
     font-size: 1rem;
     line-height: 1.6;
     color: #ddd;
+}
+.tarot-btn {
+    display: block;
+    width: 100%;
+    margin-top: 10px;
+    padding: 12px 10px;
+    background: #111;
+    border: 1px solid #b38b59;
+    color: #f0d080;
+    border-radius: 8px;
+    font-size: 0.9rem;
+    font-weight: bold;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+.tarot-btn:hover {
+    background: #b38b59;
+    color: #000;
 }
 @keyframes crystal-spin { 0% { transform: rotate(0deg); } 100% { transform: rotate(360deg); } }
 

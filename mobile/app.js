@@ -148,11 +148,55 @@ function moveToFloor(floorId, label) {
     }, 1500);
 }
 
+function playCorrectSound() {
+    try {
+        if (!audioCtx) audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+        if (audioCtx.state === 'suspended') audioCtx.resume();
+        var osc = audioCtx.createOscillator(); var gain = audioCtx.createGain();
+        osc.type = 'sine'; osc.frequency.setValueAtTime(523.25, audioCtx.currentTime); osc.frequency.setValueAtTime(659.25, audioCtx.currentTime + 0.1); osc.frequency.setValueAtTime(783.99, audioCtx.currentTime + 0.2);
+        osc.connect(gain); gain.connect(audioCtx.destination);
+        gain.gain.setValueAtTime(0, audioCtx.currentTime); gain.gain.linearRampToValueAtTime(0.2, audioCtx.currentTime + 0.05); gain.gain.linearRampToValueAtTime(0, audioCtx.currentTime + 0.4);
+        osc.start(audioCtx.currentTime); osc.stop(audioCtx.currentTime + 0.4);
+    } catch(e) {}
+}
+
+function playWrongSound() {
+    try {
+        if (!audioCtx) audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+        if (audioCtx.state === 'suspended') audioCtx.resume();
+        var osc = audioCtx.createOscillator(); var gain = audioCtx.createGain();
+        osc.type = 'sawtooth'; osc.frequency.setValueAtTime(150, audioCtx.currentTime); osc.frequency.exponentialRampToValueAtTime(50, audioCtx.currentTime + 0.4);
+        osc.connect(gain); gain.connect(audioCtx.destination);
+        gain.gain.setValueAtTime(0, audioCtx.currentTime); gain.gain.linearRampToValueAtTime(0.2, audioCtx.currentTime + 0.05); gain.gain.linearRampToValueAtTime(0, audioCtx.currentTime + 0.4);
+        osc.start(audioCtx.currentTime); osc.stop(audioCtx.currentTime + 0.4);
+    } catch(e) {}
+}
+
+function playMysticalSound() {
+    try {
+        if (!audioCtx) audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+        if (audioCtx.state === 'suspended') audioCtx.resume();
+        var osc1 = audioCtx.createOscillator(); var osc2 = audioCtx.createOscillator(); var gain = audioCtx.createGain();
+        osc1.type = 'sine'; osc2.type = 'triangle';
+        osc1.frequency.setValueAtTime(440, audioCtx.currentTime); osc1.frequency.exponentialRampToValueAtTime(880, audioCtx.currentTime + 1.5);
+        osc2.frequency.setValueAtTime(554.37, audioCtx.currentTime); osc2.frequency.exponentialRampToValueAtTime(1108.73, audioCtx.currentTime + 1.5);
+        osc1.connect(gain); osc2.connect(gain); gain.connect(audioCtx.destination);
+        gain.gain.setValueAtTime(0, audioCtx.currentTime); gain.gain.linearRampToValueAtTime(0.15, audioCtx.currentTime + 0.5); gain.gain.linearRampToValueAtTime(0, audioCtx.currentTime + 2.0);
+        osc1.start(audioCtx.currentTime); osc1.stop(audioCtx.currentTime + 2.0); osc2.start(audioCtx.currentTime); osc2.stop(audioCtx.currentTime + 2.0);
+    } catch(e) {}
+}
+
 function showAlert(msg, color) {
+    if (msg.indexOf('정답') !== -1 || msg.indexOf('성공') !== -1 || msg.indexOf('열렸') !== -1) {
+        if (typeof playCorrectSound === 'function') playCorrectSound();
+    } else if (msg.indexOf('틀렸') !== -1 || msg.indexOf('다시') !== -1 || msg.indexOf('아닙니다') !== -1 || color === '#ff3b30' || color === '#cc4444') {
+        if (typeof playWrongSound === 'function') playWrongSound();
+    }
     var div = document.createElement('div');
-    div.style.cssText = 'position:fixed;top:30px;left:50%;transform:translateX(-50%);background:' + (color||'#b38b59') + ';color:#000;padding:12px 24px;border-radius:8px;font-weight:bold;z-index:9999;font-size:1rem;box-shadow:0 4px 16px rgba(0,0,0,0.5);';
+    div.style.cssText = 'position:absolute;top:30px;left:50%;transform:translateX(-50%);background:' + (color||'#b38b59') + ';color:#000;padding:12px 24px;border-radius:8px;font-weight:bold;z-index:9999;font-size:1rem;box-shadow:0 4px 16px rgba(0,0,0,0.5);width:max-content;max-width:90%;text-align:center;';
     div.textContent = msg;
-    document.body.appendChild(div);
+    var container = document.getElementById('game-container') || document.body;
+    container.appendChild(div);
     setTimeout(function() { div.remove(); }, 2200);
 }
 
@@ -691,7 +735,9 @@ function initFloor2() {
                     flash.style.opacity = '0';
                     flash.style.zIndex = '9999';
                     flash.style.transition = 'opacity 0.5s ease-in-out';
-                    document.body.appendChild(flash);
+                    var container = document.getElementById('game-container') || document.body;
+                    container.appendChild(flash);
+                    playMysticalSound();
                     
                     setTimeout(function() { flash.style.opacity = '1'; }, 50);
                     
@@ -918,7 +964,9 @@ function initFloor3() {
             var flash = document.createElement('div');
             flash.style.position = 'absolute'; flash.style.top = '0'; flash.style.left = '0'; flash.style.width = '100%'; flash.style.height = '100%';
             flash.style.backgroundColor = 'white'; flash.style.opacity = '0'; flash.style.zIndex = '9999'; flash.style.transition = 'opacity 0.5s ease-in-out';
-            document.body.appendChild(flash);
+            var container = document.getElementById('game-container') || document.body;
+            container.appendChild(flash);
+            playMysticalSound();
             setTimeout(function() { flash.style.opacity = '1'; }, 50);
             
             setTimeout(function() {
@@ -990,9 +1038,10 @@ function initFloor4() {
         
         // 팝업 생성: LOFT 뜻
         var loftPopup = document.createElement('div');
-        loftPopup.style.cssText = 'position:fixed;top:50%;left:50%;transform:translate(-50%,-50%);background:rgba(0,0,0,0.9);border:2px solid #b38b59;padding:30px;border-radius:12px;z-index:9999;text-align:center;box-shadow:0 10px 30px rgba(0,0,0,0.8);animation:pop-in 0.5s ease-out;';
+        loftPopup.style.cssText = 'position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);background:rgba(0,0,0,0.9);border:2px solid #b38b59;padding:30px;border-radius:12px;z-index:9999;text-align:center;box-shadow:0 10px 30px rgba(0,0,0,0.8);animation:pop-in 0.5s ease-out;width:90%;max-width:400px;';
         loftPopup.innerHTML = '<h2 style="color:#ffd700;font-size:3rem;margin-bottom:10px;letter-spacing:5px;">LOFT</h2><p style="color:#fff;font-size:1.2rem;">(명사) 복층, 다락방<br><span style="font-size:0.9rem;color:#ccc;">공간을 입체적으로 활용하는 대표적인 주거 형태입니다.</span></p>';
-        document.body.appendChild(loftPopup);
+        var container = document.getElementById('game-container') || document.body;
+        container.appendChild(loftPopup);
         
         setTimeout(function() {
             loftPopup.style.opacity = '0';
@@ -1100,7 +1149,9 @@ function initFloor4() {
             var flash = document.createElement('div');
             flash.style.position = 'absolute'; flash.style.top = '0'; flash.style.left = '0'; flash.style.width = '100%'; flash.style.height = '100%';
             flash.style.backgroundColor = 'white'; flash.style.opacity = '0'; flash.style.zIndex = '9999'; flash.style.transition = 'opacity 0.5s ease-in-out';
-            document.body.appendChild(flash);
+            var container = document.getElementById('game-container') || document.body;
+            container.appendChild(flash);
+            playMysticalSound();
             setTimeout(function() { flash.style.opacity = '1'; }, 50);
             
             setTimeout(function() {
@@ -1212,11 +1263,11 @@ function initFloor5() {
     var checkF5M1 = document.getElementById('check-f5-m1');
     if (checkF5M1) checkF5M1.addEventListener('click', function() {
         var selected = errorItems.filter(function(item) { var cb = document.getElementById('err-' + item.id); return cb && cb.checked; });
-        if (selected.length < 2) { showAlert('2개 이상 선택하세요!', '#ff9'); return; }
-        if (selected.every(function(item) { return item.wrong; })) {
-            state.f5m1Done = true; showAlert('정답! 잘못된 배치 발견!', '#4cd964');
+        var correctCount = errorItems.filter(function(i) { return i.wrong; }).length;
+        if (selected.length === correctCount && selected.every(function(item) { return item.wrong; })) {
+            state.f5m1Done = true; showAlert('정답! 잘못된 배치를 모두 발견!', '#4cd964');
             setTimeout(function() { hideElement(m1); showElement(m2); initF5M2(); }, 1000);
-        } else { showAlert('잘못된 선택이 포함되어 있어요!', '#ff6b6b'); }
+        } else { showAlert('틀린 배치를 모두 찾아야 해요!', '#ff6b6b'); }
     });
 
     var sizeItems = [
@@ -1456,9 +1507,10 @@ function moveToRoofStairs() {
     
     // 발소리 효과음 (오디오 컨텍스트 활용 또는 간단한 텍스트 팝업)
     var stairsText = document.createElement('div');
-    stairsText.style.cssText = 'position:fixed;top:50%;left:50%;transform:translate(-50%,-50%);font-size:2rem;color:#fff;font-weight:bold;z-index:9999;opacity:0;transition:opacity 0.5s;text-shadow:0 0 10px #000;';
+    stairsText.style.cssText = 'position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);font-size:2rem;color:#fff;font-weight:bold;z-index:9999;opacity:0;transition:opacity 0.5s;text-shadow:0 0 10px #000;width:100%;text-align:center;';
     stairsText.textContent = '헉... 헉... 계단을 오르는 중...';
-    document.body.appendChild(stairsText);
+    var container = document.getElementById('game-container') || document.body;
+    container.appendChild(stairsText);
     
     setTimeout(function() { stairsText.style.opacity = '1'; }, 1000);
     
@@ -1635,7 +1687,7 @@ function initRoof() {
             b.dataset.h = book.h;
             
             var t = document.createElement('span');
-            t.style.cssText = 'writing-mode: vertical-rl; text-orientation: upright; color:#f0d080; font-size:0.8rem; font-weight:bold; letter-spacing:-2px; text-shadow:1px 1px 1px #000;';
+            t.style.cssText = 'writing-mode: vertical-rl; text-orientation: upright; color:#f0d080; font-size:0.8rem; font-weight:bold; letter-spacing:1px; text-shadow:1px 1px 1px #000;';
             t.textContent = book.title;
             b.appendChild(t);
 
