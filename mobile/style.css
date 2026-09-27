@@ -2536,3 +2536,30 @@ button, .action-btn, .test-btn, .drop-box, .key-btn, .glass-panel, .dialogue-box
     justify-content: flex-start !important; /* 가운데 정렬 대신 왼쪽 정렬이 줄바꿈 시 더 자연스러울 수 있음 */
 }
 
+
+/* ============================================================
+   🔥 엄마 통화 휴대폰 화면 원래 크기 복구 및 공인중개사 크기 확대
+   ============================================================ */
+.smartphone-wrapper {
+    transform: scale(1) !important;
+    width: 100% !important;
+    height: 95vh !important;
+    justify-content: center !important;
+}
+
+.smartphone-frame {
+    height: 100% !important;
+    width: 100% !important;
+    max-width: 400px !important;
+    max-height: 850px !important;
+    margin: 0 auto !important;
+}
+
+#agent-portrait {
+    width: 150px !important;
+    height: 150px !important;
+    border-radius: 50% !important;
+    box-shadow: 0 0 15px rgba(255,255,255,0.2) !important;
+    margin-bottom: 20px !important;
+}
+
