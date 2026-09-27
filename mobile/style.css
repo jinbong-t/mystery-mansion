@@ -2397,3 +2397,22 @@ h2 {
     min-height: 55px !important;
 }
 
+
+/* 컨베이어 벨트(분류 박스) 글자 넘침 해결 */
+.drop-box {
+    padding: 5px !important;
+    gap: 4px !important;
+}
+.drop-box span:nth-child(2) {
+    font-size: clamp(0.75rem, 3vw, 1rem) !important;
+    text-align: center !important;
+    word-break: keep-all !important;
+    line-height: 1.2 !important;
+}
+.drop-box span:nth-child(3) {
+    font-size: clamp(0.6rem, 2.5vw, 0.8rem) !important;
+    text-align: center !important;
+    word-break: keep-all !important;
+    line-height: 1.2 !important;
+}
+
