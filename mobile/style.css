@@ -12,7 +12,7 @@
 }
 
 /* ============================================================
-   기본 초기화 & 레이아웃
+   기본 초기??& ?�이?�웃
    ============================================================ */
 * {
     margin: 0;
@@ -28,7 +28,7 @@ body {
     font-family: var(--font-main);
     display: flex;
     justify-content: center;
-    align-items: center; /* 세로 화면에서도 중앙 정렬되도록 변경 */
+    align-items: center; /* ?�로 ?�면?�서??중앙 ?�렬?�도�?변�?*/
     min-height: 100dvh;
     overflow: hidden;
     overscroll-behavior: none;
@@ -37,22 +37,22 @@ body {
 #game-container {
     position: relative;
     width: 100%;
-    /* 화면 높이에 비례해 최대 너비를 제한하여 가로 모드에서 잘리지 않도록 함 */
+    /* ?�면 ?�이??비�???최�? ?�비�??�한?�여 가�?모드?�서 ?�리지 ?�도�???*/
     max-width: min(480px, 100vw, 65dvh); 
     height: 100dvh;
-    /* 지나치게 길어지는 것을 방지 */
+    /* 지?�치�?길어지??것을 방�? */
     max-height: min(900px, 100dvh); 
     background-color: #000;
     overflow-x: hidden;
     overflow-y: auto;
     box-shadow: 0 0 60px rgba(0,0,0,0.9);
     border: 1px solid var(--glass-border);
-    /* 모바일 외 기기에서 게임 화면처럼 보이도록 모서리 둥글게 */
+    /* 모바????기기?�서 게임 ?�면처럼 보이?�록 모서�??��?�?*/
     border-radius: 8px; 
 }
 
 /* ============================================================
-   배경 & 층 콘텐츠
+   배경 & �?콘텐�?
    ============================================================ */
 #room-background {
     position: absolute;
@@ -75,7 +75,7 @@ body {
     justify-content: center;
     align-items: center;
     z-index: 10;
-    /* 세로가 짧은 화면에서 내용을 볼 수 있게 스크롤 허용 */
+    /* ?�로가 짧�? ?�면?�서 ?�용??�????�게 ?�크�??�용 */
     overflow-x: hidden;
     overflow-y: auto;
 }
@@ -97,7 +97,7 @@ body {
 }
 
 /* ============================================================
-   대화 박스 (모바일 최적화)
+   ?�??박스 (모바??최적??
    ============================================================ */
 .dialogue-box {
     position: absolute;
@@ -132,7 +132,7 @@ body {
 }
 
 /* ============================================================
-   버튼 스타일 (터치 최적화)
+   버튼 ?��???(?�치 최적??
    ============================================================ */
 .action-btn {
     background: transparent;
@@ -168,7 +168,7 @@ body {
 }
 
 /* ============================================================
-   유리 패널
+   ?�리 ?�널
    ============================================================ */
 .glass-panel {
     background: var(--glass-bg);
@@ -183,7 +183,7 @@ body {
 }
 
 /* ============================================================
-   게임 패널 (스크롤 가능)
+   게임 ?�널 (?�크�?가??
    ============================================================ */
 .game-panel {
     position: absolute;
@@ -196,12 +196,12 @@ body {
     overflow-y: auto;
     max-height: 90dvh;
     border-radius: var(--radius);
-    /* iOS 탄성 스크롤 */
+    /* iOS ?�성 ?�크�?*/
     -webkit-overflow-scrolling: touch;
 }
 
 /* ============================================================
-   이름 입력 컨테이너
+   ?�름 ?�력 컨테?�너
    ============================================================ */
 #name-input-container {
     position: absolute;
@@ -313,7 +313,7 @@ body {
 }
 
 /* ============================================================
-   인벤토리
+   ?�벤?�리
    ============================================================ */
 #inventory {
     position: absolute;
@@ -354,7 +354,7 @@ body {
 }
 
 /* ============================================================
-   퀴즈 & 옵션 버튼
+   ?�즈 & ?�션 버튼
    ============================================================ */
 .options {
     display: flex;
@@ -420,7 +420,7 @@ body {
 }
 
 /* ============================================================
-   도어락 키패드 (모바일 최적화)
+   ?�어???�패??(모바??최적??
    ============================================================ */
 .doorlock-panel {
     position: absolute;
@@ -487,11 +487,11 @@ body {
 }
 
 /* ============================================================
-   숨겨진 오브젝트
+   ?�겨�??�브?�트
    ============================================================ */
 .hidden-object {
     position: absolute;
-    z-index: 15;
+    z-index: 5;
 }
 
 .magnet-glow {
@@ -509,7 +509,7 @@ body {
 }
 
 /* ============================================================
-   스마트폰 씬
+   ?�마?�폰 ??
    ============================================================ */
 .smartphone-wrapper {
     position: relative;
@@ -636,7 +636,7 @@ body {
     justify-content: center;
 }
 
-/* 스와이프 UI */
+/* ?��??�프 UI */
 .swipe-container {
     width: 240px;
     height: 58px;
@@ -743,7 +743,7 @@ body {
 }
 
 /* ============================================================
-   영화적 연출
+   ?�화???�출
    ============================================================ */
 @keyframes bounce {
     0%, 20%, 50%, 80%, 100% { transform: translateY(0); }
@@ -794,7 +794,7 @@ body {
 }
 
 /* ============================================================
-   엘리베이터 UI
+   ?�리베이??UI
    ============================================================ */
 #elevator-ui {
     position: absolute;
@@ -881,7 +881,7 @@ body {
 }
 
 /* ============================================================
-   힌트 & 자물쇠 UI
+   ?�트 & ?�물??UI
    ============================================================ */
 .hint-box {
     padding: 18px;
@@ -936,7 +936,7 @@ body {
 }
 
 /* ============================================================
-   라디오 & 퀴즈 레이블
+   ?�디??& ?�즈 ?�이�?
    ============================================================ */
 .radio-label:hover {
     background: rgba(200, 151, 94, 0.12) !important;
@@ -958,7 +958,7 @@ body {
 }
 
 /* ============================================================
-   스마트폰 이중 스크린 지원 (더 작은 화면)
+   ?�마?�폰 ?�중 ?�크�?지??(???��? ?�면)
    ============================================================ */
 @media (max-height: 700px) {
     .smartphone-wrapper {
@@ -973,7 +973,7 @@ body {
 }
 
 /* ============================================================
-   타로 카드 (주거 유형 테스트)
+   ?��?카드 (주거 ?�형 ?�스??
    ============================================================ */
 .tarot-card {
     background: linear-gradient(145deg, #1a1a2e, #16213e);
@@ -1003,7 +1003,7 @@ body {
 }
 
 /* ============================================================
-   엔딩 화면
+   ?�딩 ?�면
    ============================================================ */
 #ending-screen {
     overflow-y: auto;
@@ -1028,7 +1028,7 @@ body {
 }
 
 /* ============================================================
-   진행도 애니메이션
+   진행???�니메이??
    ============================================================ */
 @keyframes fadeInUp {
     from { opacity: 0; transform: translateY(10px); }
@@ -1049,7 +1049,7 @@ body {
 }
 
 /* ============================================================
-   정전 손전등
+   ?�전 ?�전??
    ============================================================ */
 #blackout-overlay {
     background: radial-gradient(
@@ -1061,7 +1061,7 @@ body {
 }
 
 /* ============================================================
-   컨베이어 벨트 아이템
+   컨베?�어 벨트 ?�이??
    ============================================================ */
 #classification-item {
     background: linear-gradient(135deg, #f0d080, #ffb020, #e8900a) !important;
@@ -1100,7 +1100,7 @@ body {
 }
 
 /* ============================================================
-   4층 자물쇠 씬
+   4�??�물????
    ============================================================ */
 #f4-padlock-scene {
     background: rgba(0,0,0,0.8);
@@ -1110,7 +1110,7 @@ body {
 }
 
 /* ============================================================
-   마지막 공간 (penthouse)
+   마�?�?공간 (penthouse)
    ============================================================ */
 #floor-penthouse .glass-panel {
     border-color: gold;
@@ -1118,7 +1118,7 @@ body {
 }
 
 /* ============================================================
-   글자 입력 포커스
+   글???�력 ?�커??
    ============================================================ */
 .letter-input:focus {
     outline: none;
@@ -1127,7 +1127,7 @@ body {
 }
 
 /* ============================================================
-   텍스트 크기 (모바일 기본)
+   ?�스???�기 (모바??기본)
    ============================================================ */
 h1 { font-size: 1.7rem; line-height: 1.3; }
 h2 { font-size: 1.15rem; line-height: 1.4; }
@@ -1135,7 +1135,7 @@ h3 { font-size: 1rem; line-height: 1.4; }
 p  { font-size: 0.92rem; line-height: 1.65; }
 
 /* ============================================================
-   별 / 우주 배경
+   �?/ ?�주 배경
    ============================================================ */
 .space-bg {
     background: radial-gradient(ellipse at bottom, #1b2735 0%, #090a0f 100%);
@@ -1503,7 +1503,7 @@ body {
     cursor: pointer;
 }
 
-/* 실감나는 디지털 도어락 디자인 */
+/* ?�감?�는 ?��????�어???�자??*/
 .doorlock-panel {
     position: absolute;
     top: 50%;
@@ -1568,7 +1568,7 @@ body {
 
 .hidden-object {
     position: absolute;
-    z-index: 15;
+    z-index: 5;
 }
 
 .magnet-glow {
@@ -1599,7 +1599,7 @@ body {
 .power-btn-side {
     position: absolute;
     right: -14px;
-    top: 50%; /* 실제 스마트폰처럼 오른쪽 측면 중간 */
+    top: 50%; /* ?�제 ?�마?�폰처럼 ?�른�?측면 중간 */
     transform: translateY(-50%);
     width: 4px;
     height: 60px;
@@ -1624,7 +1624,7 @@ body {
     flex-direction: column;
 }
 
-/* 발신자 이름 - 가독성 있는 프리미엄 스타일 */
+/* 발신???�름 - 가?�성 ?�는 ?�리미엄 ?��???*/
 .phone-caller-name {
     font-size: 2.8rem !important;
     color: #fff !important;
@@ -1975,7 +1975,7 @@ body {
     transition: transform 2.5s ease-in-out !important;
 }
 
-/* 공용 모달 스타일 */
+/* 공용 모달 ?��???*/
 .modal {
     position: fixed;
     top: 0;
@@ -2023,7 +2023,7 @@ body {
     padding: 15px;
 }
 
-/* ===== 결말 화면 스타일 ===== */
+/* ===== 결말 ?�면 ?��???===== */
 #ending-screen {
     display: none;
     flex-direction: column;
@@ -2035,14 +2035,14 @@ body {
     display: flex;
 }
 
-/* 글자 입력 칸 포커스 */
+/* 글???�력 �??�커??*/
 .letter-input:focus {
     outline: none;
     border-color: gold !important;
     box-shadow: 0 0 12px rgba(255, 215, 0, 0.5);
 }
 
-/* 옥상 퍼즐 수집 글자 애니메이션 */
+/* ?�상 ?�즐 ?�집 글???�니메이??*/
 #collected-letters-display > div {
     animation: fadeInUp 0.4s ease forwards;
 }
@@ -2052,7 +2052,7 @@ body {
     to { opacity: 1; transform: translateY(0); }
 }
 
-/* 결말 화면 반짝이는 제목 */
+/* 결말 ?�면 반짝?�는 ?�목 */
 #ending-title {
     text-shadow: 0 0 30px rgba(255, 215, 0, 0.6), 0 0 60px rgba(255, 215, 0, 0.3);
     animation: goldGlow 3s ease-in-out infinite;
@@ -2063,7 +2063,7 @@ body {
     50% { text-shadow: 0 0 50px rgba(255, 215, 0, 1), 0 0 80px rgba(255, 215, 0, 0.5); }
 }
 
-/* 각 층 힌트 박스 페이드인 */
+/* �?�??�트 박스 ?�이?�인 */
 #f2-password-hint, #f3-password-hint, #f4-password-hint, #f5-password-hint {
     animation: hintFadeIn 0.8s ease;
 }
@@ -2073,14 +2073,14 @@ body {
     to { opacity: 1; }
 }
 
-/* 라디오 레이블 호버 효과 */
+/* ?�디???�이�??�버 ?�과 */
 .radio-label:hover {
     background: rgba(179, 139, 89, 0.15) !important;
     border-color: var(--accent) !important;
     transition: all 0.2s ease;
 }
 
-/* ===== ���ο� UI ��� ��Ÿ�� ===== */
+/* ===== ���ο� UI ���?��Ÿ�� ===== */
 .hint-box {
     padding: 20px;
     border: 1px dashed #0ff;
@@ -2110,7 +2110,7 @@ body {
 
 .game-panel { overflow-y: auto; max-height: 85vh; }
 
-/* 4�� �ڹ��� �� ��� */
+/* 4�� �ڹ��� �� ���?*/
 #f4-padlock-scene {
     background: rgba(0,0,0,0.75);
     z-index: 16;
@@ -2122,7 +2122,7 @@ body {
 #floor-penthouse .glass-panel { border-color: gold; }
 
 
-/* 엘리베이터 흔들림 효과 */
+/* ?�리베이???�들�??�과 */
 @keyframes elevatorShake {
     0% { transform: translateY(0); }
     50% { transform: translateY(-1px); }
@@ -2132,7 +2132,7 @@ body {
     animation: elevatorShake 0.5s infinite ease-in-out;
 }
 
-/* 옥탑방 방탈출 드래그 아이템 */
+/* ?�탑�?방탈�??�래�??�이??*/
 .mess-item {
     user-select: none;
     transition: transform 0.2s;
@@ -2146,7 +2146,7 @@ body {
     100% { transform: translateX(-40px); }
 }
 
-/* 컨베이어 벨트 아이템 스타일 */
+/* 컨베?�어 벨트 ?�이???��???*/
 #classification-item {
     background: linear-gradient(135deg, #f0d080, #ffb020, #e8900a) !important;
     color: #1a0a00 !important;
@@ -2167,14 +2167,14 @@ body {
     to { box-shadow: 0 6px 25px rgba(0,0,0,0.7), 0 0 20px rgba(255,180,0,0.7); }
 }
 
-/* 드롭박스 hover 강조 */
+/* ?�롭박스 hover 강조 */
 .drop-box.drag-over {
     transform: scale(1.08) !important;
     filter: brightness(1.3) !important;
 }
 
 
-/* 정전 손전등 효과 */
+/* ?�전 ?�전???�과 */
 #blackout-overlay {
     background: radial-gradient(
         circle 170px at var(--cursor-x, 50%) var(--cursor-y, 50%),
@@ -2184,7 +2184,7 @@ body {
     );
 }
 
-/* 타로 카드 스타일 (엔딩 테스트) */
+/* ?��?카드 ?��???(?�딩 ?�스?? */
 .tarot-card {
     background: linear-gradient(135deg, #1a1510 0%, #000000 100%);
     border: 2px solid #b38b59;
@@ -2237,17 +2237,17 @@ body {
 @keyframes crystal-spin { 0% { transform: rotate(0deg); } 100% { transform: rotate(360deg); } }
 
 /* ============================================================
-   📱 모바일 전용 오버라이드 스타일
+   ?�� 모바???�용 ?�버?�이???��???
    ============================================================ */
 
-/* 버튼 터치 영역 확대 */
+/* 버튼 ?�치 ?�역 ?��? */
 .action-btn, .key-btn, .test-btn {
     min-height: 48px;
     font-size: 1rem;
     touch-action: manipulation;
 }
 
-/* 대화 박스 모바일 최적화 */
+/* ?�??박스 모바??최적??*/
 .dialogue-box {
     width: 95%;
     max-width: 100%;
@@ -2258,7 +2258,7 @@ body {
     bottom: 10px;
 }
 
-/* 유리 패널 가로 여백 최소화 */
+/* ?�리 ?�널 가�??�백 최소??*/
 .glass-panel {
     width: 92%;
     max-width: 100%;
@@ -2266,48 +2266,48 @@ body {
     font-size: 0.92rem;
 }
 
-/* 입력 필드 터치 최적화 */
+/* ?�력 ?�드 ?�치 최적??*/
 input[type="text"], input[type="number"] {
     font-size: 1rem !important;
     min-height: 44px;
 }
 
-/* 엘리베이터 UI 패널 */
+/* ?�리베이??UI ?�널 */
 #elevator-ui {
     right: 8px;
 }
 
-/* 게임 패널 스크롤 가능하게 */
+/* 게임 ?�널 ?�크�?가?�하�?*/
 .game-panel {
     overflow-y: auto;
     max-height: 88dvh;
 }
 
-/* 텍스트 크기 조정 */
+/* ?�스???�기 조정 */
 h2 { font-size: 1.2rem; }
 h3 { font-size: 1.05rem; }
 p  { font-size: 0.9rem; }
  k e y f r a m e s   c r y s t a l - s p i n   {   0 %   {   t r a n s f o r m :   r o t a t e ( 0 d e g ) ;   }   1 0 0 %   {   t r a n s f o r m :   r o t a t e ( 3 6 0 d e g ) ;   }   } 
  
  
-/* 공인중개사 이미지 크기 키우기 오버라이드 */
+/* 공인중개???��?지 ?�기 ?�우�??�버?�이??*/
 .cinematic-portrait { width: 85% !important; max-width: 450px !important; right: -5% !important; }
 
 
-/* 공인중개사 텍스트 크기 원상복구 */
+/* 공인중개???�스???�기 ?�상복구 */
 .speaker { font-size: 1.35rem !important; text-shadow: none !important; }
 
 
 /* ============================================================
-   🔥 모바일 전체 UI/UX 디자인 하모니 개선 (글씨체, 박스 크기 등)
+   ?�� 모바???�체 UI/UX ?�자???�모??개선 (글?�체, 박스 ?�기 ??
    ============================================================ */
 
-/* 1. 기본 폰트 크기 반응형 조절 (전체 rem 기준점) */
+/* 1. 기본 ?�트 ?�기 반응??조절 (?�체 rem 기�??? */
 html {
     font-size: clamp(14px, 4vw, 17px) !important;
 }
 
-/* 2. 대화창 (Dialogue Box) 디자인 및 여백 최적화 */
+/* 2. ?�?�창 (Dialogue Box) ?�자??�??�백 최적??*/
 .dialogue-box {
     width: 92% !important;
     max-width: 500px !important;
@@ -2316,10 +2316,10 @@ html {
     background: rgba(12, 10, 8, 0.9) !important;
     border: 1px solid rgba(200, 151, 94, 0.5) !important;
     box-shadow: 0 10px 35px rgba(0,0,0,0.7) !important;
-    bottom: 25px !important; /* 화면 하단에서 약간 띄움 */
+    bottom: 25px !important; /* ?�면 ?�단?�서 ?�간 ?��? */
 }
 
-/* 3. 대화창 텍스트 및 스피커(화자) */
+/* 3. ?�?�창 ?�스??�??�피�??�자) */
 .speaker {
     font-size: 1.25rem !important;
     color: #f0c070 !important;
@@ -2337,7 +2337,7 @@ html {
     font-family: var(--font-main) !important;
 }
 
-/* 4. 공통 버튼 (Action Buttons) 일관성 부여 */
+/* 4. 공통 버튼 (Action Buttons) ?��???부??*/
 .action-btn {
     font-size: 1.1rem !important;
     font-weight: 700 !important;
@@ -2359,7 +2359,7 @@ html {
     box-shadow: 0 2px 8px rgba(166,124,0,0.3) !important;
 }
 
-/* 5. 미니게임 및 패널 박스 (Glass Panels) */
+/* 5. 미니게임 �??�널 박스 (Glass Panels) */
 .glass-panel, #housing-questions .question-card {
     width: 90% !important;
     max-width: 480px !important;
@@ -2373,7 +2373,7 @@ html {
     line-height: 1.5 !important;
 }
 
-/* 6. 인풋창(비밀번호 등) 크기 통일 */
+/* 6. ?�풋�?비�?번호 ?? ?�기 ?�일 */
 input[type="text"], input[type="number"], input[type="password"] {
     font-size: 1.2rem !important;
     padding: 12px 15px !important;
@@ -2388,7 +2388,7 @@ input[type="text"], input[type="number"], input[type="password"] {
     display: block !important;
 }
 
-/* 7. 제목 (미스터리 맨션 등) 비율 최적화 */
+/* 7. ?�목 (미스?�리 맨션 ?? 비율 최적??*/
 h1, h2, h3 {
     word-break: keep-all !important;
     line-height: 1.3 !important;
@@ -2400,7 +2400,7 @@ h2 {
 }
 
 
-/* F5 (벽면 패널 해설/이동) 버튼 텍스트 넘침 해결 */
+/* F5 (벽면 ?�널 ?�설/?�동) 버튼 ?�스???�침 ?�결 */
 #show-f4-solution-btn, #f5-go-roof-btn {
     font-size: clamp(0.8rem, 3.5vw, 0.95rem) !important;
     padding: 10px 5px !important;
@@ -2411,7 +2411,7 @@ h2 {
 }
 
 
-/* 컨베이어 벨트(분류 박스) 글자 넘침 해결 */
+/* 컨베?�어 벨트(분류 박스) 글???�침 ?�결 */
 .drop-box {
     padding: 5px !important;
     gap: 4px !important;
@@ -2430,7 +2430,7 @@ h2 {
 }
 
 
-/* 도어락 / 비밀번호 패드 모바일 삐져나감 방지 */
+/* ?�어??/ 비�?번호 ?�드 모바???�져?�감 방�? */
 .doorlock-panel {
     transform: translate(-50%, -50%) scale(0.9) !important;
     width: 90% !important;
@@ -2438,7 +2438,7 @@ h2 {
 }
 
 
-/* 나의 운명적인 주거공간 확인하기 버튼 넘침 해결 */
+/* ?�의 ?�명?�인 주거공간 ?�인?�기 버튼 ?�침 ?�결 */
 #submit-housing-test {
     font-size: clamp(1rem, 3.5vw, 1.2rem) !important;
     padding: 15px !important;
@@ -2449,17 +2449,17 @@ h2 {
 
 
 /* ============================================================
-   🔥 글로벌 텍스트 삐져나감 방지 (모바일 전체 적용)
+   ?�� 글로벌 ?�스???�져?�감 방�? (모바???�체 ?�용)
    ============================================================ */
 button, .action-btn, .test-btn, .drop-box, .key-btn, .glass-panel, .dialogue-box, .game-panel, .item-label {
     word-break: keep-all !important;
     overflow-wrap: break-word !important;
-    white-space: normal !important; /* nowrap으로 인해 삐져나가는 현상 원천 차단 */
+    white-space: normal !important; /* nowrap?�로 ?�해 ?�져?��????�상 ?�천 차단 */
 }
 
 
 /* ============================================================
-   🔥 모바일 첫 화면(시작 화면) 멋뜨러지게 업그레이드
+   ?�� 모바??�??�면(?�작 ?�면) 멋뜨?��?�??�그?�이??
    ============================================================ */
 #start-screen {
     background-image: linear-gradient(to bottom, rgba(15, 10, 25, 0.4), rgba(5, 5, 15, 0.95)), url("mansion_exterior.png") !important;
@@ -2516,7 +2516,7 @@ button, .action-btn, .test-btn, .drop-box, .key-btn, .glass-panel, .dialogue-box
 }
 
 
-/* 버튼들 왼쪽 치우침 방지 및 중앙 정렬 복구 */
+/* 버튼???�쪽 치우�?방�? �?중앙 ?�렬 복구 */
 .action-btn {
     display: flex !important;
     justify-content: center !important;
@@ -2527,7 +2527,7 @@ button, .action-btn, .test-btn, .drop-box, .key-btn, .glass-panel, .dialogue-box
 
 
 /* ============================================================
-   🔥 소감(이름 지은 이유) 입력칸 크기 확대
+   ?�� ?�감(?�름 지?� ?�유) ?�력�??�기 ?��?
    ============================================================ */
 #house-name-reason {
     height: 180px !important;
@@ -2538,7 +2538,7 @@ button, .action-btn, .test-btn, .drop-box, .key-btn, .glass-panel, .dialogue-box
 
 
 /* ============================================================
-   🔥 부엌 작업대 순서 맞추기 줄바꿈 허용 (가로 스크롤 제거)
+   ?�� 부???�업?� ?�서 맞추�?줄바�??�용 (가�??�크�??�거)
    ============================================================ */
 #f3-order-display {
     flex-wrap: wrap !important;
@@ -2546,14 +2546,14 @@ button, .action-btn, .test-btn, .drop-box, .key-btn, .glass-panel, .dialogue-box
     height: auto !important;
     min-height: 40px !important;
     overflow-x: hidden !important;
-    justify-content: flex-start !important; /* 가운데 정렬 대신 왼쪽 정렬이 줄바꿈 시 더 자연스러울 수 있음 */
+    justify-content: flex-start !important; /* 가?�데 ?�렬 ?�???�쪽 ?�렬??줄바�??????�연?�러?????�음 */
 }
 
 
 
 
 /* ============================================================
-   🔥 엄마 통화 휴대폰 화면 축소 방지 및 공인중개사 크기 확대
+   ?�� ?�마 ?�화 ?��????�면 축소 방�? �?공인중개???�기 ?��?
    ============================================================ */
 .smartphone-wrapper {
     transform: none !important;
