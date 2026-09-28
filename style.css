@@ -64,6 +64,18 @@ body {
     display: flex;
 }
 
+.cinematic-portrait {
+    position: absolute;
+    bottom: 0;
+    left: 50%;
+    transform: translateX(-50%);
+    max-height: 85vh; /* 화면 높이에 맞게 조절 */
+    max-width: 100%;
+    object-fit: contain;
+    z-index: 5; /* 대화창(z-index: 10)보다 뒤에 오도록 설정 */
+    pointer-events: none; /* 클릭 방해 방지 */
+}
+
 .dialogue-box {
     position: absolute;
     bottom: 20px;

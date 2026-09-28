@@ -124,7 +124,7 @@ function moveToFloor(floorId, label) {
             if (elevatorUI) {
                 elevatorUI.classList.remove('elevator-shake');
                 elevatorUI.classList.remove('closed');
-                elevatorUI.style.transition = 'transform 1.2s ease-in, opacity 1.2s ease-in';
+                elevatorUI.style.transition = 'transform 0.8s ease-in, opacity 0.8s ease-in';
                 elevatorUI.style.transform = 'scale(1.5)';
                 elevatorUI.style.opacity = '0';
             }
@@ -143,8 +143,8 @@ function moveToFloor(floorId, label) {
                     elevatorUI.style.transform = 'scale(1)';
                     elevatorUI.style.opacity = '1';
                 }
-            }, 1200);
-        }, 2200);
+            }, 800);
+        }, 1000);
     }, 1500);
 }
 
@@ -2250,12 +2250,12 @@ changeFloorUI = function(floorId) {
 
     if(targetDialogue) {
         if (dialogueTimeout) clearTimeout(dialogueTimeout);
-        // 엘리베이터 문 닫힘(0s) -> 흔들림(2.2s) -> 문 열리기(1.2s) -> 총 3.4초 소요.
-        // 유저가 배경(그림)을 먼저 볼 수 있도록 4.4초(4400ms) 뒤에 문제(대화창)가 나타나게 설정.
+        // 엘리베이터 문 닫힘(0s) -> 흔들림(1.0s) -> 문 열리기(0.8s) -> 총 1.8초 소요.
+        // 유저가 배경(그림)을 먼저 볼 수 있도록 2.0초(2000ms) 뒤에 문제(대화창)가 나타나게 설정.
         dialogueTimeout = setTimeout(function() {
             targetDialogue.style.display = 'block';
             setTimeout(function() { targetDialogue.style.opacity = '1'; }, 50);
-        }, 4400); 
+        }, 2000); 
     }
 };
 

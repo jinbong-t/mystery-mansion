@@ -124,7 +124,7 @@ function moveToFloor(floorId, label) {
             if (elevatorUI) {
                 elevatorUI.classList.remove('elevator-shake');
                 elevatorUI.classList.remove('closed');
-                elevatorUI.style.transition = 'transform 1.2s ease-in, opacity 1.2s ease-in';
+                elevatorUI.style.transition = 'transform 0.8s ease-in, opacity 0.8s ease-in';
                 elevatorUI.style.transform = 'scale(1.5)';
                 elevatorUI.style.opacity = '0';
             }
@@ -143,12 +143,55 @@ function moveToFloor(floorId, label) {
                     elevatorUI.style.transform = 'scale(1)';
                     elevatorUI.style.opacity = '1';
                 }
-            }, 1200);
-        }, 2200);
+            }, 800);
+        }, 1000);
     }, 1500);
 }
 
+function playCorrectSound() {
+    try {
+        if (!audioCtx) audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+        if (audioCtx.state === 'suspended') audioCtx.resume();
+        var osc = audioCtx.createOscillator(); var gain = audioCtx.createGain();
+        osc.type = 'sine'; osc.frequency.setValueAtTime(523.25, audioCtx.currentTime); osc.frequency.setValueAtTime(659.25, audioCtx.currentTime + 0.1); osc.frequency.setValueAtTime(783.99, audioCtx.currentTime + 0.2);
+        osc.connect(gain); gain.connect(audioCtx.destination);
+        gain.gain.setValueAtTime(0, audioCtx.currentTime); gain.gain.linearRampToValueAtTime(0.2, audioCtx.currentTime + 0.05); gain.gain.linearRampToValueAtTime(0, audioCtx.currentTime + 0.4);
+        osc.start(audioCtx.currentTime); osc.stop(audioCtx.currentTime + 0.4);
+    } catch(e) {}
+}
+
+function playWrongSound() {
+    try {
+        if (!audioCtx) audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+        if (audioCtx.state === 'suspended') audioCtx.resume();
+        var osc = audioCtx.createOscillator(); var gain = audioCtx.createGain();
+        osc.type = 'sawtooth'; osc.frequency.setValueAtTime(150, audioCtx.currentTime); osc.frequency.exponentialRampToValueAtTime(50, audioCtx.currentTime + 0.4);
+        osc.connect(gain); gain.connect(audioCtx.destination);
+        gain.gain.setValueAtTime(0, audioCtx.currentTime); gain.gain.linearRampToValueAtTime(0.2, audioCtx.currentTime + 0.05); gain.gain.linearRampToValueAtTime(0, audioCtx.currentTime + 0.4);
+        osc.start(audioCtx.currentTime); osc.stop(audioCtx.currentTime + 0.4);
+    } catch(e) {}
+}
+
+function playMysticalSound() {
+    try {
+        if (!audioCtx) audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+        if (audioCtx.state === 'suspended') audioCtx.resume();
+        var osc1 = audioCtx.createOscillator(); var osc2 = audioCtx.createOscillator(); var gain = audioCtx.createGain();
+        osc1.type = 'sine'; osc2.type = 'triangle';
+        osc1.frequency.setValueAtTime(440, audioCtx.currentTime); osc1.frequency.exponentialRampToValueAtTime(880, audioCtx.currentTime + 1.5);
+        osc2.frequency.setValueAtTime(554.37, audioCtx.currentTime); osc2.frequency.exponentialRampToValueAtTime(1108.73, audioCtx.currentTime + 1.5);
+        osc1.connect(gain); osc2.connect(gain); gain.connect(audioCtx.destination);
+        gain.gain.setValueAtTime(0, audioCtx.currentTime); gain.gain.linearRampToValueAtTime(0.15, audioCtx.currentTime + 0.5); gain.gain.linearRampToValueAtTime(0, audioCtx.currentTime + 2.0);
+        osc1.start(audioCtx.currentTime); osc1.stop(audioCtx.currentTime + 2.0); osc2.start(audioCtx.currentTime); osc2.stop(audioCtx.currentTime + 2.0);
+    } catch(e) {}
+}
+
 function showAlert(msg, color) {
+    if (msg.indexOf('정답') !== -1 || msg.indexOf('성공') !== -1 || msg.indexOf('열렸') !== -1) {
+        if (typeof playCorrectSound === 'function') playCorrectSound();
+    } else if (msg.indexOf('틀렸') !== -1 || msg.indexOf('다시') !== -1 || msg.indexOf('아닙니다') !== -1 || color === '#ff3b30' || color === '#cc4444') {
+        if (typeof playWrongSound === 'function') playWrongSound();
+    }
     var div = document.createElement('div');
     div.style.cssText = 'position:fixed;top:30px;left:50%;transform:translateX(-50%);background:' + (color||'#b38b59') + ';color:#000;padding:12px 24px;border-radius:8px;font-weight:bold;z-index:9999;font-size:1rem;box-shadow:0 4px 16px rgba(0,0,0,0.5);';
     div.textContent = msg;
@@ -2238,12 +2281,12 @@ changeFloorUI = function(floorId) {
 
     if(targetDialogue) {
         if (dialogueTimeout) clearTimeout(dialogueTimeout);
-        // 엘리베이터 문 닫힘(0s) -> 흔들림(2.2s) -> 문 열리기(1.2s) -> 총 3.4초 소요.
-        // 유저가 배경(그림)을 먼저 볼 수 있도록 4.4초(4400ms) 뒤에 문제(대화창)가 나타나게 설정.
+        // 엘리베이터 문 닫힘(0s) -> 흔들림(1.0s) -> 문 열리기(0.8s) -> 총 1.8초 소요.
+        // 유저가 배경(그림)을 먼저 볼 수 있도록 2.0초(2000ms) 뒤에 문제(대화창)가 나타나게 설정.
         dialogueTimeout = setTimeout(function() {
             targetDialogue.style.display = 'block';
             setTimeout(function() { targetDialogue.style.opacity = '1'; }, 50);
-        }, 4400); 
+        }, 2000); 
     }
 };
 

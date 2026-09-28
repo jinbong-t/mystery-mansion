@@ -84,6 +84,18 @@ body {
     display: flex;
 }
 
+.cinematic-portrait {
+    position: absolute;
+    bottom: 0;
+    left: 50%;
+    transform: translateX(-50%);
+    max-height: 80vh;
+    max-width: 100%;
+    object-fit: contain;
+    z-index: 5;
+    pointer-events: none;
+}
+
 /* ============================================================
    대화 박스 (모바일 최적화)
    ============================================================ */
