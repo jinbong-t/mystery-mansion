@@ -7,7 +7,14 @@ var state = {
     f4keyFound: false, f4m1Done: false, f4m2Done: false, f4m3Done: false,
     f5m1Done: false, f5m2Done: false, f5m3Done: false,
     roofBonusA: false, roofBonusB: false, roofBonusC: false,
-    houseName: '', houseType: '', housingVector: { A: 0, B: 0, C: 0, D: 0 }
+    houseName: '', houseType: '', housingVector: { A: 0, B: 0, C: 0, D: 0 },
+    
+    // 과정중심평가 트래킹 데이터
+    startTime: Date.now(),
+    mistakes: 0,
+    hintsUsed: 0,
+    choiceHistory: [],
+    lastFloorStart: Date.now()
 };
 
 var roomBackground = document.getElementById('room-background');
@@ -24,6 +31,12 @@ function saveState() {
         if (state.floor === 'roof') floorNum = 6;
         if (state.floor === 'penthouse') floorNum = 7;
         let level = floorNum >= 6 ? (Object.keys(state.housingVector || {}).length > 0 ? 'A' : 'B') : (floorNum > 3 ? 'B' : 'C');
+        
+        // 대시보드 수정 없이 데이터를 전달하기 위해 reflection 필드에 트래킹 정보 첨부
+        let totalPlayTime = Math.floor((Date.now() - state.startTime) / 60000); // 분 단위
+        let trackingInfo = `\n[트래킹 로그] 총 ${totalPlayTime}분 소요 | 오답 ${state.mistakes}회 | 힌트 ${state.hintsUsed}회 | 주요 선택: ${state.choiceHistory.slice(-3).join(' ➔ ')}`;
+        let combinedReflection = (state.reflection || '내용 없음') + trackingInfo;
+
         let payload = {
             id: state.classNum + '_' + state.studentNum + '_' + state.playerName,
             classNum: state.classNum,
@@ -33,7 +46,7 @@ function saveState() {
             level: level,
             houseType: state.houseType || '진행중',
             houseName: state.houseName || '',
-            reflection: state.reflection || ''
+            reflection: combinedReflection
         };
         fetch(DB_URL, {
             method: 'POST',
@@ -189,9 +202,18 @@ function playMysticalSound() {
 function showAlert(msg, color) {
     if (msg.indexOf('정답') !== -1 || msg.indexOf('성공') !== -1 || msg.indexOf('열렸') !== -1) {
         if (typeof playCorrectSound === 'function') playCorrectSound();
-    } else if (msg.indexOf('틀렸') !== -1 || msg.indexOf('다시') !== -1 || msg.indexOf('아닙니다') !== -1 || color === '#ff3b30' || color === '#cc4444') {
+    } else if (msg.indexOf('틀렸') !== -1 || msg.indexOf('다시') !== -1 || msg.indexOf('아닙니다') !== -1 || color === '#ff3b30' || color === '#cc4444' || color === '#ff6b6b') {
         if (typeof playWrongSound === 'function') playWrongSound();
+        state.mistakes++; // 오답 횟수 증가
+        saveState();
     }
+    
+    // 힌트인 경우
+    if (msg.indexOf('힌트') !== -1) {
+        state.hintsUsed++;
+        saveState();
+    }
+
     var div = document.createElement('div');
     div.style.cssText = 'position:fixed;top:30px;left:50%;transform:translateX(-50%);background:' + (color||'#b38b59') + ';color:#000;padding:12px 24px;border-radius:8px;font-weight:bold;z-index:9999;font-size:1rem;box-shadow:0 4px 16px rgba(0,0,0,0.5);';
     div.textContent = msg;
@@ -471,7 +493,9 @@ function initIntroAndLobby() {
     }
     testBtns.forEach(function(btn) {
         btn.addEventListener('click', function() {
-            state.personalityType = btn.dataset.type; saveState();
+            state.personalityType = btn.dataset.type; 
+            state.choiceHistory.push('성향:' + btn.dataset.type);
+            saveState();
             hideElement(personalityTestModal);
             if (agentPortrait) hideElement(agentPortrait);
             if (lobbyDialogueBox) hideElement(lobbyDialogueBox);

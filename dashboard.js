@@ -4,7 +4,16 @@ const STORAGE_KEY = 'mansion_students_data';
 // 데이터 초기화
 let studentsData = JSON.parse(localStorage.getItem(STORAGE_KEY)) || [];
 let currentFilter = 'all';
+let currentSort = 'desc'; // 기본값: 최신 활동순
 let currentSelectedStudentId = null;
+
+// 차트 인스턴스 저장용 변수
+let levelChartInstance = null;
+let typeChartInstance = null;
+
+// Chart.js 기본 스타일 (다크모드)
+Chart.defaults.color = '#e0e0e0';
+Chart.defaults.font.family = "'Noto Serif KR', serif";
 
 // 요소 가져오기
 const tbody = document.getElementById('student-table-body');
@@ -56,12 +65,20 @@ function updateDashboardUI() {
     let levelARate = filtered.length > 0 ? Math.round((levelA / filtered.length) * 100) : 0;
     document.getElementById('stat-level-a').textContent = levelARate + '%';
     
-    // 정렬 (최신순 상단)
-    filtered.sort((a,b) => {
-        let timeA = new Date(a.timestamp || 0).getTime();
-        let timeB = new Date(b.timestamp || 0).getTime();
-        return timeB - timeA;
-    });
+    // 정렬 로직 적용
+    if (currentSort === 'desc') {
+        filtered.sort((a,b) => new Date(b.timestamp || 0).getTime() - new Date(a.timestamp || 0).getTime());
+    } else if (currentSort === 'asc') {
+        filtered.sort((a,b) => new Date(a.timestamp || 0).getTime() - new Date(b.timestamp || 0).getTime());
+    } else if (currentSort === 'num') {
+        filtered.sort((a,b) => {
+            if(a.classNum !== b.classNum) return a.classNum - b.classNum;
+            return a.studentNum - b.studentNum;
+        });
+    }
+    
+    // 차트 업데이트 호출
+    updateCharts(filtered);
     
     tbody.innerHTML = '';
     
@@ -124,6 +141,16 @@ function showDetail(id) {
             <p style="color:gold; margin-bottom:5px;"><strong>💬 활동후 느낀 점 / 알게된 점:</strong></p>
             <p>${student.reflection || '내용 없음'}</p>
         </div>
+        
+        <div style="background:rgba(76, 175, 80, 0.05); padding:15px; border-radius:8px; margin-top:15px; border:1px solid rgba(76, 175, 80, 0.4);">
+            <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:10px;">
+                <p style="color:#4caf50; margin:0;"><strong>✨ AI 과세특 초안 (자동 생성)</strong></p>
+                <button onclick="copySeTeuk()" style="background:#4caf50; color:white; border:none; padding:5px 12px; border-radius:4px; font-size:0.85rem; font-weight:bold;">📝 복사하기</button>
+            </div>
+            <textarea id="autoSeTeuk" style="width:100%; height:120px; background:#121212; color:#e0e0e0; border:1px solid #333; padding:10px; border-radius:5px; font-family:inherit; line-height:1.5; resize:vertical;">${generateSeTeuk(student)}</textarea>
+            <p style="font-size:0.75rem; color:#888; margin-top:8px;">※ 학생의 진행 데이터와 느낀 점을 바탕으로 자동 조합된 문구입니다. 선생님의 판단에 따라 수정해서 사용하세요!</p>
+        </div>
+
         <p style="font-size:0.8rem; color:#888; margin-top:15px; text-align:right;">마지막 업데이트: ${student.timestamp}</p>
     `;
     
@@ -133,6 +160,24 @@ function showDetail(id) {
 
 // 이벤트 리스너 설정
 classFilter.addEventListener('change', (e) => { currentFilter = e.target.value; renderTable(); });
+const sortOrder = document.getElementById('sortOrder');
+if (sortOrder) sortOrder.addEventListener('change', (e) => { currentSort = e.target.value; updateDashboardUI(); });
+
+const btnToggleCharts = document.getElementById('btnToggleCharts');
+const chartsContainer = document.getElementById('chartsContainer');
+if (btnToggleCharts && chartsContainer) {
+    btnToggleCharts.addEventListener('click', () => {
+        if (chartsContainer.style.display === 'none') {
+            chartsContainer.style.display = 'grid';
+            btnToggleCharts.textContent = '📊 통계 차트 숨기기';
+            updateCharts(studentsData); // 혹시 몰라 다시 한 번 렌더링
+        } else {
+            chartsContainer.style.display = 'none';
+            btnToggleCharts.textContent = '📊 통계 차트 보기';
+        }
+    });
+}
+
 btnRefresh.addEventListener('click', renderTable);
 
 const btnExportExcel = document.getElementById('btnExportExcel');
@@ -193,3 +238,134 @@ window.addEventListener('click', (e) => { if(e.target === modal) modal.style.dis
 
 // 초기 렌더링
 renderTable();
+
+// --- AI 과세특 자동 생성 로직 ---
+// ... (생략, 기존 코드 유지)
+
+function generateSeTeuk(student) {
+    if (!student) return "";
+    let text = `주거 공간 설계 프로젝트인 '미스터리 맨션' 방탈출 활동에 참여하여 `;
+    
+    // 1. 성취수준/진행도에 따른 평가
+    if (student.level === 'A' || student.floor >= 6 || student.floor === 'penthouse') {
+        text += `뛰어난 공간 지각력과 문제 해결 능력을 발휘하여 주어지는 주거 미션을 모두 훌륭하게 완수함. `;
+    } else if (student.level === 'B' || student.floor >= 4) {
+        text += `주거 공간의 다양한 요소를 잘 이해하고 주어지는 문제 상황을 성실하게 해결함. `;
+    } else {
+        text += `주거 공간의 기본 개념과 동선 배치를 이해하기 위해 끈기 있게 과제에 참여함. `;
+    }
+
+    // 2. 주거 유형 및 결과물에 따른 평가
+    if (student.houseType && student.houseType !== '미정') {
+        text += `특히 자신의 라이프스타일과 가치관을 반영한 '${student.houseType}' 유형의 주거 공간을 구상하고, 이를 '${student.houseName}'(이)라는 개성 있는 이름으로 설계하여 발표함. `;
+    }
+
+    // 3. 느낀점(reflection)에 따른 태도/성찰 평가
+    if (student.reflection && student.reflection.length > 5) {
+        // 따옴표 정리하여 문장에 자연스럽게 녹임
+        let cleanRef = student.reflection.replace(/"/g, '').trim();
+        text += `활동 후 "${cleanRef}"라고 소감을 밝히며, 주거 환경이 개인의 삶의 질에 미치는 영향을 깊이 있게 성찰하는 성숙한 태도를 보임.`;
+    } else {
+        text += `미래 자신의 이상적인 주거 공간에 대한 밑그림을 그리고, 건강한 주거 생활에 대한 가치관을 확립하는 계기로 삼음.`;
+    }
+
+    return text;
+}
+
+// 전역 함수로 등록 (onclick 속성에서 접근 가능하도록)
+window.copySeTeuk = function() {
+    const textarea = document.getElementById("autoSeTeuk");
+    textarea.select();
+    textarea.setSelectionRange(0, 99999); // 모바일 호환성
+    
+    try {
+        document.execCommand("copy");
+        alert("📝 과세특 초안이 클립보드에 복사되었습니다!\n\n나이스(NEIS)나 한글 문서에 바로 붙여넣기(Ctrl+V) 하세요.");
+    } catch(e) {
+        alert("복사 기능이 지원되지 않는 브라우저입니다. 텍스트를 직접 복사해주세요.");
+    }
+};
+
+// --- 차트 그리기 로직 ---
+function updateCharts(data) {
+    const levelCounts = { A: 0, B: 0, C: 0 };
+    const typeCounts = {};
+
+    data.forEach(s => {
+        // 성취 수준 카운트
+        if (s.level && levelCounts[s.level] !== undefined) {
+            levelCounts[s.level]++;
+        }
+        
+        // 주거 유형 카운트
+        let type = s.houseType || '미정';
+        if(type === '미정') return; // 미정은 통계에서 제외할 수도 있음 (선택)
+        if (typeCounts[type]) {
+            typeCounts[type]++;
+        } else {
+            typeCounts[type] = 1;
+        }
+    });
+
+    // 성취 수준 차트 갱신
+    const ctxLevel = document.getElementById('levelChart').getContext('2d');
+    if (levelChartInstance) levelChartInstance.destroy();
+    
+    levelChartInstance = new Chart(ctxLevel, {
+        type: 'doughnut',
+        data: {
+            labels: ['A 수준', 'B 수준', 'C 수준'],
+            datasets: [{
+                data: [levelCounts.A, levelCounts.B, levelCounts.C],
+                backgroundColor: [
+                    'rgba(76, 175, 80, 0.7)', // A (초록)
+                    'rgba(255, 152, 0, 0.7)', // B (주황)
+                    'rgba(255, 82, 82, 0.7)'  // C (빨강)
+                ],
+                borderColor: ['#4caf50', '#ff9800', '#ff5252'],
+                borderWidth: 1
+            }]
+        },
+        options: {
+            responsive: true,
+            maintainAspectRatio: false,
+            plugins: {
+                legend: { position: 'right' }
+            }
+        }
+    });
+
+    // 주거 유형 차트 갱신
+    const ctxType = document.getElementById('typeChart').getContext('2d');
+    if (typeChartInstance) typeChartInstance.destroy();
+
+    const typeLabels = Object.keys(typeCounts);
+    const typeData = Object.values(typeCounts);
+    
+    // 색상 팔레트 (골드, 브라운 등 맨션 테마에 어울리는 색)
+    const bgColors = [
+        'rgba(179, 139, 89, 0.7)', 'rgba(212, 175, 55, 0.7)', 
+        'rgba(139, 69, 19, 0.7)', 'rgba(205, 133, 63, 0.7)',
+        'rgba(222, 184, 135, 0.7)'
+    ];
+
+    typeChartInstance = new Chart(ctxType, {
+        type: 'pie',
+        data: {
+            labels: typeLabels,
+            datasets: [{
+                data: typeData,
+                backgroundColor: bgColors.slice(0, typeLabels.length),
+                borderColor: '#1a1a1a',
+                borderWidth: 2
+            }]
+        },
+        options: {
+            responsive: true,
+            maintainAspectRatio: false,
+            plugins: {
+                legend: { position: 'right' }
+            }
+        }
+    });
+}
