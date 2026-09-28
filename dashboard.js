@@ -244,29 +244,43 @@ renderTable();
 
 function generateSeTeuk(student) {
     if (!student) return "";
-    let text = `주거 공간 설계 프로젝트인 '미스터리 맨션' 방탈출 활동에 참여하여 `;
+    let text = "";
     
-    // 1. 성취수준/진행도에 따른 평가
+    // 느낀점 추출 (트래킹 로그 등 부가 정보가 섞여있을 수 있으므로 분리)
+    let rawRef = student.reflection || '';
+    // 정규식 등을 써서 대괄호로 감싸인 트래킹 로그 등은 일단 제외하고 순수 텍스트만 추출해볼 수 있지만,
+    // 간단히 따옴표 등만 제거하여 문장에 녹일 준비를 합니다.
+    let cleanRef = rawRef.replace(/"/g, '').trim();
+    let hasRef = cleanRef.length > 5;
+    
+    let houseNameStr = student.houseName ? `'${student.houseName}'` : '자신만의 주거 공간';
+    let typeStr = (student.houseType && student.houseType !== '미정') ? student.houseType : '창의적인';
+
+    // 성취 수준별 완전 차별화된 세특 템플릿 작성
     if (student.level === 'A' || student.floor >= 6 || student.floor === 'penthouse') {
-        text += `뛰어난 공간 지각력과 문제 해결 능력을 발휘하여 주어지는 주거 미션을 모두 훌륭하게 완수함. `;
+        text += `주거 공간 설계 프로젝트인 '미스터리 맨션' 방탈출 활동에서 뛰어난 공간 지각력과 분석력을 발휘하여 모든 미션을 자기 주도적으로 완수함. `;
+        text += `특히 각 주거 유형의 특징을 깊이 있게 이해하고, 이를 바탕으로 자신의 가치관을 반영한 ${typeStr} 유형의 ${houseNameStr}을(를) 독창적으로 설계하여 발표함. `;
+        if (hasRef) {
+            text += `활동을 마치며 "${cleanRef}"라고 깊이 있게 성찰하는 모습을 통해, 주거 환경이 개인의 삶의 질과 행복에 미치는 영향을 종합적으로 통찰하는 성숙한 태도를 보여줌.`;
+        } else {
+            text += `이러한 과정을 통해 건강하고 쾌적한 주거 생활에 대한 확고한 가치관을 정립하고 뛰어난 문제 해결 능력을 증명함.`;
+        }
     } else if (student.level === 'B' || student.floor >= 4) {
-        text += `주거 공간의 다양한 요소를 잘 이해하고 주어지는 문제 상황을 성실하게 해결함. `;
+        text += `주거 공간 설계 프로젝트인 '미스터리 맨션' 활동에 성실하게 참여하여 주거 공간의 다양한 구성 요소와 배치 원리를 잘 이해함. `;
+        text += `주어진 문제 상황을 논리적으로 해결해 나가는 과정을 거쳐, ${typeStr} 유형의 특성을 살린 ${houseNameStr}을(를) 구상해냄. `;
+        if (hasRef) {
+            text += `활동 후 "${cleanRef}"라고 소감을 밝히며, 주거 공간의 역할과 중요성에 대해 긍정적으로 인식하는 계기로 삼음.`;
+        } else {
+            text += `활동을 통해 미래 자신의 주거 공간에 대한 밑그림을 그려보고, 바람직한 주거 가치관을 형성하려는 노력이 돋보임.`;
+        }
     } else {
-        text += `주거 공간의 기본 개념과 동선 배치를 이해하기 위해 끈기 있게 과제에 참여함. `;
-    }
-
-    // 2. 주거 유형 및 결과물에 따른 평가
-    if (student.houseType && student.houseType !== '미정') {
-        text += `특히 자신의 라이프스타일과 가치관을 반영한 '${student.houseType}' 유형의 주거 공간을 구상하고, 이를 '${student.houseName}'(이)라는 개성 있는 이름으로 설계하여 발표함. `;
-    }
-
-    // 3. 느낀점(reflection)에 따른 태도/성찰 평가
-    if (student.reflection && student.reflection.length > 5) {
-        // 따옴표 정리하여 문장에 자연스럽게 녹임
-        let cleanRef = student.reflection.replace(/"/g, '').trim();
-        text += `활동 후 "${cleanRef}"라고 소감을 밝히며, 주거 환경이 개인의 삶의 질에 미치는 영향을 깊이 있게 성찰하는 성숙한 태도를 보임.`;
-    } else {
-        text += `미래 자신의 이상적인 주거 공간에 대한 밑그림을 그리고, 건강한 주거 생활에 대한 가치관을 확립하는 계기로 삼음.`;
+        text += `주거 공간 설계 프로젝트인 '미스터리 맨션' 활동에서 주거 공간의 기본 개념과 올바른 동선 배치의 중요성을 학습하기 위해 끈기 있게 참여함. `;
+        text += `다양한 주거 관련 과제를 수행하며 공간의 쓰임새와 가구 배치에 대한 이해도를 높였으며, ${typeStr} 성향을 바탕으로 ${houseNameStr}을(를) 설계해보는 경험을 함. `;
+        if (hasRef) {
+            text += `프로젝트 진행 중 "${cleanRef}"라고 느낀 점을 표현하며, 안전하고 편안한 주거 환경의 필요성을 깨달아가는 발전적인 태도를 보임.`;
+        } else {
+            text += `이 과정을 통해 주거가 단순히 머무는 곳을 넘어 삶의 질을 높이는 중요한 공간임을 인식하게 됨.`;
+        }
     }
 
     return text;
