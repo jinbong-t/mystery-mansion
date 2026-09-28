@@ -1,4 +1,4 @@
-﻿// 미스터리 맨션 - app.js (완전 재작성, UTF-8)
+// 미스터리 맨션 - app.js (완전 재작성, UTF-8)
 
 var state = {
     floor: 1, playerName: '', personalityType: '',
@@ -2221,6 +2221,7 @@ if (document.readyState === 'loading') {
 
 
 var originalChangeFloorUI2 = changeFloorUI; // 원래꺼 보존
+var dialogueTimeout;
 changeFloorUI = function(floorId) {
     originalChangeFloorUI2(floorId);
     
@@ -2248,13 +2249,13 @@ changeFloorUI = function(floorId) {
     else if(floorId === 'roof') targetDialogue = dialogues[4];
 
     if(targetDialogue) {
-        // 엘리베이터 문 닫힘(0s) -> 문 열리기 시작(1.2s) -> 완전히 열림(2.2s)
-        // 문이 완전히 열린 후 1초 뒤에 등장해야 하므로 총 3200ms? 
-        // 그냥 문 열리기 시작(1.2초) + 1초 = 2200ms 로 설정!
-        setTimeout(function() {
+        if (dialogueTimeout) clearTimeout(dialogueTimeout);
+        // 엘리베이터 문 닫힘(0s) -> 흔들림(2.2s) -> 문 열리기(1.2s) -> 총 3.4초 소요.
+        // 유저가 배경(그림)을 먼저 볼 수 있도록 4.4초(4400ms) 뒤에 문제(대화창)가 나타나게 설정.
+        dialogueTimeout = setTimeout(function() {
             targetDialogue.style.display = 'block';
             setTimeout(function() { targetDialogue.style.opacity = '1'; }, 50);
-        }, 2200); 
+        }, 4400); 
     }
 };
 

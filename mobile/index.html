@@ -186,10 +186,10 @@
             <div id="name-input-container" class="hidden glass-panel">
                 <h2>명함을 건네받았지만, 이름 칸이 얼룩져 있다.</h2>
                 <p style="margin-bottom:15px;">당신의 학번과 이름을 적어보세요.</p>
-                <div style="display:flex; gap:10px; margin-bottom:15px; justify-content:center;">
-                    <input type="number" id="player-class" placeholder="반" style="width:70px; text-align:center;">
-                    <input type="number" id="player-number" placeholder="번호" style="width:70px; text-align:center;">
-                    <input type="text" id="player-name" placeholder="이름" style="width:120px; text-align:center;" autocomplete="off">
+                <div style="display:flex; gap:8px; margin-bottom:15px; justify-content:center; width: 100%;">
+                    <input type="number" id="player-class" placeholder="반" style="flex: 1; min-width: 0; text-align:center; padding: 10px 5px; font-size: 1rem;">
+                    <input type="number" id="player-number" placeholder="번호" style="flex: 1; min-width: 0; text-align:center; padding: 10px 5px; font-size: 1rem;">
+                    <input type="text" id="player-name" placeholder="이름" style="flex: 2; min-width: 0; text-align:center; padding: 10px 5px; font-size: 1rem;" autocomplete="off">
                 </div>
                 <button id="start-btn" class="action-btn">서명하기</button>
             </div>
@@ -280,15 +280,15 @@
                 <!-- 문제 1: 평면도 구역 분류 -->
                 <div id="f2-minigame-1" class="hidden glass-panel game-panel">
                     <h2>문제 1: 평면도 구획 나누기</h2>
-                    <p style="color:#ccc;margin-bottom:10px;">아래 공간 구역 카드를 평면도의 알맞은 방에 드래그 또는 터치해 주세요.</p>
+                    <p style="color:#ccc;margin-bottom:10px;font-size:clamp(0.7rem, 3vw, 0.95rem);white-space:nowrap;">아래 공간 구역 카드를 평면도의 알맞은 방에 터치해 주세요.</p>
                     
                     <div class="zoning-game" style="flex-direction: column;">
                         <div class="items" id="room-items" style="justify-content: center; gap: 8px;">
-                            <div class="draggable-item" draggable="true" data-zone="개인생활공간" style="background:#4a5054; color:#fff; padding:6px 12px;">개인생활공간</div>
-                            <div class="draggable-item" draggable="true" data-zone="공동생활공간" style="background:#4a5054; color:#fff; padding:6px 12px;">공동생활공간</div>
-                            <div class="draggable-item" draggable="true" data-zone="가사작업공간" style="background:#4a5054; color:#fff; padding:6px 12px;">가사작업공간</div>
-                            <div class="draggable-item" draggable="true" data-zone="생리위생공간" style="background:#4a5054; color:#fff; padding:6px 12px;">생리위생공간</div>
-                            <div class="draggable-item" draggable="true" data-zone="부수공간" style="background:#4a5054; color:#fff; padding:6px 12px;">부수공간 (현관)</div>
+                            <div class="draggable-item" draggable="true" data-zone="개인생활공간" style="background:#4a5054; color:#fff; padding:6px 10px; font-size:clamp(0.75rem, 2.5vw, 0.9rem); word-break:keep-all; display:flex; align-items:center; justify-content:center; text-align:center;">개인생활공간</div>
+                            <div class="draggable-item" draggable="true" data-zone="공동생활공간" style="background:#4a5054; color:#fff; padding:6px 10px; font-size:clamp(0.75rem, 2.5vw, 0.9rem); word-break:keep-all; display:flex; align-items:center; justify-content:center; text-align:center;">공동생활공간</div>
+                            <div class="draggable-item" draggable="true" data-zone="가사작업공간" style="background:#4a5054; color:#fff; padding:6px 10px; font-size:clamp(0.75rem, 2.5vw, 0.9rem); word-break:keep-all; display:flex; align-items:center; justify-content:center; text-align:center;">가사작업공간</div>
+                            <div class="draggable-item" draggable="true" data-zone="생리위생공간" style="background:#4a5054; color:#fff; padding:6px 10px; font-size:clamp(0.75rem, 2.5vw, 0.9rem); word-break:keep-all; display:flex; align-items:center; justify-content:center; text-align:center;">생리위생공간</div>
+                            <div class="draggable-item" draggable="true" data-zone="부수공간" style="background:#4a5054; color:#fff; padding:6px 6px; font-size:clamp(0.7rem, 2.3vw, 0.85rem); line-height:1.2; word-break:keep-all; display:flex; align-items:center; justify-content:center; text-align:center;">부수공간<br>(현관)</div>
                         </div>
                         
                         <div id="floor-plan-container" style="position: relative; width: 100%; max-width: 480px; margin: 15px auto; background: #fff; padding: 10px; border-radius: 8px; border: 4px solid #333; box-shadow: 0 5px 15px rgba(0,0,0,0.5);">
@@ -296,35 +296,35 @@
                             <div style="color: #333; font-weight: bold; margin-bottom: 10px; border-bottom: 2px solid #ccc; padding-bottom: 5px;">신혼부부의 15평형 평면도</div>
                             
                             <!-- The Grid -->
-                            <div style="display: grid; grid-template-columns: 1fr 1fr; grid-template-rows: 150px 150px; gap: 4px; background: #555; border: 2px solid #555;">
+                            <div style="display: grid; grid-template-columns: 1fr 1fr; grid-template-rows: minmax(150px, auto) minmax(150px, auto); gap: 4px; background: #555; border: 2px solid #555;">
                                 
                                 <!-- Room 1 (방) -->
-                                <div class="floor-plan-room" style="background: #e6f7ff; display: flex; flex-direction: column; align-items: center; justify-content: center; position: relative;">
+                                <div class="floor-plan-room" style="background: #e6f7ff; display: flex; flex-direction: column; align-items: center; justify-content: center; position: relative; padding: 10px 0;">
                                     <span style="color: #333; font-weight: bold; font-size: 1.1rem; margin-bottom: 10px;">🛏️ 안방 (침실)</span>
-                                    <div class="drop-zone" data-target="개인생활공간" style="width: 85%; min-height: 50px; background: rgba(0,0,0,0.1); border: 2px dashed #888; margin: 0; padding: 5px; font-size: 0.8rem; color: #555;">여기에 드래그</div>
+                                    <div class="drop-zone" data-target="개인생활공간" style="width: 85%; min-height: 50px; background: rgba(0,0,0,0.1); border: 2px dashed #888; margin: 0; padding: 5px; font-size: 0.8rem; color: #555; display: flex; align-items: center; justify-content: center;">여기에 터치</div>
                                 </div>
                                 
                                 <!-- Room 2 (화장실) -->
-                                <div class="floor-plan-room" style="background: #e6ffed; display: flex; flex-direction: column; align-items: center; justify-content: center; position: relative; border-left: 4px solid #555; border-bottom: 4px solid #555;">
+                                <div class="floor-plan-room" style="background: #e6ffed; display: flex; flex-direction: column; align-items: center; justify-content: center; position: relative; border-left: 4px solid #555; border-bottom: 4px solid #555; padding: 10px 0;">
                                     <span style="color: #333; font-weight: bold; font-size: 1.1rem; margin-bottom: 10px;">🚿 화장실</span>
-                                    <div class="drop-zone" data-target="생리위생공간" style="width: 85%; min-height: 50px; background: rgba(0,0,0,0.1); border: 2px dashed #888; margin: 0; padding: 5px; font-size: 0.8rem; color: #555;">여기에 드래그</div>
+                                    <div class="drop-zone" data-target="생리위생공간" style="width: 85%; min-height: 50px; background: rgba(0,0,0,0.1); border: 2px dashed #888; margin: 0; padding: 5px; font-size: 0.8rem; color: #555; display: flex; align-items: center; justify-content: center;">여기에 터치</div>
                                 </div>
                                 
                                 <!-- Room 3 (거실) -->
-                                <div class="floor-plan-room" style="background: #fff5e6; display: flex; flex-direction: column; align-items: center; justify-content: center; position: relative;">
+                                <div class="floor-plan-room" style="background: #fff5e6; display: flex; flex-direction: column; align-items: center; justify-content: center; position: relative; padding: 10px 0;">
                                     <span style="color: #333; font-weight: bold; font-size: 1.1rem; margin-bottom: 10px;">🛋️ 거실</span>
-                                    <div class="drop-zone" data-target="공동생활공간" style="width: 85%; min-height: 50px; background: rgba(0,0,0,0.1); border: 2px dashed #888; margin: 0; padding: 5px; font-size: 0.8rem; color: #555;">여기에 드래그</div>
+                                    <div class="drop-zone" data-target="공동생활공간" style="width: 85%; min-height: 50px; background: rgba(0,0,0,0.1); border: 2px dashed #888; margin: 0; padding: 5px; font-size: 0.8rem; color: #555; display: flex; align-items: center; justify-content: center;">여기에 터치</div>
                                 </div>
                                 
                                 <!-- Room 4 (부엌 + 현관) -->
                                 <div class="floor-plan-room" style="background: #fff0f5; display: flex; flex-direction: column; align-items: center; justify-content: flex-start; position: relative;">
-                                    <div style="height: 60%; width: 100%; display: flex; flex-direction: column; align-items: center; justify-content: center; border-bottom: 4px solid #555;">
+                                    <div style="min-height: 60%; width: 100%; display: flex; flex-direction: column; align-items: center; justify-content: center; border-bottom: 4px solid #555; padding: 10px 0; flex-grow: 1;">
                                         <span style="color: #333; font-weight: bold; font-size: 1.1rem; margin-bottom: 5px;">🍳 주방</span>
-                                        <div class="drop-zone" data-target="가사작업공간" style="width: 85%; min-height: 40px; background: rgba(0,0,0,0.1); border: 2px dashed #888; margin: 0; padding: 5px; font-size: 0.8rem; color: #555;">여기에 드래그</div>
+                                        <div class="drop-zone" data-target="가사작업공간" style="width: 85%; min-height: 40px; background: rgba(0,0,0,0.1); border: 2px dashed #888; margin: 0; padding: 5px; font-size: 0.8rem; color: #555; display: flex; align-items: center; justify-content: center;">여기에 터치</div>
                                     </div>
-                                    <div style="height: 40%; width: 100%; background: #f0f0f0; display: flex; flex-direction: column; align-items: center; justify-content: center;">
+                                    <div style="min-height: 40%; width: 100%; background: #f0f0f0; display: flex; flex-direction: column; align-items: center; justify-content: center; padding: 10px 0;">
                                         <span style="color: #333; font-weight: bold; font-size: 0.9rem; margin-bottom: 5px;">🚪 현관</span>
-                                        <div class="drop-zone" data-target="부수공간" style="width: 85%; min-height: 30px; background: rgba(0,0,0,0.1); border: 2px dashed #888; margin: 0; padding: 2px; font-size: 0.7rem; color: #555;">여기에 드래그</div>
+                                        <div class="drop-zone" data-target="부수공간" style="width: 85%; min-height: 35px; background: rgba(0,0,0,0.1); border: 2px dashed #888; margin: 0; padding: 2px; font-size: 0.7rem; color: #555; display: flex; align-items: center; justify-content: center;">여기에 터치</div>
                                     </div>
                                 </div>
                                 
@@ -339,41 +339,41 @@
 
                 <style>
                 .mcq-options { display: flex; flex-direction: column; gap: 10px; }
-                .mcq-btn { background: rgba(255,255,255,0.1); border: 1px solid rgba(255,255,255,0.3); color: #fff; padding: 14px 18px; border-radius: 6px; text-align: left; cursor: pointer; transition: all 0.2s; font-size: 0.95rem; font-family: inherit; line-height: 1.4; }
+                .mcq-btn { background: rgba(255,255,255,0.1); border: 1px solid rgba(255,255,255,0.3); color: #fff; padding: 12px 14px; border-radius: 6px; text-align: left; cursor: pointer; transition: all 0.2s; font-size: clamp(0.8rem, 3.5vw, 0.95rem); font-family: inherit; line-height: 1.4; word-break: keep-all; }
                 .mcq-btn:hover { background: rgba(255,255,255,0.25); }
                 .mcq-btn.selected { background: #b38b59; border-color: #b38b59; color: #fff; font-weight: bold; }
                 </style>
 
                 <!-- 문제 2: 동선 최적화 (객관식) -->
                 <div id="f2-minigame-2" class="hidden glass-panel game-panel">
-                    <h2>문제 2: 비효율적인 동선 개선하기</h2>
+                    <h2 style="font-size:1.3rem;">문제 2: 비효율적인 동선 개선하기</h2>
                     <div style="background:rgba(0,0,0,0.3); padding:15px; border-radius:8px; margin-bottom:15px; border-left: 4px solid #b38b59; text-align: left;">
-                        <p style="margin:0; font-style:italic; font-size:1.15rem;">"아내가 요리를 하다가 세탁기를 돌리러 갈 때마다 거실을 가로질러 가야 해서 너무 피곤하다고 하네요..."</p>
+                        <p style="margin:0; font-style:italic; font-size:clamp(0.85rem, 3.5vw, 1rem); word-break:keep-all;">"아내가 요리를 하다가 세탁기를 돌리러 갈 때마다 거실을 가로질러 가야 해서 너무 피곤하다고 하네요..."</p>
                     </div>
-                    <p style="margin-bottom:15px;font-size:1.15rem;line-height:1.5;text-align:left;">현재 이 집은 가사 노동 동선이 너무 길고 복잡합니다.<br>이를 해결하기 위한 가장 올바른 공간 배치 원칙은 무엇일까요?</p>
+                    <p style="margin-bottom:15px;font-size:clamp(0.9rem, 3.8vw, 1.05rem);line-height:1.5;text-align:left;word-break:keep-all;">현재 이 집은 가사 노동 동선이 너무 길고 복잡합니다.<br>이를 해결하기 위한 가장 올바른 공간 배치 원칙은 무엇일까요?</p>
                     <div class="mcq-options" id="m2-options">
                         <button class="mcq-btn" data-correct="false">1. 가사 동선과 가족 휴식 동선을 완전히 겹치게 하여 공간을 절약한다.</button>
                         <button class="mcq-btn" data-correct="true">2. 가사 작업 공간(주방)과 가사 작업 공간(다용도실)을 인접하게 배치하여 동선을 짧고 단순하게 한다.</button>
                         <button class="mcq-btn" data-correct="false">3. 현관에서 주방을 거쳐야만 거실로 들어갈 수 있도록 동선을 길게 우회시킨다.</button>
                         <button class="mcq-btn" data-correct="false">4. 개인 생활 동선을 주방 한가운데로 통과하게 하여 가족간 소통을 강제한다.</button>
                     </div>
-                    <button id="check-f2-m2" class="action-btn hidden" style="margin-top:15px;">확인</button>
+                    <button id="check-f2-m2" class="action-btn hidden" style="margin-top:15px; margin-left:auto;">확인</button>
                 </div>
 
                 <!-- 문제 3: 공간 조닝 (객관식) -->
                 <div id="f2-minigame-3" class="hidden glass-panel game-panel">
-                    <h2>문제 3: 라이프스타일을 반영한 조닝(Zoning)</h2>
+                    <h2 style="font-size:1.3rem;">문제 3: 라이프스타일을 반영한 조닝(Zoning)</h2>
                     <div style="background:rgba(0,0,0,0.3); padding:15px; border-radius:8px; margin-bottom:15px; border-left: 4px solid #b38b59; text-align: left;">
-                        <p style="margin:0; font-style:italic; font-size:1.15rem;">"남편은 야간 교대 근무라 낮에 잠을 자야 해요. 그런데 제가 낮에 거실에 손님을 초대하면, 남편이 시끄러워서 쉴 수가 없대요."</p>
+                        <p style="margin:0; font-style:italic; font-size:clamp(0.85rem, 3.5vw, 1rem); word-break:keep-all;">"남편은 야간 교대 근무라 낮에 잠을 자야 해요. 그런데 제가 낮에 거실에 손님을 초대하면, 남편이 시끄러워서 쉴 수가 없대요."</p>
                     </div>
-                    <p style="margin-bottom:15px;font-size:1.15rem;line-height:1.5;text-align:left;">이 문제를 해결하기 위해 중학교 기술·가정 시간에 배운 '조닝' 원칙을 어떻게 적용해야 할까요?</p>
+                    <p style="margin-bottom:15px;font-size:clamp(0.9rem, 3.8vw, 1.05rem);line-height:1.5;text-align:left;word-break:keep-all;">이 문제를 해결하기 위해 중학교 기술·가정 시간에 배운 '조닝' 원칙을 어떻게 적용해야 할까요?</p>
                     <div class="mcq-options" id="m3-options">
                         <button class="mcq-btn" data-correct="false">1. 거실과 주방 사이에 가벽을 세워 손님들이 주방을 보지 못하게 차단한다.</button>
                         <button class="mcq-btn" data-correct="false">2. 침실을 현관 입구 쪽으로 배치하여 남편이 퇴근 후 곧바로 들어갈 수 있게 한다.</button>
                         <button class="mcq-btn" data-correct="true">3. 정적 공간(침실)과 동적 공간(거실)을 평면도 상에서 분리하여 소음과 동선 간섭을 최소화한다.</button>
                         <button class="mcq-btn" data-correct="false">4. 모든 공간의 벽을 허무는 '오픈 플랜' 구조를 적용하여 집을 더 넓어 보이게 한다.</button>
                     </div>
-                    <button id="check-f2-m3" class="action-btn hidden" style="margin-top:15px;">확인</button>
+                    <button id="check-f2-m3" class="action-btn hidden" style="margin-top:15px; margin-left:auto;">확인</button>
                     <div id="f2-password-hint" class="hidden hint-box" style="margin-top:20px;">
                         <p class="hint-title">✨ 두 사람의 요구가 모두 반영된 공간 배치 완성!</p>
                         <p style="color:#ddd;margin:10px 0;">명함이 파랗게 빛납니다. 뒤집어보니...</p>
@@ -421,14 +421,14 @@
                     <h2>📦 문 앞 트릭: 뒤바뀐 택배 순서</h2>
                     <p style="color:#ccc;margin-bottom:15px;font-size:0.9rem;">진짜 도착 순서를 추리해 도어락 비밀번호를 알아내세요!</p>
                     <div style="background-color:#f4ecd8; background-image:url('https://www.transparenttextures.com/patterns/cream-paper.png'); padding:20px; border-radius:2px; border:1px solid #dcd3b6; margin-bottom:15px; font-size:0.95rem; color:#333; box-shadow: 2px 2px 8px rgba(0,0,0,0.5);">
-                        <ul style="list-style:none;padding-left:0;margin-top:0;margin-bottom:15px;color:#222;line-height:1.7;font-weight:bold;">
-                            <li>• 운동화는 책보다 늦게 도착했다.</li>
-                            <li>• 라면은 가장 먼저도, 가장 나중에도 아니었다.</li>
-                            <li>• 정수기 필터는 운동화보다 먼저 도착했다.</li>
-                            <li>• 책은 라면보다 나중에 도착했다.</li>
+                        <ul style="list-style:none;padding-left:0;margin-top:0;margin-bottom:15px;color:#222;line-height:1.7;font-weight:bold; word-break:keep-all;">
+                            <li style="padding-left:18px; text-indent:-18px; margin-bottom:5px;">• 운동화는 책보다 늦게 도착했다.</li>
+                            <li style="padding-left:18px; text-indent:-18px; margin-bottom:5px;">• 라면은 가장 먼저도, 가장 나중에도 아니었다.</li>
+                            <li style="padding-left:18px; text-indent:-18px; margin-bottom:5px;">• 정수기 필터는 운동화보다 먼저 도착했다.</li>
+                            <li style="padding-left:18px; text-indent:-18px; margin-bottom:5px;">• 책은 라면보다 나중에 도착했다.</li>
                         </ul>
                         <hr style="border:0;border-top:1px dashed #aa9;margin:15px 0;">
-                        <p style="margin:5px 0;color:#555;font-size:0.85rem;text-align:center;">
+                        <p style="margin:5px 0;color:#555;font-size:0.85rem;text-align:center; word-break:keep-all;">
                             (참고: 각 상자 뒷면의 숫자 - 라면=9, 정수기 필터=3, 책=6, 운동화=2)<br>
                             *도착한 순서대로 상자의 숫자를 나열하면 4자리 비밀번호가 됩니다.
                         </p>
@@ -526,33 +526,33 @@
 
                 <!-- 문제 1: 공간 제약의 해결 -->
                 <div id="f4-minigame-1" class="hidden glass-panel game-panel">
-                    <h2>🏠 문제 1: 공간 제약의 해결</h2>
+                    <h2 style="font-size:1.3rem;">🏠 문제 1: 공간 제약의 해결</h2>
                     <div style="background:rgba(0,0,0,0.3); padding:15px; border-radius:8px; margin-bottom:15px; border-left: 4px solid #b38b59; text-align:left;">
-                        <p style="margin:0; font-size:1.15rem; line-height:1.6; color:#e0e0e0;">"수납할 책과 옷은 많은데 바닥 면적이 좁아서 가구를 다 놓을 수가 없어 고민입니다. 하지만 다행히 이 원룸은 천장이 높은 복층 구조네요."</p>
+                        <p style="margin:0; font-size:clamp(0.85rem, 3.5vw, 1rem); line-height:1.6; color:#e0e0e0; word-break:keep-all;">"수납할 책과 옷은 많은데 바닥 면적이 좁아서 가구를 다 놓을 수가 없어 고민입니다. 하지만 다행히 이 원룸은 천장이 높은 복층 구조네요."</p>
                     </div>
-                    <p style="color:#ccc;margin-bottom:15px; font-weight:bold; font-size:1.15rem; text-align:left;">수납 문제를 해결하기 위해 '공간의 입체적 활용'을 적용한<br>가장 타당한 대안은?</p>
+                    <p style="color:#ccc;margin-bottom:15px; font-weight:bold; font-size:clamp(0.9rem, 3.8vw, 1.05rem); text-align:left; word-break:keep-all;">수납 문제를 해결하기 위해 '공간의 입체적 활용'을 적용한<br>가장 타당한 대안은?</p>
                     <div class="mcq-options" id="f4-m1-options"></div>
                     <button id="check-f4-m1" class="action-btn" style="margin-top:15px;width:100%;padding:12px;display:none;">확인</button>
                 </div>
 
                 <!-- 문제 2: 라이프스타일과 가구 선택 -->
                 <div id="f4-minigame-2" class="hidden glass-panel game-panel">
-                    <h2>🪑 문제 2: 라이프스타일과 가구 선택</h2>
+                    <h2 style="font-size:1.3rem;">🪑 문제 2: 라이프스타일과 가구 선택</h2>
                     <div style="background:rgba(0,0,0,0.3); padding:15px; border-radius:8px; margin-bottom:15px; border-left: 4px solid #b38b59; text-align:left;">
-                        <p style="margin:0; font-size:1.15rem; line-height:1.6; color:#e0e0e0;">"평소 친구들을 자주 초대해서 과제를 같이 하는 편입니다. 하지만 좁은 원룸에 큰 식탁을 두면 평상시에 지나다닐 동선이 꽉 막혀버려요."</p>
+                        <p style="margin:0; font-size:clamp(0.85rem, 3.5vw, 1rem); line-height:1.6; color:#e0e0e0; word-break:keep-all;">"평소 친구들을 자주 초대해서 과제를 같이 하는 편입니다. 하지만 좁은 원룸에 큰 식탁을 두면 평상시에 지나다닐 동선이 꽉 막혀버려요."</p>
                     </div>
-                    <p style="color:#ccc;margin-bottom:15px; font-weight:bold; font-size:1.15rem; text-align:left;">친구들과의 모임(다인용)과 평상시의 넓은 동선(공간 절약)을<br>모두 만족시킬 수 있는 가구는?</p>
+                    <p style="color:#ccc;margin-bottom:15px; font-weight:bold; font-size:clamp(0.9rem, 3.8vw, 1.05rem); text-align:left; word-break:keep-all;">친구들과의 모임(다인용)과 평상시의 넓은 동선(공간 절약)을<br>모두 만족시킬 수 있는 가구는?</p>
                     <div class="mcq-options" id="f4-m2-options"></div>
                     <button id="check-f4-m2" class="action-btn" style="margin-top:15px;width:100%;padding:12px;display:none;">확인</button>
                 </div>
 
                 <!-- 문제 3: 합리적인 가구 배치 -->
                 <div id="f4-minigame-3" class="hidden glass-panel game-panel">
-                    <h2>📐 문제 3: 합리적인 가구 배치 결과 평가</h2>
+                    <h2 style="font-size:1.3rem;">📐 문제 3: 합리적인 가구 배치 결과 평가</h2>
                     <div style="background:rgba(0,0,0,0.3); padding:15px; border-radius:8px; margin-bottom:15px; border-left: 4px solid #b38b59; text-align:left;">
-                        <p style="margin:0; font-size:1.15rem; line-height:1.6; color:#e0e0e0;">"이제 마지막으로 가구를 배치하려고 합니다. 생활의 편리함(동선 확보)과 쾌적함(채광/환기)을 동시에 고려해야 합니다."</p>
+                        <p style="margin:0; font-size:clamp(0.85rem, 3.5vw, 1rem); line-height:1.6; color:#e0e0e0; word-break:keep-all;">"이제 마지막으로 가구를 배치하려고 합니다. 생활의 편리함(동선 확보)과 쾌적함(채광/환기)을 동시에 고려해야 합니다."</p>
                     </div>
-                    <p style="color:#ccc;margin-bottom:15px; font-weight:bold; font-size:1.15rem;">다음 중 좁은 공간에서 가장 올바른 가구 배치는?</p>
+                    <p style="color:#ccc;margin-bottom:15px; font-weight:bold; font-size:clamp(0.9rem, 3.8vw, 1.05rem); word-break:keep-all;">다음 중 좁은 공간에서 가장 올바른 가구 배치는?</p>
                     <div class="mcq-options" id="f4-m3-options"></div>
                     <button id="check-f4-m3" class="action-btn" style="margin-top:15px;width:100%;padding:12px;display:none;">확인</button>
                 </div>
@@ -629,7 +629,7 @@
                     <div style="display:flex; flex-direction:column; align-items:center; gap:15px; margin-top: 20px;">
                         <!-- 문제 설명 추가 -->
                         <p style="color:#ccc; font-size:0.95rem; line-height:1.6; text-align:center; padding:10px; background:rgba(0,0,0,0.3); border-left:4px solid #b38b59; border-radius:8px; width:100%; box-sizing:border-box; margin: 5px 0;">
-                            아래의 가구들을 도면의 가장 적절한 구역(A~D)으로 드래그 또는 터치하여 배치해 보세요.<br>
+                            <span style="display:inline-block; font-size:clamp(0.65rem, 2.8vw, 0.95rem); white-space:nowrap;">아래의 가구들을 도면의 적절한 구역(A~D)에 터치하여 배치해 보세요.</span><br>
                             <span style="color:#f0d080;font-size:0.85rem;">(힌트: 채광, 생활 동선, 프라이버시 등 가구 배치 원칙 고려)</span>
                         </p>
 
@@ -705,7 +705,7 @@
                                 <h3 style="color:gold;margin-bottom:15px;font-size:1.4rem;">✨ 벽면의 패널이 열렸습니다!</h3>
                                 <div style="background:linear-gradient(135deg, rgba(30,20,40,0.9), rgba(10,5,15,0.9)); padding:25px; border:2px solid #a67c00; border-radius:15px; margin-bottom:25px; box-shadow: 0 0 20px rgba(166,124,0,0.5), inset 0 0 10px rgba(255,255,255,0.1); position:relative; overflow:hidden;">
                                     <div style="position:absolute; top:-10px; right:10px; font-size:3rem; opacity:0.15;">🌌</div>
-                                    <p style="color:#f0d080;font-style:italic;line-height:1.8;font-size:1.1rem; text-shadow:0 0 5px rgba(240,208,128,0.5);">"집의 진정한 완성은 4개의 벽 안에 있지 않습니다.<br>하늘 아래 탁 트인 공간 — 가장 높은 곳에서<br>우리는 비로소 삶의 방향을 봅니다.<br>이 쪽지를 들고 마지막 공간으로 오세요."</p>
+                                    <p style="color:#f0d080;font-style:italic;line-height:1.6;font-size:clamp(0.95rem, 4vw, 1.1rem); text-shadow:0 0 5px rgba(240,208,128,0.5); word-break:keep-all;">"집의 진정한 완성은<br>4개의 벽 안에 있지 않습니다.<br><br>하늘 아래 탁 트인 공간<br>— 가장 높은 곳에서<br>우리는 비로소 삶의 방향을 봅니다.<br><br>이 쪽지를 들고<br>마지막 공간으로 오세요."</p>
                                 </div>
                                 
             <!-- 정답 해설 버튼 & 마지막 공간 이동 버튼 -->
@@ -786,7 +786,7 @@
                 <!-- 미니게임 2: 수납 개념 심화 분류 (E, S, K 획득) -->
                 <div id="roof-game-floor" class="hidden glass-panel game-panel" style="max-width:700px; width:90%;">
                     <h2>🧹 두 번째 단서: 수납의 고수 (컨베이어 벨트)</h2>
-                    <p style="color:#ccc;margin-bottom:15px;font-size:0.9rem;">물건이 지나가기 전에 알맞은 곳으로 드래그 또는 터치해 주세요!<br>(정리: 버림 / 수납: 제자리 보관 / 보관: 창고행)</p>
+                    <p style="color:#ccc;margin-bottom:15px;font-size:clamp(0.7rem, 2.8vw, 0.9rem);"><span style="white-space:nowrap;">물건이 지나가기 전에 알맞은 곳으로 터치해 주세요!</span><br>(정리: 버림 / 수납: 제자리 보관 / 보관: 창고행)</p>
                     
                     <!-- 컨베이어 벨트 영역 -->
                     <div style="position:relative;width:100%;height:100px;background:#333;border:4px solid #222;border-radius:8px;overflow:hidden;margin-bottom:20px;box-shadow:inset 0 0 15px rgba(0,0,0,0.8);">
@@ -797,10 +797,10 @@
                         </div>
                     </div>
 
-                    <div style="display:flex;gap:15px;justify-content:center;margin-bottom:20px;">
-                        <div class="drop-box" data-target="trash" style="flex:1;height:130px;background:linear-gradient(145deg, #8B0000, #cc2200, #ff4422);border-radius:14px;display:flex;flex-direction:column;align-items:center;justify-content:center;font-size:1.1rem;font-weight:bold;color:#fff;border:3px solid rgba(255,80,50,0.7);box-shadow:0 0 20px rgba(200,30,0,0.5),inset 0 0 15px rgba(0,0,0,0.3);gap:6px;cursor:pointer;transition:transform 0.2s,box-shadow 0.2s;" onmouseover="this.style.transform='scale(1.05)'" onmouseout="this.style.transform='scale(1)'"><span style="font-size:2rem;">🗑️</span><span>정리 (폐기)</span><span style="font-size:0.75rem;color:rgba(255,200,200,0.8);">필요없는 물건</span></div>
-                        <div class="drop-box" data-target="frequent" style="flex:1;height:130px;background:linear-gradient(145deg, #004d00, #228822, #44cc44);border-radius:14px;display:flex;flex-direction:column;align-items:center;justify-content:center;font-size:1.1rem;font-weight:bold;color:#fff;border:3px solid rgba(50,220,80,0.7);box-shadow:0 0 20px rgba(0,150,30,0.5),inset 0 0 15px rgba(0,0,0,0.3);gap:6px;cursor:pointer;transition:transform 0.2s,box-shadow 0.2s;" onmouseover="this.style.transform='scale(1.05)'" onmouseout="this.style.transform='scale(1)'"><span style="font-size:2rem;">🗄️</span><span>자주쓰는 수납</span><span style="font-size:0.75rem;color:rgba(180,255,180,0.8);">자주 꺼내는 물건</span></div>
-                        <div class="drop-box" data-target="warehouse" style="flex:1;height:130px;background:linear-gradient(145deg, #003366, #1a5fa5, #4488dd);border-radius:14px;display:flex;flex-direction:column;align-items:center;justify-content:center;font-size:1.1rem;font-weight:bold;color:#fff;border:3px solid rgba(80,160,255,0.7);box-shadow:0 0 20px rgba(30,80,200,0.5),inset 0 0 15px rgba(0,0,0,0.3);gap:6px;cursor:pointer;transition:transform 0.2s,box-shadow 0.2s;" onmouseover="this.style.transform='scale(1.05)'" onmouseout="this.style.transform='scale(1)'"><span style="font-size:2rem;">📦</span><span>장기 보관 (창고)</span><span style="font-size:0.75rem;color:rgba(180,210,255,0.8);">계절용·비상 물건</span></div>
+                    <div style="display:flex;gap:8px;justify-content:center;margin-bottom:20px;padding: 0 5px;">
+                        <div class="drop-box" data-target="trash" style="flex:1;min-height:150px;padding:10px 5px;background:linear-gradient(145deg, #8B0000, #cc2200, #ff4422);border-radius:14px;display:flex;flex-direction:column;align-items:center;justify-content:center;font-size:0.95rem;word-break:keep-all;text-align:center;line-height:1.2;font-weight:bold;color:#fff;border:3px solid rgba(255,80,50,0.7);box-shadow:0 0 20px rgba(200,30,0,0.5),inset 0 0 15px rgba(0,0,0,0.3);gap:4px;cursor:pointer;transition:transform 0.2s,box-shadow 0.2s;" onmouseover="this.style.transform='scale(1.05)'" onmouseout="this.style.transform='scale(1)'"><span style="font-size:1.6rem;">🗑️</span><span>정리<br>(폐기)</span><span style="font-size:0.7rem;color:rgba(255,200,200,0.8);line-height:1.1;">필요없는 물건</span></div>
+                        <div class="drop-box" data-target="frequent" style="flex:1;min-height:150px;padding:10px 5px;background:linear-gradient(145deg, #004d00, #228822, #44cc44);border-radius:14px;display:flex;flex-direction:column;align-items:center;justify-content:center;font-size:0.95rem;word-break:keep-all;text-align:center;line-height:1.2;font-weight:bold;color:#fff;border:3px solid rgba(50,220,80,0.7);box-shadow:0 0 20px rgba(0,150,30,0.5),inset 0 0 15px rgba(0,0,0,0.3);gap:4px;cursor:pointer;transition:transform 0.2s,box-shadow 0.2s;" onmouseover="this.style.transform='scale(1.05)'" onmouseout="this.style.transform='scale(1)'"><span style="font-size:1.6rem;">🗄️</span><span>자주쓰는<br>수납</span><span style="font-size:0.7rem;color:rgba(180,255,180,0.8);line-height:1.1;">자주 꺼내는 물건</span></div>
+                        <div class="drop-box" data-target="warehouse" style="flex:1;min-height:150px;padding:10px 5px;background:linear-gradient(145deg, #003366, #1a5fa5, #4488dd);border-radius:14px;display:flex;flex-direction:column;align-items:center;justify-content:center;font-size:0.95rem;word-break:keep-all;text-align:center;line-height:1.2;font-weight:bold;color:#fff;border:3px solid rgba(80,160,255,0.7);box-shadow:0 0 20px rgba(30,80,200,0.5),inset 0 0 15px rgba(0,0,0,0.3);gap:4px;cursor:pointer;transition:transform 0.2s,box-shadow 0.2s;" onmouseover="this.style.transform='scale(1.05)'" onmouseout="this.style.transform='scale(1)'"><span style="font-size:1.6rem;">📦</span><span>장기 보관<br>(창고)</span><span style="font-size:0.7rem;color:rgba(180,210,255,0.8);line-height:1.1;">계절용·비상 물건</span></div>
                     </div>
                     
                     
@@ -822,7 +822,7 @@
                         <div style="display:flex;justify-content:center;margin-bottom:15px;">
     <input id="storage-word-full" type="text" maxlength="5" placeholder="5글자 입력" style="width:200px;height:50px;font-size:1.5rem;text-align:center;background:#111;border:2px solid gold;color:gold;border-radius:8px;font-weight:bold;letter-spacing:10px;">
 </div>
-                        <button id="check-storage-word" class="action-btn" style="background:gold;color:#000;font-weight:bold;padding:10px 24px;">확인</button>
+                        <button id="check-storage-word" class="action-btn" style="background:gold;color:#000;font-weight:bold;padding:10px 24px;margin:0 auto;display:block;">확인</button>
                     </div>
                 </div>
 
@@ -909,7 +909,7 @@
                         </div>
                         <div id="submit-housing-container" class="hidden" style="display:flex; flex-direction:column; justify-content:center; align-items:center; width:100%; text-align:center; margin-top:20px;">
                             <h2 style="color:gold; margin-bottom:30px; font-size:1.8rem; text-shadow:0 0 15px gold; text-align:center; line-height:1.4;">✨ 운명의 주거 공간이 정해졌습니다 ✨</h2>
-                            <button id="submit-housing-test" class="action-btn" style="display:block; margin:0 auto; width:80%; max-width:400px; padding:20px; font-size:1.3rem; background:linear-gradient(135deg, #a67c00, #bf953f); color:#fff; border-radius:30px; box-shadow:0 0 20px rgba(166,124,0,0.5); border:2px solid #ffe57f;">나의 운명적인 주거 공간 확인하기</button>
+                            <button id="submit-housing-test" class="action-btn" style="display:block; margin:0 auto; width:90%; max-width:400px; padding:15px 10px; font-size: clamp(0.9rem, 4.5vw, 1.2rem); background:linear-gradient(135deg, #a67c00, #bf953f); color:#fff; border-radius:30px; box-shadow:0 0 20px rgba(166,124,0,0.5); border:2px solid #ffe57f; white-space:normal; word-break:keep-all; line-height:1.4;">나의 운명적인 주거 공간 확인하기</button>
                         </div>
                     </div>
                 </div>

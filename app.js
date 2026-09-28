@@ -531,10 +531,12 @@ function initFloor2() {
             roomBackground.style.backgroundImage = "url('201호신혼부부 하우스.png')";
         }
         
+        if (f2InsideScene) { showElement(f2InsideScene); f2InsideScene.classList.remove('hidden'); }
+        var d = document.getElementById('f2-dialogue');
+        if (d) d.style.display = 'none';
+        
         // 1. 전체 모습 1초간 보여주고 대사 등장
         setTimeout(function() {
-            if (f2InsideScene) { showElement(f2InsideScene); f2InsideScene.classList.remove('hidden'); }
-            var d = document.getElementById('f2-dialogue');
             if (d) d.style.display = 'block';
         }, 1000);
     }, null);
@@ -762,10 +764,13 @@ function initFloor3() {
     setupDoorlock('f3', '3962', function() {
         hideElement(f3EntranceScene);
         if (roomBackground) roomBackground.style.backgroundImage = "url('2. 301호 방 안 (정리 전 - 엉망인 부엌 동선).png')";
+        
+        if (f3InsideScene) { showElement(f3InsideScene); f3InsideScene.classList.remove('hidden'); }
+        var d = document.getElementById('f3-dialogue');
+        if (d) d.style.display = 'none';
+        
         setTimeout(function() {
-            if (f3InsideScene) { 
-                showElement(f3InsideScene); f3InsideScene.classList.remove('hidden'); 
-            }
+            if (d) d.style.display = 'block';
         }, 1000);
     }, function() {
         setTimeout(function() {
@@ -977,8 +982,10 @@ function initFloor4() {
             
             if (roomBackground) roomBackground.style.backgroundImage = "url('401호 정리 안된 내부.png')"; // 정리가 덜 된 초기 내부 이미지
             if (f4InsideScene) { showElement(f4InsideScene); f4InsideScene.classList.remove('hidden'); }
+            var f4Dial = document.getElementById('f4-dialogue');
+            if (f4Dial) f4Dial.style.display = 'none';
+            
             setTimeout(function() {
-                var f4Dial = document.getElementById('f4-dialogue');
                 if (f4Dial) f4Dial.style.display = 'block';
             }, 1000);
         }, 2500);
@@ -1137,27 +1144,27 @@ function initFloor5() {
     setupDoorlock('f5', '0501', function() {
         hideElement(f5EntranceScene);
         if (roomBackground) roomBackground.style.backgroundImage = "url('501%ED%98%B8%20%EB%82%B4%EB%B6%80.png')";
+        
+        if (f5InsideScene) { showElement(f5InsideScene); f5InsideScene.classList.remove('hidden'); }
+        var dIn = document.getElementById('f5-dialogue');
+        if (dIn) dIn.style.display = 'none';
+        
         setTimeout(function() {
-            if (f5InsideScene) { 
-                showElement(f5InsideScene); f5InsideScene.classList.remove('hidden'); 
-                var dIn = document.getElementById('f5-dialogue');
-                if (dIn) {
-                    dIn.style.display = 'block';
-                var inBtn1 = document.getElementById('f5-in-btn-1');
-                if (inBtn1) {
-                    inBtn1.addEventListener('click', function() {
-                        dIn.innerHTML = '<p class="speaker">나(플레이어)</p><p class="text">"심지어 가구 배치도 이상해요. 좁은 방에 이렇게 큰 가구들을 욱여넣다니... 도대체 누가 이런 짓을?"</p><button id="f5-in-btn-2" class="action-btn">다음</button>';
-                        document.getElementById('f5-in-btn-2').addEventListener('click', function() {
-                            dIn.innerHTML = '<p class="speaker">미스터리 공인중개사</p><p class="text">"(떨리는 목소리로) 일단... 가구 배치 원칙 8가지를 떠올려서, 이 기괴한 방의 오류들을 찾아보세요. 서둘러야 할 것 같습니다!"</p><button id="start-f5-btn" class="action-btn">가구 배치 조사하기</button>';
-                            document.getElementById('start-f5-btn').addEventListener('click', function() {
-                                dIn.style.display = 'none';
-                                showElement(m1); initF5M1();
-                            });
+            if (dIn) dIn.style.display = 'block';
+            
+            var inBtn1 = document.getElementById('f5-in-btn-1');
+            if (inBtn1) {
+                inBtn1.addEventListener('click', function() {
+                    dIn.innerHTML = '<p class="speaker">나(플레이어)</p><p class="text">"심지어 가구 배치도 이상해요. 좁은 방에 이렇게 큰 가구들을 욱여넣다니... 도대체 누가 이런 짓을?"</p><button id="f5-in-btn-2" class="action-btn">다음</button>';
+                    document.getElementById('f5-in-btn-2').addEventListener('click', function() {
+                        dIn.innerHTML = '<p class="speaker">미스터리 공인중개사</p><p class="text">"(떨리는 목소리로) 일단... 가구 배치 원칙 8가지를 떠올려서, 이 기괴한 방의 오류들을 찾아보세요. 서둘러야 할 것 같습니다!"</p><button id="start-f5-btn" class="action-btn">가구 배치 조사하기</button>';
+                        document.getElementById('start-f5-btn').addEventListener('click', function() {
+                            dIn.style.display = 'none';
+                            showElement(m1); initF5M1();
                         });
                     });
-                }
+                });
             }
-        }
         }, 1000);
     }, null);
 
@@ -2202,6 +2209,7 @@ if(phoneScene) {
 
 
 var originalChangeFloorUI2 = changeFloorUI; // 원래꺼 보존
+var dialogueTimeout;
 changeFloorUI = function(floorId) {
     originalChangeFloorUI2(floorId);
     
@@ -2229,13 +2237,13 @@ changeFloorUI = function(floorId) {
     else if(floorId === 'roof') targetDialogue = dialogues[4];
 
     if(targetDialogue) {
-        // 엘리베이터 문 닫힘(0s) -> 문 열리기 시작(1.2s) -> 완전히 열림(2.2s)
-        // 문이 완전히 열린 후 1초 뒤에 등장해야 하므로 총 3200ms? 
-        // 그냥 문 열리기 시작(1.2초) + 1초 = 2200ms 로 설정!
-        setTimeout(function() {
+        if (dialogueTimeout) clearTimeout(dialogueTimeout);
+        // 엘리베이터 문 닫힘(0s) -> 흔들림(2.2s) -> 문 열리기(1.2s) -> 총 3.4초 소요.
+        // 유저가 배경(그림)을 먼저 볼 수 있도록 4.4초(4400ms) 뒤에 문제(대화창)가 나타나게 설정.
+        dialogueTimeout = setTimeout(function() {
             targetDialogue.style.display = 'block';
             setTimeout(function() { targetDialogue.style.opacity = '1'; }, 50);
-        }, 2200); 
+        }, 4400); 
     }
 };
 

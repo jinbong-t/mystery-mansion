@@ -1,4 +1,4 @@
-﻿:root {
+:root {
     --bg-dark: #0d0d0d;
     --text-light: #f0f0f0;
     --accent: #c8975e;
@@ -507,19 +507,19 @@ body {
 }
 
 @media (max-height: 850px), (max-width: 850px) {
-    .smartphone-wrapper { transform: scale(0.85); }
+    /* .smartphone-wrapper { transform: scale(0.85); } */
 }
 @media (max-height: 750px), (max-width: 750px) {
-    .smartphone-wrapper { transform: scale(0.75); }
+    /* .smartphone-wrapper { transform: scale(0.75); } */
 }
 @media (max-height: 650px), (max-width: 650px) {
-    .smartphone-wrapper { transform: scale(0.65); }
+    /* .smartphone-wrapper { transform: scale(0.65); } */
 }
 @media (max-height: 550px), (max-width: 550px) {
-    .smartphone-wrapper { transform: scale(0.55); }
+    /* .smartphone-wrapper { transform: scale(0.55); } */
 }
 @media (max-height: 450px), (max-width: 450px) {
-    .smartphone-wrapper { transform: scale(0.45); }
+    /* .smartphone-wrapper { transform: scale(0.45); } */
 }
 
 .power-btn-side {
@@ -2547,5 +2547,5 @@ button, .action-btn, .test-btn, .drop-box, .key-btn, .glass-panel, .dialogue-box
     transform: none !important;
 }
 
-#agent-portrait { width: 85vw !important; max-width: 450px !important; height: auto !important; border-radius: 0 !important; box-shadow: none !important; margin-bottom: 0 !important; bottom: -10px !important; right: 0 !important; z-index: 10 !important; }
+#agent-portrait { width: 130vw !important; max-width: 650px !important; height: auto !important; border-radius: 0 !important; box-shadow: none !important; margin-bottom: 0 !important; bottom: 0 !important; right: -20vw !important; z-index: 10 !important; }
 

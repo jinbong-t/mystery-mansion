@@ -277,7 +277,7 @@
                 <!-- 문제 1: 평면도 구역 분류 -->
                 <div id="f2-minigame-1" class="hidden glass-panel game-panel">
                     <h2>문제 1: 평면도 구획 나누기</h2>
-                    <p style="color:#ccc;margin-bottom:10px;">아래 공간 구역 카드를 평면도의 알맞은 방에 드래그 또는 터치해 주세요.</p>
+                    <p style="color:#ccc;margin-bottom:10px;">아래 공간 구역 카드를 평면도의 알맞은 방에 터치해 주세요.</p>
                     
                     <div class="zoning-game" style="flex-direction: column;">
                         <div class="items" id="room-items" style="justify-content: center; gap: 8px;">
@@ -354,7 +354,7 @@
                         <button class="mcq-btn" data-correct="false">3. 현관에서 주방을 거쳐야만 거실로 들어갈 수 있도록 동선을 길게 우회시킨다.</button>
                         <button class="mcq-btn" data-correct="false">4. 개인 생활 동선을 주방 한가운데로 통과하게 하여 가족간 소통을 강제한다.</button>
                     </div>
-                    <button id="check-f2-m2" class="action-btn hidden" style="margin-top:15px;">확인</button>
+                    <button id="check-f2-m2" class="action-btn hidden" style="margin-top:15px; margin-left:auto;">확인</button>
                 </div>
 
                 <!-- 문제 3: 공간 조닝 (객관식) -->
@@ -370,7 +370,7 @@
                         <button class="mcq-btn" data-correct="true">3. 정적 공간(침실)과 동적 공간(거실)을 평면도 상에서 분리하여 소음과 동선 간섭을 최소화한다.</button>
                         <button class="mcq-btn" data-correct="false">4. 모든 공간의 벽을 허무는 '오픈 플랜' 구조를 적용하여 집을 더 넓어 보이게 한다.</button>
                     </div>
-                    <button id="check-f2-m3" class="action-btn hidden" style="margin-top:15px;">확인</button>
+                    <button id="check-f2-m3" class="action-btn hidden" style="margin-top:15px; margin-left:auto;">확인</button>
                     <div id="f2-password-hint" class="hidden hint-box" style="margin-top:20px;">
                         <p class="hint-title">✨ 두 사람의 요구가 모두 반영된 공간 배치 완성!</p>
                         <p style="color:#ddd;margin:10px 0;">명함이 파랗게 빛납니다. 뒤집어보니...</p>
@@ -418,14 +418,14 @@
                     <h2>📦 문 앞 트릭: 뒤바뀐 택배 순서</h2>
                     <p style="color:#ccc;margin-bottom:15px;font-size:0.9rem;">진짜 도착 순서를 추리해 도어락 비밀번호를 알아내세요!</p>
                     <div style="background-color:#f4ecd8; background-image:url('https://www.transparenttextures.com/patterns/cream-paper.png'); padding:20px; border-radius:2px; border:1px solid #dcd3b6; margin-bottom:15px; font-size:0.95rem; color:#333; box-shadow: 2px 2px 8px rgba(0,0,0,0.5);">
-                        <ul style="list-style:none;padding-left:0;margin-top:0;margin-bottom:15px;color:#222;line-height:1.7;font-weight:bold;">
-                            <li>• 운동화는 책보다 늦게 도착했다.</li>
-                            <li>• 라면은 가장 먼저도, 가장 나중에도 아니었다.</li>
-                            <li>• 정수기 필터는 운동화보다 먼저 도착했다.</li>
-                            <li>• 책은 라면보다 나중에 도착했다.</li>
+                        <ul style="list-style:none;padding-left:0;margin-top:0;margin-bottom:15px;color:#222;line-height:1.7;font-weight:bold; word-break:keep-all;">
+                            <li style="padding-left:18px; text-indent:-18px; margin-bottom:5px;">• 운동화는 책보다 늦게 도착했다.</li>
+                            <li style="padding-left:18px; text-indent:-18px; margin-bottom:5px;">• 라면은 가장 먼저도, 가장 나중에도 아니었다.</li>
+                            <li style="padding-left:18px; text-indent:-18px; margin-bottom:5px;">• 정수기 필터는 운동화보다 먼저 도착했다.</li>
+                            <li style="padding-left:18px; text-indent:-18px; margin-bottom:5px;">• 책은 라면보다 나중에 도착했다.</li>
                         </ul>
                         <hr style="border:0;border-top:1px dashed #aa9;margin:15px 0;">
-                        <p style="margin:5px 0;color:#555;font-size:0.85rem;text-align:center;">
+                        <p style="margin:5px 0;color:#555;font-size:0.85rem;text-align:center; word-break:keep-all;">
                             (참고: 각 상자 뒷면의 숫자 - 라면=9, 정수기 필터=3, 책=6, 운동화=2)<br>
                             *도착한 순서대로 상자의 숫자를 나열하면 4자리 비밀번호가 됩니다.
                         </p>
@@ -625,7 +625,7 @@
                     <h2>🛏️ 문제 4: 2D 가구 배치 시뮬레이션</h2>
                     <div style="display:flex; flex-direction:column; align-items:center; gap:15px; margin-top: 20px;">
                         <!-- 문제 설명 추가 -->
-                        <p style="color:#ccc; font-size:1rem; margin-top:5px; margin-bottom:5px; text-align:center;">👉 <strong>아래의 가구들</strong>을 드래그 또는 터치하여 도면의 <strong>알맞은 위치</strong>에 모두 배치해 보세요!</p>
+                        <p style="color:#ccc; font-size:1rem; margin-top:5px; margin-bottom:5px; text-align:center;">👉 <strong>아래의 가구들</strong>을 터치하여 도면의 <strong>알맞은 위치</strong>에 모두 배치해 보세요!</p>
 
                         <!-- 가구 아이콘들 (깨진 이미지 대신 이모지와 그라데이션) -->
                         <div id="f5-furniture-items" class="items" style="display:flex; gap:15px; flex-wrap:wrap; justify-content:center; padding:15px; background:rgba(255,255,255,0.05); border-radius:12px; width: 100%; min-height: 100px; border:1px solid rgba(255,255,255,0.1);">
@@ -699,7 +699,7 @@
                                 <h3 style="color:gold;margin-bottom:15px;font-size:1.4rem;">✨ 벽면의 패널이 열렸습니다!</h3>
                                 <div style="background:linear-gradient(135deg, rgba(30,20,40,0.9), rgba(10,5,15,0.9)); padding:25px; border:2px solid #a67c00; border-radius:15px; margin-bottom:25px; box-shadow: 0 0 20px rgba(166,124,0,0.5), inset 0 0 10px rgba(255,255,255,0.1); position:relative; overflow:hidden;">
                                     <div style="position:absolute; top:-10px; right:10px; font-size:3rem; opacity:0.15;">🌌</div>
-                                    <p style="color:#f0d080;font-style:italic;line-height:1.8;font-size:1.1rem; text-shadow:0 0 5px rgba(240,208,128,0.5);">"집의 진정한 완성은 4개의 벽 안에 있지 않습니다.<br>하늘 아래 탁 트인 공간 — 가장 높은 곳에서<br>우리는 비로소 삶의 방향을 봅니다.<br>이 쪽지를 들고 마지막 공간으로 오세요."</p>
+                                    <p style="color:#f0d080;font-style:italic;line-height:1.6;font-size:clamp(0.95rem, 4vw, 1.1rem); text-shadow:0 0 5px rgba(240,208,128,0.5); word-break:keep-all;">"집의 진정한 완성은<br>4개의 벽 안에 있지 않습니다.<br><br>하늘 아래 탁 트인 공간<br>— 가장 높은 곳에서<br>우리는 비로소 삶의 방향을 봅니다.<br><br>이 쪽지를 들고<br>마지막 공간으로 오세요."</p>
                                 </div>
                                 
             <!-- 정답 해설 버튼 & 마지막 공간 이동 버튼 -->
@@ -780,7 +780,7 @@
                 <!-- 미니게임 2: 수납 개념 심화 분류 (E, S, K 획득) -->
                 <div id="roof-game-floor" class="hidden glass-panel game-panel" style="max-width:700px; width:90%;">
                     <h2>🧹 두 번째 단서: 수납의 고수 (컨베이어 벨트)</h2>
-                    <p style="color:#ccc;margin-bottom:15px;font-size:0.9rem;">물건이 지나가기 전에 알맞은 곳으로 드래그 또는 터치해 주세요!<br>(정리: 버림 / 수납: 제자리 보관 / 보관: 창고행)</p>
+                    <p style="color:#ccc;margin-bottom:15px;font-size:0.9rem;">물건이 지나가기 전에 알맞은 곳으로 터치해 주세요!<br>(정리: 버림 / 수납: 제자리 보관 / 보관: 창고행)</p>
                     
                     <!-- 컨베이어 벨트 영역 -->
                     <div style="position:relative;width:100%;height:100px;background:#333;border:4px solid #222;border-radius:8px;overflow:hidden;margin-bottom:20px;box-shadow:inset 0 0 15px rgba(0,0,0,0.8);">
@@ -791,10 +791,10 @@
                         </div>
                     </div>
 
-                    <div style="display:flex;gap:15px;justify-content:center;margin-bottom:20px;">
-                        <div class="drop-box" data-target="trash" style="flex:1;height:130px;background:linear-gradient(145deg, #8B0000, #cc2200, #ff4422);border-radius:14px;display:flex;flex-direction:column;align-items:center;justify-content:center;font-size:1.1rem;font-weight:bold;color:#fff;border:3px solid rgba(255,80,50,0.7);box-shadow:0 0 20px rgba(200,30,0,0.5),inset 0 0 15px rgba(0,0,0,0.3);gap:6px;cursor:pointer;transition:transform 0.2s,box-shadow 0.2s;" onmouseover="this.style.transform='scale(1.05)'" onmouseout="this.style.transform='scale(1)'"><span style="font-size:2rem;">🗑️</span><span>정리 (폐기)</span><span style="font-size:0.75rem;color:rgba(255,200,200,0.8);">필요없는 물건</span></div>
-                        <div class="drop-box" data-target="frequent" style="flex:1;height:130px;background:linear-gradient(145deg, #004d00, #228822, #44cc44);border-radius:14px;display:flex;flex-direction:column;align-items:center;justify-content:center;font-size:1.1rem;font-weight:bold;color:#fff;border:3px solid rgba(50,220,80,0.7);box-shadow:0 0 20px rgba(0,150,30,0.5),inset 0 0 15px rgba(0,0,0,0.3);gap:6px;cursor:pointer;transition:transform 0.2s,box-shadow 0.2s;" onmouseover="this.style.transform='scale(1.05)'" onmouseout="this.style.transform='scale(1)'"><span style="font-size:2rem;">🗄️</span><span>자주쓰는 수납</span><span style="font-size:0.75rem;color:rgba(180,255,180,0.8);">자주 꺼내는 물건</span></div>
-                        <div class="drop-box" data-target="warehouse" style="flex:1;height:130px;background:linear-gradient(145deg, #003366, #1a5fa5, #4488dd);border-radius:14px;display:flex;flex-direction:column;align-items:center;justify-content:center;font-size:1.1rem;font-weight:bold;color:#fff;border:3px solid rgba(80,160,255,0.7);box-shadow:0 0 20px rgba(30,80,200,0.5),inset 0 0 15px rgba(0,0,0,0.3);gap:6px;cursor:pointer;transition:transform 0.2s,box-shadow 0.2s;" onmouseover="this.style.transform='scale(1.05)'" onmouseout="this.style.transform='scale(1)'"><span style="font-size:2rem;">📦</span><span>장기 보관 (창고)</span><span style="font-size:0.75rem;color:rgba(180,210,255,0.8);">계절용·비상 물건</span></div>
+                    <div style="display:flex;gap:8px;justify-content:center;margin-bottom:20px;padding: 0 5px;">
+                        <div class="drop-box" data-target="trash" style="flex:1;min-height:150px;padding:10px 5px;background:linear-gradient(145deg, #8B0000, #cc2200, #ff4422);border-radius:14px;display:flex;flex-direction:column;align-items:center;justify-content:center;font-size:0.95rem;word-break:keep-all;text-align:center;line-height:1.2;font-weight:bold;color:#fff;border:3px solid rgba(255,80,50,0.7);box-shadow:0 0 20px rgba(200,30,0,0.5),inset 0 0 15px rgba(0,0,0,0.3);gap:4px;cursor:pointer;transition:transform 0.2s,box-shadow 0.2s;" onmouseover="this.style.transform='scale(1.05)'" onmouseout="this.style.transform='scale(1)'"><span style="font-size:1.6rem;">🗑️</span><span>정리<br>(폐기)</span><span style="font-size:0.7rem;color:rgba(255,200,200,0.8);line-height:1.1;">필요없는 물건</span></div>
+                        <div class="drop-box" data-target="frequent" style="flex:1;min-height:150px;padding:10px 5px;background:linear-gradient(145deg, #004d00, #228822, #44cc44);border-radius:14px;display:flex;flex-direction:column;align-items:center;justify-content:center;font-size:0.95rem;word-break:keep-all;text-align:center;line-height:1.2;font-weight:bold;color:#fff;border:3px solid rgba(50,220,80,0.7);box-shadow:0 0 20px rgba(0,150,30,0.5),inset 0 0 15px rgba(0,0,0,0.3);gap:4px;cursor:pointer;transition:transform 0.2s,box-shadow 0.2s;" onmouseover="this.style.transform='scale(1.05)'" onmouseout="this.style.transform='scale(1)'"><span style="font-size:1.6rem;">🗄️</span><span>자주쓰는<br>수납</span><span style="font-size:0.7rem;color:rgba(180,255,180,0.8);line-height:1.1;">자주 꺼내는 물건</span></div>
+                        <div class="drop-box" data-target="warehouse" style="flex:1;min-height:150px;padding:10px 5px;background:linear-gradient(145deg, #003366, #1a5fa5, #4488dd);border-radius:14px;display:flex;flex-direction:column;align-items:center;justify-content:center;font-size:0.95rem;word-break:keep-all;text-align:center;line-height:1.2;font-weight:bold;color:#fff;border:3px solid rgba(80,160,255,0.7);box-shadow:0 0 20px rgba(30,80,200,0.5),inset 0 0 15px rgba(0,0,0,0.3);gap:4px;cursor:pointer;transition:transform 0.2s,box-shadow 0.2s;" onmouseover="this.style.transform='scale(1.05)'" onmouseout="this.style.transform='scale(1)'"><span style="font-size:1.6rem;">📦</span><span>장기 보관<br>(창고)</span><span style="font-size:0.7rem;color:rgba(180,210,255,0.8);line-height:1.1;">계절용·비상 물건</span></div>
                     </div>
                     
                     
@@ -816,7 +816,7 @@
                         <div style="display:flex;justify-content:center;margin-bottom:15px;">
     <input id="storage-word-full" type="text" maxlength="5" placeholder="5글자 입력" style="width:200px;height:50px;font-size:1.5rem;text-align:center;background:#111;border:2px solid gold;color:gold;border-radius:8px;font-weight:bold;letter-spacing:10px;">
 </div>
-                        <button id="check-storage-word" class="action-btn" style="background:gold;color:#000;font-weight:bold;padding:10px 24px;">확인</button>
+                        <button id="check-storage-word" class="action-btn" style="background:gold;color:#000;font-weight:bold;padding:10px 24px;margin:0 auto;display:block;">확인</button>
                     </div>
                 </div>
 
@@ -903,7 +903,7 @@
                         </div>
                         <div id="submit-housing-container" class="hidden" style="display:flex; flex-direction:column; justify-content:center; align-items:center; width:100%; text-align:center; margin-top:20px;">
                             <h2 style="color:gold; margin-bottom:30px; font-size:1.8rem; text-shadow:0 0 15px gold; text-align:center; line-height:1.4;">✨ 운명의 주거 공간이 정해졌습니다 ✨</h2>
-                            <button id="submit-housing-test" class="action-btn" style="display:block; margin:0 auto; width:80%; max-width:400px; padding:20px; font-size:1.3rem; background:linear-gradient(135deg, #a67c00, #bf953f); color:#fff; border-radius:30px; box-shadow:0 0 20px rgba(166,124,0,0.5); border:2px solid #ffe57f;">나의 운명적인 주거 공간 확인하기</button>
+                            <button id="submit-housing-test" class="action-btn" style="display:block; margin:0 auto; width:90%; max-width:400px; padding:15px 10px; font-size: clamp(0.9rem, 4.5vw, 1.2rem); background:linear-gradient(135deg, #a67c00, #bf953f); color:#fff; border-radius:30px; box-shadow:0 0 20px rgba(166,124,0,0.5); border:2px solid #ffe57f; white-space:normal; word-break:keep-all; line-height:1.4;">나의 운명적인 주거 공간 확인하기</button>
                         </div>
                     </div>
                 </div>

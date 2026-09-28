@@ -414,20 +414,29 @@ body {
     transform-origin: center center;
 }
 
-@media (max-height: 850px), (max-width: 850px) {
+@media (max-height: 850px) {
     .smartphone-wrapper { transform: scale(0.85); }
 }
-@media (max-height: 750px), (max-width: 750px) {
+@media (max-height: 750px) {
     .smartphone-wrapper { transform: scale(0.75); }
 }
-@media (max-height: 650px), (max-width: 650px) {
+@media (max-height: 650px) {
     .smartphone-wrapper { transform: scale(0.65); }
 }
-@media (max-height: 550px), (max-width: 550px) {
+@media (max-height: 550px) {
     .smartphone-wrapper { transform: scale(0.55); }
 }
-@media (max-height: 450px), (max-width: 450px) {
+@media (max-height: 450px) {
     .smartphone-wrapper { transform: scale(0.45); }
+}
+@media (max-width: 600px) {
+    .smartphone-wrapper { 
+        position: fixed !important;
+        top: 50% !important;
+        left: 50% !important;
+        transform: translate(-50%, -50%) scale(0.95) !important;
+        z-index: 9999;
+    }
 }
 
 .power-btn-side {
@@ -689,12 +698,13 @@ body {
     bottom: 0;
     right: 5%;
     width: 40%;
+    min-width: 220px; /* 모바일에서도 너무 작아지지 않도록 최소 크기 지정 */
     max-width: 400px;
     height: auto;
     filter: drop-shadow(0 0 20px rgba(0,0,0,0.8));
     transform: translateY(120%);
     transition: transform 1s cubic-bezier(0.175, 0.885, 0.32, 1.275);
-    z-index: 5;
+    z-index: 15; /* 대화창(z-index: 10)보다 앞으로 나오도록 수정 */
     pointer-events: none;
 }
 
