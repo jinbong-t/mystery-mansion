@@ -716,7 +716,7 @@ body {
     filter: drop-shadow(0 0 20px rgba(0,0,0,0.8));
     transform: translateY(120%);
     transition: transform 1s cubic-bezier(0.175, 0.885, 0.32, 1.275);
-    z-index: 15; /* 대화창(z-index: 10)보다 앞으로 나오도록 수정 */
+    z-index: 5; /* 대화창(z-index: 10)보다 뒤로 나오도록 수정 */
     pointer-events: none;
 }
 
