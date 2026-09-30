@@ -1,5 +1,41 @@
 // 미스터리 맨션 - app.js (완전 재작성, UTF-8)
 
+window.isGlobalMuted = false;
+const OriginalAudioContext = window.AudioContext || window.webkitAudioContext;
+if (OriginalAudioContext) {
+    window.AudioContext = function() {
+        const ctx = new OriginalAudioContext();
+        const masterGain = ctx.createGain();
+        masterGain.connect(ctx.destination);
+        Object.defineProperty(ctx, 'destination', {
+            get: () => masterGain,
+            configurable: true
+        });
+        ctx.setMute = function(mute) {
+            masterGain.gain.value = mute ? 0 : 1;
+        };
+        if (!window.audioContexts) window.audioContexts = [];
+        window.audioContexts.push(ctx);
+        ctx.setMute(window.isGlobalMuted);
+        return ctx;
+    };
+    window.webkitAudioContext = window.AudioContext;
+}
+
+document.addEventListener('DOMContentLoaded', () => {
+    const muteBtn = document.getElementById('global-mute-btn');
+    if (muteBtn) {
+        muteBtn.addEventListener('click', function(e) {
+            e.stopPropagation();
+            window.isGlobalMuted = !window.isGlobalMuted;
+            this.textContent = window.isGlobalMuted ? '🔇' : '🔊';
+            if (window.audioContexts) {
+                window.audioContexts.forEach(ctx => ctx.setMute(window.isGlobalMuted));
+            }
+        });
+    }
+});
+
 var state = {
     floor: 1, playerName: '', personalityType: '',
     f2m1Done: false, f2m2Done: false, f2m3Done: false,
